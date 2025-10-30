@@ -41,7 +41,7 @@ export const resendVerificationEmail = async (req, res) => {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: user.email,
-      subject: "Resend Verify your email",
+      subject: "Email Verification (Resent)",
       html: `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`,
     });
     res.json({ message: "Verification email resent successfully" });

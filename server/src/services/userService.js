@@ -34,8 +34,6 @@ export const createUser = async (data) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
-  await User.deleteMany({});
-
   const newUser = await User.create({
     name,
     email,

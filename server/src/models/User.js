@@ -16,11 +16,16 @@ const userSchema = new mongoose.Schema(
     },
     preferences: {
       taskTypes: {
-        type: [String],
-        enum: ["delivery", "shopping", "smalljob"],
+        type: [
+          {
+            type: String,
+            enum: ["delivery", "shopping", "smalljob"],
+          },
+        ],
         default: ["delivery", "shopping", "smalljob"],
         required: false,
       },
+
       maxDistance: { type: Number, required: false },
       minPrice: { type: Number, required: false },
     },
