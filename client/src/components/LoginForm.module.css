@@ -1,0 +1,147 @@
+.form {
+  background: var(--color-bg);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 400px;
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* .signin-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(80vh - 80px);
+  background-color: var(--color-bg-light);
+  padding: 1rem;
+} */
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--color-text-light);
+  margin-bottom: var(--space-lg);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+label {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+input {
+  padding: var(--space-sm);
+  border: 1px solid #ccc;
+  border-radius: var(--radius-md);
+  font-family: var(--font-main);
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.2);
+}
+
+.errorInput {
+  border-color: red;
+}
+
+.error {
+  font-size: 0.85rem;
+  color: red;
+}
+
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.showPasswordBtn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.forgotLink {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.submitBtn {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  padding: var(--space-sm);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.footerText {
+  text-align: center;
+  margin-top: var(--space-sm);
+}
+
+.footerText a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footerText a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .form {
+    padding: var(--space-lg);
+    margin: var(--space-lg);
+  }
+}
