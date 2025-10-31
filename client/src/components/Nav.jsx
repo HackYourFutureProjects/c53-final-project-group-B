@@ -34,6 +34,11 @@ const Nav = () => {
               How it works
             </Link>
           </li>
+          <li>
+            <Link to="/client" className={styles.navLinksLink}>
+              Client
+            </Link>
+          </li>
           {/* Mobile buttons inside hamburger menu */}
           <li className={styles.mobileButtonsContainer}>
             {!isLoginPage && ( //hide Login if already on /login
