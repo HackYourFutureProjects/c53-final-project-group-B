@@ -12,6 +12,7 @@ import UserList from "./pages/User/UserList";
 import { UserProvider } from "./context/UserProvider.jsx";
 import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
+import Register from "./pages/Register/Register.jsx";
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
           path="/reset-password/:userId/:token"
           element={<ResetPasswordForm />}
         />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </UserProvider>
   );

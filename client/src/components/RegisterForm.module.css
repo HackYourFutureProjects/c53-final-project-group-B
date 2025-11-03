@@ -1,0 +1,94 @@
+.form {
+  background: var(--color-bg);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 420px;
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+input,
+select {
+  padding: var(--space-sm);
+  border: 1px solid #ccc;
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease;
+  font-family: var(--font-main);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.15);
+}
+
+.errorInput {
+  border-color: red;
+}
+
+.error {
+  font-size: 0.8rem;
+  color: red;
+}
+
+.submitBtn {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  padding: var(--space-sm);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.footerText {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.footerText a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footerText a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .form {
+    margin: 1.5rem;
+    padding: var(--space-lg);
+  }
+}
