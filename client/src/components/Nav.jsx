@@ -55,9 +55,11 @@ const Nav = () => {
             Login
           </Link>
         )}
-        <Link to="/get-started" className={styles.getStartedBtn}>
-          Get Started
-        </Link>
+        {location.pathname !== "/register" && (
+          <Link to="/register" className={styles.getStartedBtn}>
+            Get Started
+          </Link>
+        )}
       </div>
 
       {/* Hamburger toggle */}
