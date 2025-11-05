@@ -21,8 +21,8 @@ export function UserProvider({ children }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
             }),
           });
         } catch (err) {

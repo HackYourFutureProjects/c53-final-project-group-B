@@ -3,6 +3,7 @@ import authRouter from "./routes/authRoutes.js";
 import verifyRouter from "./routes/verifyRoutes.js";
 import taskRouter from "./routes/taskRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import ratingRouter from "./routes/ratingRoutes.js";
 
 // Create an express server
 const app = express();
@@ -20,5 +21,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/verify", verifyRouter);
 app.use("/api/tasks", taskRouter);
 app.use("/api/users", userRouter);
+app.use("/api/ratings", ratingRouter);
 
 export default app;

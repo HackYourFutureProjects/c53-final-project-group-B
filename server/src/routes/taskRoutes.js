@@ -18,7 +18,7 @@ taskRouter.post(
   authorizeRole("client"),
   requestTaskToCourier,
 );
-taskRouter.get("/", authMiddleware, getMyTasks);
+taskRouter.get("/my-tasks", authMiddleware, getMyTasks);
 taskRouter.get(
   "/availableTasks",
   authMiddleware,

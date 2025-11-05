@@ -4,7 +4,8 @@ import User from "../models/User.js";
 
 export const createRating = async (req, res) => {
   try {
-    const { taskId, score, comment } = req.body;
+    const { taskId } = req.params;
+    const { score, comment } = req.body;
     if (!taskId || !score) {
       return res
         .status(400)
