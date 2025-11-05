@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     address: { type: String, default: "" },
     location: {
       type: { type: String, enum: ["Point"], default: "Point" },
-      coordinates: { type: [Number], default: [0, 0] },
+      coordinates: { type: [Number], required: false },
     },
     preferences: {
       taskTypes: {
