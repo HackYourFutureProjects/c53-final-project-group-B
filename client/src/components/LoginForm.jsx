@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import styles from "./LoginForm.module.css";
-import { UserContext } from "../context/context.jsx";
+import { UserContext } from "../context/UserContext";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
