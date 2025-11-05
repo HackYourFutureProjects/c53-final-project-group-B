@@ -41,9 +41,6 @@ const Nav = () => {
                 Login
               </Link>
             )}
-            <Link to="/get-started" className={styles.getStartedBtn}>
-              Get Started
-            </Link>
           </li>
         </ul>
       </div>
@@ -55,9 +52,6 @@ const Nav = () => {
             Login
           </Link>
         )}
-        <Link to="/get-started" className={styles.getStartedBtn}>
-          Get Started
-        </Link>
       </div>
 
       {/* Hamburger toggle */}
