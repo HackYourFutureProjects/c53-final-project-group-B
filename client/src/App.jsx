@@ -4,7 +4,7 @@ import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
-import { UserProvider } from "./context/context.jsx";
+import { UserProvider } from "./context/UserProvider.jsx";
 
 const App = () => {
   return (
