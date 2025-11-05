@@ -1,5 +1,5 @@
 import express from "express";
-import { createRating } from "../controllers/ratingController";
+import { createRating } from "../controllers/ratingController.js";
 import { authMiddleware, authorizeRole } from "../middleware/auth.js";
 const ratingRouter = express.Router();
 ratingRouter.post(

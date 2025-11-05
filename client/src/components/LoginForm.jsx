@@ -1,10 +1,7 @@
 import { useState } from "react";
 import styles from "./LoginForm.module.css";
-import { UserContext } from "../context/UserContext.jsx";
-import { useContext } from "react";
 
 const LoginForm = () => {
-  const { login } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +35,6 @@ const LoginForm = () => {
     e.preventDefault();
     if (validate()) {
       console.log("✅ Login success", { email, password });
-      login(email, password);
     }
   };
 
