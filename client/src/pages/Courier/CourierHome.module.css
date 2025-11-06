@@ -1,4 +1,4 @@
-/* Page shell */
+/* Same shell as client for visual parity */
 .page {
   max-width: 1200px;
   margin: 0 auto;
@@ -18,24 +18,12 @@
   color: var(--color-text);
 }
 
-.linkBtn {
-  background: #fff;
-  color: var(--color-primary);
-  border: 1px solid rgba(109, 52, 159, 0.25);
-  border-radius: var(--radius-md);
-  padding: 8px 12px;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-/* Two-column layout like the reference */
 .twoPane {
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 24px;
 }
 
-/* Left: map placeholder */
 .mapBox {
   position: relative;
   min-height: 520px;
@@ -79,7 +67,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Right: sidebar */
 .sidebar {
   background: #ffffff;
   border-radius: 20px;
@@ -95,51 +82,60 @@
   margin: 4px 0 12px;
 }
 
-/* Driver cards */
-.driverList {
+.note {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Parcel cards */
+.parcelList {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.driverCard {
+.parcelCard {
   display: grid;
-  grid-template-columns: 56px 1fr;
+  grid-template-columns: 10px 1fr auto;
   gap: 12px;
-  padding: 14px;
-  border-radius: 16px;
-  background: #f6f9ff;
+  align-items: center;
+  padding: 12px;
+  border-radius: 14px;
+  background: #f8f7ff;
   box-shadow:
-    0 0 0 2px #e7efff inset,
+    0 0 0 2px #efeafe inset,
     var(--shadow-xs);
 }
 
-.avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  object-fit: cover;
+.colorBar {
+  width: 10px;
+  height: 48px;
+  border-radius: 8px;
+  background: #7c3aed;
 }
 
-.driverBody {
+.parcelBody {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-.driverName {
+.parcelTitle {
   font-weight: 700;
 }
-
-.driverMeta {
-  display: flex;
-  gap: 12px;
+.parcelMeta {
   font-size: 12px;
   color: #6b7280;
+  display: flex;
+  gap: 12px;
 }
 
-.note {
-  font-size: 12px;
-  color: #9ca3af;
+.acceptBtn {
+  background: #fff;
+  border: 1px solid rgba(109, 52, 159, 0.25);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
 }
 
 @media (max-width: 960px) {

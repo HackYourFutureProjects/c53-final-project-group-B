@@ -1,98 +1,102 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "../../components/Card";
 import styles from "./ClientHome.module.css";
 
-// Mock data then gonna change to real API data
-const mockCouriers = [
-  { id: 1, name: "Hussein B.", distanceKm: 2.4, rating: 4.8 },
-  { id: 2, name: "Anna D.", distanceKm: 4.1, rating: 4.5 },
-  { id: 3, name: "Paul J.", distanceKm: 5.2, rating: 4.6 },
-];
-
-const mockTasks = [
-  { id: "T-201", title: "Deliver docs to Zaandam", status: "posted" },
-  { id: "T-202", title: "Pick up parcel", status: "accepted" },
+// Mock data only; no backend calls
+const MOCK_DRIVERS = [
+  {
+    id: 1,
+    name: "John Doe",
+    rating: 4.8,
+    distanceKm: 6.4,
+    vehicle: "Car",
+    avatarUrl: "",
+  },
+  {
+    id: 2,
+    name: "John Smith",
+    rating: 4.2,
+    distanceKm: 5.8,
+    vehicle: "Motorbike",
+    avatarUrl: "",
+  },
+  {
+    id: 3,
+    name: "Alex S.",
+    rating: 4.9,
+    distanceKm: 3.1,
+    vehicle: "Bike",
+    avatarUrl: "",
+  },
 ];
 
 const ClientHome = () => {
+  const [drivers, setDrivers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Simulate async load
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDrivers(MOCK_DRIVERS);
+      setLoading(false);
+    }, 350);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
-    <main className={styles.wrapper}>
+    <main className={styles.page}>
       <header className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Your deliveries</h1>
-          <p className={styles.subtitle}>
-            Post a new delivery or track the ones you already created.
-          </p>
-        </div>
+        <h1 className={styles.title}>New Delivery Task</h1>
         <Link to="/client/tasks" className={styles.linkBtn}>
-          View all tasks
+          My tasks
         </Link>
       </header>
 
-      <div className={styles.grid}>
-        {/* 1. Create delivery */}
-        <Card
-          title="Create delivery"
-          action={
-            <button type="button" className={styles.primaryBtn}>
-              + New delivery
-            </button>
-          }
-        >
-          <p>Publish a task with pickup and dropoff locations.</p>
-          <p className={styles.hint}>
-            Later we can add price, distance and courier preferences.
-          </p>
-        </Card>
+      <section className={styles.twoPane}>
+        {/* Left: map placeholder with big Add button */}
+        <div className={styles.mapBox}>
+          <button className={styles.geoBtn} aria-label="Use my location">
+            📍
+          </button>
+          <div className={styles.mapPin}>📌</div>
+          <button
+            type="button"
+            className={styles.addBtn}
+            onClick={() => alert("Open Create Delivery flow")}
+          >
+            Add Task
+          </button>
+        </div>
 
-        {/* 2. Available couriers */}
-        <Card title="Available couriers near you">
-          <ul className={styles.list}>
-            {mockCouriers.map((c) => (
-              <li key={c.id} className={styles.listItem}>
-                <div>
-                  <p className={styles.listTitle}>{c.name}</p>
-                  <p className={styles.listMeta}>
-                    {c.distanceKm} km • ⭐ {c.rating}
-                  </p>
-                </div>
-                <button type="button" className={styles.smallBtn}>
-                  Request
-                </button>
-              </li>
-            ))}
-          </ul>
-          <p className={styles.note}>
-            Distance / sorting will use user location (to be added).
-          </p>
-        </Card>
+        {/* Right: Available Drivers list */}
+        <aside className={styles.sidebar}>
+          <h2 className={styles.sidebarTitle}>Available Drivers</h2>
 
-        {/* 3. My last tasks */}
-        <Card
-          title="My tasks"
-          action={
-            <Link to="/client/tasks" className={styles.smallLink}>
-              View all
-            </Link>
-          }
-        >
-          <ul className={styles.list}>
-            {mockTasks.map((t) => (
-              <li key={t.id} className={styles.listItem}>
-                <div>
-                  <p className={styles.listTitle}>{t.title}</p>
-                  <span className={`${styles.status} ${styles[t.status]}`}>
-                    {t.status}
-                  </span>
-                </div>
-                <Link to="/client/tasks" className={styles.smallLink}>
-                  Open
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </div>
+          {loading && <p className={styles.note}>Loading…</p>}
+
+          {!loading && (
+            <ul className={styles.driverList}>
+              {drivers.map((d) => (
+                <li key={d.id} className={styles.driverCard}>
+                  <img
+                    className={styles.avatar}
+                    src={d.avatarUrl || "https://i.pravatar.cc/80?img=5"}
+                    alt={d.name}
+                  />
+                  <div className={styles.driverBody}>
+                    <div className={styles.driverName}>{d.name}</div>
+                    <div className={styles.driverMeta}>
+                      <span>⭐ {d.rating}</span>
+                      <span>{d.distanceKm} km</span>
+                      <span>{d.vehicle}</span>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </aside>
+      </section>
     </main>
   );
 };
