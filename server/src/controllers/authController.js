@@ -11,17 +11,12 @@ const JWT_SECRET = process.env.JWT_SECRET;
 export const register = async (req, res) => {
   try {
     const user = await createUser(req.body);
-    try {
-      await sendVerificationEmail(user);
-    } catch (err) {
-      console.error("Error sending verification email:", err);
-    }
+    await sendVerificationEmail(user);
 
     res.status(201).json({
       message: "User registered successfully please check your inbox ",
     });
   } catch (error) {
-    console.error("REGISTER ERROR:", error);
     if (error instanceof ServiceError) {
       return res.status(error.status).json({ message: error.message });
     }
