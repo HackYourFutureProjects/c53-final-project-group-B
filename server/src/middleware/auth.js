@@ -11,12 +11,15 @@ export const authMiddleware = async (req, res, next) => {
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId);
+    console.log("Decoded token:", decoded);
     if (!user) {
+      console.error("User not found for ID:", decoded.userId);
       return res.status(401).json({ message: "user not found" });
     }
     req.user = user;
     next();
   } catch (err) {
+    console.error("Auth error:", err.message);
     return res.status(401).json({ message: "invalid token or expired" });
   }
 };
