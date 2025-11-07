@@ -7,7 +7,6 @@ import UserList from "./pages/User/UserList";
 import Register from "./pages/Register/Register.jsx";
 import { UserProvider } from "./context/UserProvider.jsx";
 
-
 const App = () => {
   return (
     <UserProvider>
