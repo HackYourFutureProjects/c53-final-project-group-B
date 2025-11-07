@@ -5,10 +5,12 @@ import Home from "./pages/Home/Home";
 import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
 import Register from "./pages/Register/Register.jsx";
+import { UserProvider } from "./context/UserProvider.jsx";
+
 
 const App = () => {
   return (
-    <>
+    <UserProvider>
       <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -17,7 +19,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-    </>
+    </UserProvider>
   );
 };
 
