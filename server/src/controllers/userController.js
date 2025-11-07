@@ -18,13 +18,17 @@ export const updateUserCoordinates = async (req, res) => {
       locationName = "Unknown location";
     }
 
-    const user = await User.findByIdAndUpdate(userId, {
-      address: locationName,
-      location: {
-        type: "Point",
-        coordinates: [longitude, latitude],
+    const user = await User.findByIdAndUpdate(
+      userId,
+      {
+        address: locationName,
+        location: {
+          type: "Point",
+          coordinates: [longitude, latitude],
+        },
       },
-    });
+      { new: true },
+    );
 
     res.status(200).json({ message: "Coordinates updated successfully", user });
   } catch (error) {
@@ -42,7 +46,6 @@ export const getAvailableCouriers = async (req, res) => {
       coords.length === 2 &&
       typeof coords[0] === "number" &&
       typeof coords[1] === "number" &&
-      coords[0] !== 0 &&
       coords[0] !== 0 &&
       coords[1] !== 0;
     let couriers;
