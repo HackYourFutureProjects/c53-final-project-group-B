@@ -77,6 +77,16 @@ const Nav = () => {
               Login
             </Link>
           ))}
+        {!isLoginPage && ( // ✅ hide Login if already on /login
+          <Link to="/login" className={styles.loginBtn}>
+            Login
+          </Link>
+        )}
+        {location.pathname !== "/register" && (
+          <Link to="/register" className={styles.getStartedBtn}>
+            Get Started
+          </Link>
+        )}
       </div>
 
       {/* Hamburger toggle */}

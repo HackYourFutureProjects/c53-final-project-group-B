@@ -9,6 +9,7 @@ import Forbidden from "./pages/Forbidden/Forbidden";
 import HeroSection from "./components/HeroSection";
 import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
+import Register from "./pages/Register/Register.jsx";
 import { UserProvider } from "./context/UserProvider.jsx";
 import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
@@ -44,6 +45,7 @@ const App = () => {
           }
         />
         <Route path="/forbidden" element={<Forbidden />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/reset-password" element={<RequestResetPassword />} />
         <Route
           path="/reset-password/:userId/:token"
