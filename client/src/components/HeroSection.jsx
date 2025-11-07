@@ -9,7 +9,7 @@ const HeroSection = () => {
       <div className={styles.content}>
         <h1 className={styles.title}>Your Delivery, Done by Anyone.</h1>
         <p className={styles.description}>
-          We connect anyone who need something delivered with Couriers ready to
+          We connect anyone who needs something delivered with Couriers ready to
           help. Fast, flexible, and fair — powered by your community.
         </p>
         <div className={styles.buttons}>
