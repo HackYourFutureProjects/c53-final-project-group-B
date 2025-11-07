@@ -69,6 +69,8 @@ const ResetPasswordForm = () => {
               type="button"
               className={styles.showPasswordBtn}
               onClick={() => setShowNew((s) => !s)}
+              aria-label="Toggle password visibility"
+              aria-pressed={showNew}
             >
               {showNew ? "Hide" : "Show"}
             </button>
@@ -88,6 +90,8 @@ const ResetPasswordForm = () => {
               type="button"
               className={styles.showPasswordBtn}
               onClick={() => setShowConfirm((s) => !s)}
+              aria-label="Toggle password visibility"
+              aria-pressed={showConfirm}
             >
               {showConfirm ? "Hide" : "Show"}
             </button>
