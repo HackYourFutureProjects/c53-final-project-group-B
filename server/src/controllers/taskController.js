@@ -39,11 +39,17 @@ export const createTask = async (req, res) => {
       price,
       pickupLocation: {
         address: pickupLocation,
-        coordinates: [pickupCoords.lon, pickupCoords.lat],
+        location: {
+          type: "Point",
+          coordinates: [pickupCoords.lon, pickupCoords.lat],
+        },
       },
       dropoffLocation: {
         address: dropoffLocation,
-        coordinates: [dropoffCoords.lon, dropoffCoords.lat],
+        location: {
+          type: "Point",
+          coordinates: [dropoffCoords.lon, dropoffCoords.lat],
+        },
       },
     });
     res.status(201).json({ message: "Task created successfully" });
@@ -210,7 +216,9 @@ export const getAvailableTasks = async (req, res) => {
       Array.isArray(coords) &&
       coords.length === 2 &&
       typeof coords[0] === "number" &&
-      typeof coords[1] === "number";
+      typeof coords[1] === "number" &&
+      coords[0] !== 0 &&
+      coords[1] !== 0;
     const { taskTypes, maxDistance, minPrice } = courier.preferences;
     const matchQuery = {
       status: "posted",
