@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import styles from "./LoginForm.module.css";
 import { UserContext } from "../context/UserContext";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,10 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const { login } = useContext(UserContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [serverError, setServerError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validate = () => {
     const newErrors = {};
@@ -33,11 +38,43 @@ const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      console.log("✅ Login success", { email, password });
-      login(email, password);
+    setServerError(null);
+    if (!validate()) return;
+    setIsSubmitting(true);
+    try {
+      const result = await login(email, password);
+      if (result.success) {
+        // If the user was redirected to login from a protected route, go back there
+        const from = location.state?.from;
+        if (from && from.pathname) {
+          navigate(from.pathname, { replace: true });
+          return;
+        }
+
+        // Otherwise, default to role-based dashboard
+        const role = result.user?.role;
+        if (role === "client") {
+          navigate("/client-dashboard");
+        } else if (role === "courier") {
+          navigate("/courier-dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        // Show server provided message (e.g. invalid credentials or not verified)
+        setServerError(result.message || "Login failed");
+        if (result.needVerification) {
+          // Optionally guide the user to verification page — keep them on login and show message
+          // You could navigate to a verification flow if available: navigate('/verify')
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      setServerError("Login failed");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -81,6 +118,8 @@ const LoginForm = () => {
         )}
       </div>
 
+      {serverError && <div className={styles.serverError}>{serverError}</div>}
+
       <div className={styles.actions}>
         <label className={styles.rememberMe}>
           <input type="checkbox" /> Save password
@@ -90,8 +129,12 @@ const LoginForm = () => {
         </a>
       </div>
 
-      <button type="submit" className={styles.submitBtn}>
-        Log In
+      <button
+        type="submit"
+        className={styles.submitBtn}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Logging in..." : "Log In"}
       </button>
 
       <p className={styles.footerText}>
