@@ -64,6 +64,8 @@ const ResetPasswordForm = () => {
               type={showNew ? "text" : "password"}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              autoComplete="new-password"
+              required
             />
             <button
               type="button"
