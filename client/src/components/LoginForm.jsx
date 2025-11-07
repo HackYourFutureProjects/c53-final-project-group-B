@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import styles from "./LoginForm.module.css";
 import { UserContext } from "../context/UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -124,9 +125,9 @@ const LoginForm = () => {
         <label className={styles.rememberMe}>
           <input type="checkbox" /> Save password
         </label>
-        <a href="/reset-password" className={styles.forgotLink}>
+        <Link to="/reset-password" className={styles.forgotLink}>
           Forgot password?
-        </a>
+        </Link>
       </div>
 
       <button

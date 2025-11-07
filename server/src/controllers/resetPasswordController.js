@@ -47,6 +47,17 @@ export const resetPassword = async (req, res) => {
     if (!resetToken) {
       return res.status(404).json({ message: "Invalid request" });
     }
+    // Ensure the new password is not the same as the old one
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const isSameAsOld = await bcrypt.compare(newPassword, user.password);
+    if (isSameAsOld) {
+      return res.status(400).json({
+        message: "New password must be different from the old password",
+      });
+    }
     const hashedPassword = await bcrypt.hash(newPassword, 12);
     await User.findByIdAndUpdate(userId, { password: hashedPassword });
     await Token.deleteMany({ userId });
