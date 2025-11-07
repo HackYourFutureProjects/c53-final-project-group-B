@@ -5,6 +5,9 @@ import taskRouter from "./routes/taskRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import ratingRouter from "./routes/ratingRoutes.js";
 import cors from "cors";
+// Create an express server
+const app = express();
+
 // Tell express to use the json middleware
 app.use(express.json());
 app.use(
@@ -13,9 +16,6 @@ app.use(
     credentials: true, // if you send cookies or authentication headers
   }),
 );
-
-// Create an express server
-const app = express();
 
 /****** Attach routes ******/
 /**
