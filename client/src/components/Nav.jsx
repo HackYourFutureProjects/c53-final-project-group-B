@@ -1,13 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
 import styles from "./Nav.module.css";
 import { PiPackageFill } from "react-icons/pi";
 import TEST_ID from "./Nav.testid";
+import { UserContext } from "../context/UserContext";
 
 const Nav = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const navigate = useNavigate();
+  const { user, logout } = useContext(UserContext);
 
   const toggleMenu = () => setOpen((prev) => !prev);
 
@@ -36,28 +39,44 @@ const Nav = () => {
           </li>
           {/* Mobile buttons inside hamburger menu */}
           <li className={styles.mobileButtonsContainer}>
-            {!isLoginPage && ( //hide Login if already on /login
-              <Link to="/login" className={styles.loginBtn}>
-                Login
-              </Link>
-            )}
-            <Link to="/get-started" className={styles.getStartedBtn}>
-              Get Started
-            </Link>
+            {!isLoginPage &&
+              (user ? (
+                <button
+                  className={styles.loginBtn}
+                  onClick={() => {
+                    logout();
+                    navigate("/");
+                  }}
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/login" className={styles.loginBtn}>
+                  Login
+                </Link>
+              ))}
           </li>
         </ul>
       </div>
 
       {/* Right: buttons (desktop only) */}
       <div className={styles.navButtons}>
-        {!isLoginPage && ( // ✅ hide Login if already on /login
-          <Link to="/login" className={styles.loginBtn}>
-            Login
-          </Link>
-        )}
-        <Link to="/get-started" className={styles.getStartedBtn}>
-          Get Started
-        </Link>
+        {!isLoginPage &&
+          (user ? (
+            <button
+              className={styles.loginBtn}
+              onClick={() => {
+                logout();
+                navigate("/");
+              }}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link to="/login" className={styles.loginBtn}>
+              Login
+            </Link>
+          ))}
       </div>
 
       {/* Hamburger toggle */}
