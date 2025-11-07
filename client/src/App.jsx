@@ -13,7 +13,6 @@ import Register from "./pages/Register/Register.jsx";
 import { UserProvider } from "./context/UserProvider.jsx";
 import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
-import Register from "./pages/Register/Register.jsx";
 
 const App = () => {
   return (
