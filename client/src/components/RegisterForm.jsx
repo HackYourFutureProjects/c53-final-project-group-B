@@ -65,7 +65,6 @@ const RegisterForm = () => {
     try {
       console.log("Submitting register form:", form);
 
-      // Simulate API call
       // const res = await fetch("/api/auth/register", {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
