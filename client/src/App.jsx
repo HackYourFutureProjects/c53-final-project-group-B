@@ -6,10 +6,11 @@ import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
 import ClientHome from "./pages/Client/ClientHome";
 import ClientTasks from "./pages/Client/ClientTasks";
+import { UserProvider } from "./context/UserProvider.jsx";
 
 const App = () => {
   return (
-    <>
+    <UserProvider>
       <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -19,7 +20,7 @@ const App = () => {
         <Route path="/client" element={<ClientHome />} />
         <Route path="/client/tasks" element={<ClientTasks />} />
       </Routes>
-    </>
+    </UserProvider>
   );
 };
 

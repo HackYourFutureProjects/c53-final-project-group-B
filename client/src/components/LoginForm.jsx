@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styles from "./LoginForm.module.css";
+import { UserContext } from "../context/UserContext.js";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const { login } = useContext(UserContext);
 
   const validate = () => {
     const newErrors = {};
@@ -35,7 +37,7 @@ const LoginForm = () => {
     e.preventDefault();
     if (validate()) {
       console.log("✅ Login success", { email, password });
-      // Add login API call here
+      login(email, password);
     }
   };
 
