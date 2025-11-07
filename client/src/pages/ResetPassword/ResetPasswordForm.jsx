@@ -81,6 +81,8 @@ const ResetPasswordForm = () => {
               type={showConfirm ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
+              required
             />
             <button
               type="button"
