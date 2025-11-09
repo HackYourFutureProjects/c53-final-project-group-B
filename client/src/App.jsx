@@ -12,6 +12,7 @@ import UserList from "./pages/User/UserList";
 import { UserProvider } from "./context/UserProvider.jsx";
 import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
+import ClientTasks from "./pages/Client/ClientTasks";
 
 const App = () => {
   return (
@@ -23,11 +24,21 @@ const App = () => {
         <Route path="/user/create" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />
         <Route
-          path="/client-dashboard"
+          path="/client"
           element={
             <RequireAuth>
               <RequireRole allowed={["client"]}>
                 <ClientHome />
+              </RequireRole>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/client/tasks"
+          element={
+            <RequireAuth>
+              <RequireRole allowed={["client"]}>
+                <ClientTasks />
               </RequireRole>
             </RequireAuth>
           }

@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { UserContext } from "./UserContext.js";
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null,
-  );
+  const [user, setUser] = useState({ id: 1, role: "client", name: "Debug" });
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [locationReady, setLocationReady] = useState(false);
   useEffect(() => {
