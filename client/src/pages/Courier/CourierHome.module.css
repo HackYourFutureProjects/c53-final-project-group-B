@@ -1,0 +1,148 @@
+/* Same shell as client for visual parity */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  color: var(--color-text);
+}
+
+.twoPane {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+}
+
+.mapBox {
+  position: relative;
+  min-height: 520px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #f6f7fb 0%, #e7ecf4 100%);
+  box-shadow: var(--shadow-sm) inset;
+}
+
+.geoBtn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 999px;
+  background: #e6f0ff;
+  cursor: pointer;
+}
+
+.mapPin {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  opacity: 0.7;
+}
+
+.addBtn {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+  position: sticky;
+  top: 16px;
+}
+
+.sidebarTitle {
+  font-size: 18px;
+  margin: 4px 0 12px;
+}
+
+.note {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Parcel cards */
+.parcelList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.parcelCard {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 14px;
+  background: #f8f7ff;
+  box-shadow:
+    0 0 0 2px #efeafe inset,
+    var(--shadow-xs);
+}
+
+.colorBar {
+  width: 10px;
+  height: 48px;
+  border-radius: 8px;
+  background: #7c3aed;
+}
+
+.parcelBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.parcelTitle {
+  font-weight: 700;
+}
+.parcelMeta {
+  font-size: 12px;
+  color: #6b7280;
+  display: flex;
+  gap: 12px;
+}
+
+.acceptBtn {
+  background: #fff;
+  border: 1px solid rgba(109, 52, 159, 0.25);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+@media (max-width: 960px) {
+  .twoPane {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+  }
+}

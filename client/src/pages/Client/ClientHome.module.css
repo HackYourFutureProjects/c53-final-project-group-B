@@ -1,0 +1,152 @@
+/* Page shell */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  color: var(--color-text);
+}
+
+.linkBtn {
+  background: #fff;
+  color: var(--color-primary);
+  border: 1px solid rgba(109, 52, 159, 0.25);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Two-column layout like the reference */
+.twoPane {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+}
+
+/* Left: map placeholder */
+.mapBox {
+  position: relative;
+  min-height: 520px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #f6f7fb 0%, #e7ecf4 100%);
+  box-shadow: var(--shadow-sm) inset;
+}
+
+.geoBtn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 999px;
+  background: #e6f0ff;
+  cursor: pointer;
+}
+
+.mapPin {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  opacity: 0.7;
+}
+
+.addBtn {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Right: sidebar */
+.sidebar {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+  position: sticky;
+  top: 16px;
+}
+
+.sidebarTitle {
+  font-size: 18px;
+  margin: 4px 0 12px;
+}
+
+/* Driver cards */
+.driverList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.driverCard {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #f6f9ff;
+  box-shadow:
+    0 0 0 2px #e7efff inset,
+    var(--shadow-xs);
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.driverBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.driverName {
+  font-weight: 700;
+}
+
+.driverMeta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.note {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+@media (max-width: 960px) {
+  .twoPane {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+  }
+}

@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Login from "./pages/Login/Login";
-import ClientDashboard from "./pages/ClientDashboard/ClientDashboard";
-import CourierDashboard from "./pages/CourierDashboard/CourierDashboard";
+import ClientHome from "./pages/Client/ClientHome";
+import CourierHome from "./pages/Courier/CourierHome";
 import RequireAuth from "./components/RequireAuth";
 import RequireRole from "./components/RequireRole";
 import Forbidden from "./pages/Forbidden/Forbidden";
@@ -27,7 +27,7 @@ const App = () => {
           element={
             <RequireAuth>
               <RequireRole allowed={["client"]}>
-                <ClientDashboard />
+                <ClientHome />
               </RequireRole>
             </RequireAuth>
           }
@@ -37,7 +37,7 @@ const App = () => {
           element={
             <RequireAuth>
               <RequireRole allowed={["courier"]}>
-                <CourierDashboard />
+                <CourierHome />
               </RequireRole>
             </RequireAuth>
           }
