@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4rem 8%;
+  padding: 5rem 8%;
   min-height: 90vh;
   background: var(--color-bg);
 }
@@ -40,6 +40,7 @@
   cursor: pointer;
   border: none;
   transition: transform 0.2s ease;
+  text-decoration: none !important;
 }
 
 .getStartedBtn:hover {

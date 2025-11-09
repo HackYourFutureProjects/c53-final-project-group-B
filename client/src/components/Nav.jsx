@@ -14,11 +14,55 @@ const Nav = () => {
 
   const toggleMenu = () => setOpen((prev) => !prev);
 
+  const handleHomeClick = (e) => {
+    // If already on home page, smooth scroll to top
+    if (location.pathname === "/") {
+      e.preventDefault();
+      window.history.pushState(null, "", "/");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    // If on another page, let the Link navigate normally
+
+    // Close mobile menu if open
+    setOpen(false);
+  };
+
+  const handleHowItWorksClick = (e) => {
+    e.preventDefault();
+
+    // If not on home page, navigate to home first with hash
+    if (location.pathname !== "/") {
+      navigate("/#how-it-works");
+      // Wait for navigation to complete, then scroll
+      setTimeout(() => {
+        const element = document.getElementById("how-it-works");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    } else {
+      // Already on home page, update hash and scroll
+      window.history.pushState(null, "", "#how-it-works");
+      const element = document.getElementById("how-it-works");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    // Close mobile menu if open
+    setOpen(false);
+  };
+
   return (
     <nav className={styles.nav}>
       {/* Left: logo + Droppit + main links */}
       <div className={styles.navBrand}>
-        <Link to="/" className={styles.logo} data-testid="nav-brand">
+        <Link
+          to="/"
+          className={styles.logo}
+          data-testid="nav-brand"
+          onClick={handleHomeClick}
+        >
           <PiPackageFill className={styles.logoIcon} /> Droppit
         </Link>
 
@@ -28,12 +72,17 @@ const Nav = () => {
               to="/"
               className={styles.navLinksLink}
               data-testid={TEST_ID.linkToHome}
+              onClick={handleHomeClick}
             >
               Home
             </Link>
           </li>
           <li>
-            <Link to="/how-it-works" className={styles.navLinksLink}>
+            <Link
+              to="/how-it-works"
+              className={styles.navLinksLink}
+              onClick={handleHowItWorksClick}
+            >
               How it works
             </Link>
           </li>
