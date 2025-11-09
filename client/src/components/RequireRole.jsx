@@ -10,7 +10,7 @@ const RequireRole = ({ children, allowed = [] }) => {
   }
 
   if (!allowed.includes(user.role)) {
-    // Unauthorized: show 403 page
+    // Unauthorized: will be shown 403 page
     return <Navigate to="/forbidden" replace />;
   }
 

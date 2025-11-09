@@ -6,7 +6,7 @@ import CourierDashboard from "./pages/CourierDashboard/CourierDashboard";
 import RequireAuth from "./components/RequireAuth";
 import RequireRole from "./components/RequireRole";
 import Forbidden from "./pages/Forbidden/Forbidden";
-import HeroSection from "./components/HeroSection";
+import HomePage from "./pages/Home/HomePage";
 import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
 import { UserProvider } from "./context/UserProvider.jsx";
@@ -18,7 +18,7 @@ const App = () => {
     <UserProvider>
       <Nav />
       <Routes>
-        <Route path="/" element={<HeroSection />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/user" element={<UserList />} />
         <Route path="/user/create" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />

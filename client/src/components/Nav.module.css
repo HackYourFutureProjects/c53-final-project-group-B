@@ -88,6 +88,7 @@
   cursor: pointer;
   font-family: var(--font-main);
   transition: transform 0.2s ease;
+  text-decoration: none !important;
 }
 
 .loginBtn:hover,
@@ -107,6 +108,7 @@
   cursor: pointer;
   border: none;
   transition: transform 0.2s ease;
+  text-decoration: none !important;
 }
 
 .getStartedBtn:hover,
@@ -115,6 +117,7 @@
   color: var(--color-primary);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px) scale(1.1);
+  text-decoration: none !important;
 }
 
 /* ===== Mobile / Tablet ===== */
