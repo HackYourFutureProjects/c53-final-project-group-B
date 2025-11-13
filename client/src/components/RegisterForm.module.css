@@ -30,36 +30,36 @@
   gap: var(--space-xs);
 }
 
-label {
+.form label {
   font-weight: 600;
   color: var(--color-text);
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"],
-input[type="number"] {
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="tel"],
+.form input[type="password"],
+.form input[type="number"] {
   padding: var(--space-sm);
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-tertiary);
   border-radius: var(--radius-md);
   font-family: var(--font-main);
   transition: border-color 0.2s ease;
 }
 
-input:focus {
+.form input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.2);
+  box-shadow: 0 0 0 2px var(--color-border-dark);
 }
 
 .errorInput {
-  border-color: red !important;
+  border-color: var(--color-warning) !important;
 }
 
 .error {
   font-size: 0.85rem;
-  color: red;
+  color: var(--color-warning);
 }
 
 .passwordWrapper {
@@ -68,14 +68,29 @@ input:focus {
   align-items: center;
 }
 
+.passwordWrapper input {
+  width: 100%;
+  padding-right: 2.5rem; /* space for the icon */
+}
+
 .showPasswordBtn {
   position: absolute;
   right: 0.75rem;
   background: none;
   border: none;
   color: var(--color-primary);
-  font-weight: 600;
+  font-size: 1.2rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  top: 0;
+}
+
+.showPasswordBtn:hover {
+  color: var(--color-secondary);
+  background-color: transparent;
 }
 
 .roleSelector {
@@ -88,7 +103,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   padding: var(--space-md);
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--color-tertiary);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -97,7 +112,7 @@ input:focus {
 
 .roleOption:hover {
   border-color: var(--color-primary);
-  background-color: rgba(106, 13, 173, 0.05);
+  background-color: var(--color-bg-dark);
 }
 
 .roleOption input[type="radio"] {
@@ -115,7 +130,7 @@ input:focus {
 
 .roleOption:has(input[type="radio"]:checked) {
   border-color: var(--color-primary);
-  background-color: rgba(106, 13, 173, 0.1);
+  background-color: var(--color-bg-dark);
 }
 
 .roleLabel {
@@ -127,14 +142,14 @@ input:focus {
 
 .roleDescription {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .preferencesSection {
-  background-color: rgba(106, 13, 173, 0.05);
+  background-color: var(--color-bg-dark);
   padding: var(--space-lg);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(106, 13, 173, 0.2);
+  border: 1px solid var(--color-border-dark);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -150,13 +165,13 @@ input:focus {
 
 .preferencesSubtitle {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
 .fieldNote {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--color-text-secondary);
   margin: 0;
   font-style: italic;
 }
@@ -172,14 +187,14 @@ input:focus {
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-sm);
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .checkboxOption:hover {
-  background-color: rgba(106, 13, 173, 0.05);
+  background-color: var(--color-bg-dark);
   border-color: var(--color-primary);
 }
 
@@ -234,9 +249,9 @@ input:focus {
 }
 
 .serverError {
-  background: #ffe6e6;
-  color: #b00020;
-  border: 1px solid #f5c2c2;
+  background: var(--color-server-error-bg);
+  color: var(--color-warning);
+  border: 1px solid var(--color-server-error-border);
   padding: var(--space-sm);
   border-radius: var(--radius-md);
   font-weight: 600;
@@ -244,9 +259,9 @@ input:focus {
 }
 
 .serverSuccess {
-  background: #e6f4ea;
-  color: #1e7e34;
-  border: 1px solid #c3e6cb;
+  background: var(--color-server-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-server-success-border);
   padding: var(--space-sm);
   border-radius: var(--radius-md);
   font-weight: 600;

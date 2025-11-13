@@ -139,7 +139,7 @@ const LoginForm = () => {
       </button>
 
       <p className={styles.footerText}>
-        No account yet? <a href="/register">Register</a>
+        No account yet? <Link to="/register">Register</Link>
       </p>
     </form>
   );

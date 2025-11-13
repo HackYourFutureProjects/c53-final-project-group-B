@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { BiHide, BiShow } from "react-icons/bi";
 import styles from "./RegisterForm.module.css";
 import { UserContext } from "../context/UserContext";
 
@@ -63,8 +64,34 @@ const RegisterForm = () => {
     }
 
     // Phone validation (optional but validate format if provided)
-    if (phone && !/^\+?[\d\s-()]+$/.test(phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+    if (
+      phone &&
+      (!/^\+?[\d\s\-()]+$/.test(phone) || phone.replace(/\D/g, "").length < 9)
+    ) {
+      newErrors.phone = "Please enter a valid phone number (at least 9 digits)";
+    }
+
+    // ✅ NEW VALIDATION for courier preferences
+    if (role === "courier") {
+      // Validate maxDistance if provided
+      if (maxDistance !== "") {
+        const distance = parseFloat(maxDistance);
+        if (isNaN(distance) || distance < 0) {
+          newErrors.maxDistance = "Maximum distance must be a positive number";
+        } else if (distance > 1000) {
+          newErrors.maxDistance = "Maximum distance seems too large";
+        }
+      }
+
+      // Validate minPrice if provided
+      if (minPrice !== "") {
+        const price = parseFloat(minPrice);
+        if (isNaN(price) || price < 0) {
+          newErrors.minPrice = "Minimum price must be a positive number";
+        } else if (price > 10000) {
+          newErrors.minPrice = "Minimum price seems too large";
+        }
+      }
     }
 
     setErrors(newErrors);
@@ -102,8 +129,8 @@ const RegisterForm = () => {
         role,
         phone || undefined,
         taskTypeValue,
-        maxDistance || undefined,
-        minPrice || undefined,
+        maxDistance !== "" ? parseFloat(maxDistance) : undefined,
+        minPrice !== "" ? parseFloat(minPrice) : undefined,
       );
 
       if (result.success) {
@@ -141,11 +168,13 @@ const RegisterForm = () => {
       <p className={styles.subtitle}>Join our delivery community!</p>
 
       <div className={styles.inputGroup}>
-        <label>Name *</label>
+        <label htmlFor="name">Name *</label>
         <input
+          id="name"
           type="text"
-          placeholder="Your full name"
+          placeholder="Your first and last name"
           value={name}
+          required
           onChange={(e) => setName(e.target.value)}
           className={errors.name ? styles.errorInput : ""}
         />
@@ -153,11 +182,13 @@ const RegisterForm = () => {
       </div>
 
       <div className={styles.inputGroup}>
-        <label>Email *</label>
+        <label htmlFor="email">Email *</label>
         <input
+          id="email"
           type="email"
           placeholder="you@example.com"
           value={email}
+          required
           onChange={(e) => setEmail(e.target.value)}
           className={errors.email ? styles.errorInput : ""}
         />
@@ -165,11 +196,13 @@ const RegisterForm = () => {
       </div>
 
       <div className={styles.inputGroup}>
-        <label>Phone</label>
+        <label htmlFor="phone">Phone *</label>
         <input
+          id="phone"
           type="tel"
-          placeholder="+3 0612345678"
+          placeholder="+31 0612345634"
           value={phone}
+          required
           onChange={(e) => setPhone(e.target.value)}
           className={errors.phone ? styles.errorInput : ""}
         />
@@ -177,22 +210,27 @@ const RegisterForm = () => {
       </div>
 
       <div className={styles.inputGroup}>
-        <label>Password *</label>
+        <label htmlFor="password">Password *</label>
         <div className={styles.passwordWrapper}>
           <input
+            id="password"
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
             value={password}
+            required
             onChange={(e) => setPassword(e.target.value)}
             className={errors.password ? styles.errorInput : ""}
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className={styles.showPasswordBtn}
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
+          {password && (
+            <button
+              type="button"
+              aria-label="Toggle password visibility"
+              onClick={() => setShowPassword(!showPassword)}
+              className={styles.showPasswordBtn}
+            >
+              {showPassword ? <BiHide /> : <BiShow />}
+            </button>
+          )}
         </div>
         {errors.password && (
           <span className={styles.error}>{errors.password}</span>
@@ -200,22 +238,27 @@ const RegisterForm = () => {
       </div>
 
       <div className={styles.inputGroup}>
-        <label>Confirm Password *</label>
+        <label htmlFor="confirmPassword">Confirm Password *</label>
         <div className={styles.passwordWrapper}>
           <input
+            id="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm your password"
+            aria-label="Toggle confirm password visibility"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className={errors.confirmPassword ? styles.errorInput : ""}
           />
-          <button
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className={styles.showPasswordBtn}
-          >
-            {showConfirmPassword ? "Hide" : "Show"}
-          </button>
+          {confirmPassword && (
+            <button
+              type="button"
+              aria-label="Toggle confirm password visibility"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className={styles.showPasswordBtn}
+            >
+              {showConfirmPassword ? <BiHide /> : <BiShow />}
+            </button>
+          )}
         </div>
         {errors.confirmPassword && (
           <span className={styles.error}>{errors.confirmPassword}</span>
@@ -225,8 +268,9 @@ const RegisterForm = () => {
       <div className={styles.inputGroup}>
         <label>I want to register as *</label>
         <div className={styles.roleSelector}>
-          <label className={styles.roleOption}>
+          <label htmlFor="role-client" className={styles.roleOption}>
             <input
+              id="role-client"
               type="radio"
               name="role"
               value="client"
@@ -238,8 +282,9 @@ const RegisterForm = () => {
               I need items delivered
             </span>
           </label>
-          <label className={styles.roleOption}>
+          <label htmlFor="role-courier" className={styles.roleOption}>
             <input
+              id="role-courier"
               type="radio"
               name="role"
               value="courier"
@@ -305,6 +350,9 @@ const RegisterForm = () => {
               min="0"
               step="0.1"
             />
+            {errors.maxDistance && (
+              <span className={styles.error}>{errors.maxDistance}</span>
+            )}
           </div>
 
           <div className={styles.inputGroup}>
@@ -317,13 +365,22 @@ const RegisterForm = () => {
               min="0"
               step="0.01"
             />
+            {errors.minPrice && (
+              <span className={styles.error}>{errors.minPrice}</span>
+            )}
           </div>
         </div>
       )}
 
-      {serverError && <div className={styles.serverError}>{serverError}</div>}
+      {serverError && (
+        <div className={styles.serverError} role="alert" aria-live="polite">
+          {serverError}
+        </div>
+      )}
       {serverSuccess && (
-        <div className={styles.serverSuccess}>{serverSuccess}</div>
+        <div className={styles.serverSuccess} role="alert" aria-live="polite">
+          {serverSuccess}
+        </div>
       )}
 
       <button
