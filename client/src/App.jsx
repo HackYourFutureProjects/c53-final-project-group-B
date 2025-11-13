@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import ClientDashboard from "./pages/ClientDashboard/ClientDashboard";
 import CourierDashboard from "./pages/CourierDashboard/CourierDashboard";
 import RequireAuth from "./components/RequireAuth";
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/user" element={<UserList />} />
         <Route path="/user/create" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/client-dashboard"
           element={
