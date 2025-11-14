@@ -85,11 +85,9 @@ export const getAvailableCouriers = async (req, res) => {
     } else {
       couriers = await User.find(matchQuery).limit(30).lean();
     }
-    console.log("Couriers found:", couriers.length);
-    console.log("Couriers details:", couriers);
+
     res.status(200).json({ success: true, couriers });
   } catch (err) {
-    console.error("Error fetching couriers:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

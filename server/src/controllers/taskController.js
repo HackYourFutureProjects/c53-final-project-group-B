@@ -27,7 +27,6 @@ export const createTask = async (req, res) => {
     ]);
 
     if (!pickupCoords || !dropoffCoords) {
-      console.log("Unable to geocode one or both addresses");
       return res
         .status(400)
         .json({ message: "Unable to geocode one or both addresses" });
@@ -53,17 +52,14 @@ export const createTask = async (req, res) => {
         },
       },
     });
-    console.log("Task created successfully");
     res.status(201).json({ message: "Task created successfully" });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 export const acceptTask = async (req, res) => {
   try {
     const { taskId } = req.params;
-    console.log("Accepting task with id:", taskId);
     const task = await Task.findById(taskId);
     if (!task) {
       return res.status(404).json({ success: false, msg: "Task not found" });
@@ -105,7 +101,6 @@ export const startTask = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Task started successfully" });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ success: false, msg: "Server error" });
   }
 };
