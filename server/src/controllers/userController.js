@@ -51,6 +51,7 @@ export const getAvailableCouriers = async (req, res) => {
     let couriers;
     const matchQuery = {
       role: "courier",
+      isAvailable: true,
     };
     if (hasLocation) {
       const [lon, lat] = coords;
@@ -59,7 +60,7 @@ export const getAvailableCouriers = async (req, res) => {
         {
           $geoNear: {
             near: { type: "Point", coordinates: [lon, lat] },
-            key: "location.coordinates",
+            key: "location",
             distanceField: "distanceKm",
             spherical: true,
             distanceMultiplier: 0.001,
@@ -84,8 +85,11 @@ export const getAvailableCouriers = async (req, res) => {
     } else {
       couriers = await User.find(matchQuery).limit(30).lean();
     }
-    res.status(200).json({ couriers });
+    console.log("Couriers found:", couriers.length);
+    console.log("Couriers details:", couriers);
+    res.status(200).json({ success: true, couriers });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Error fetching couriers:", err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

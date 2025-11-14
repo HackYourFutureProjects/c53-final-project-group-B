@@ -27,6 +27,7 @@ export const createTask = async (req, res) => {
     ]);
 
     if (!pickupCoords || !dropoffCoords) {
+      console.log("Unable to geocode one or both addresses");
       return res
         .status(400)
         .json({ message: "Unable to geocode one or both addresses" });
@@ -52,88 +53,110 @@ export const createTask = async (req, res) => {
         },
       },
     });
+    console.log("Task created successfully");
     res.status(201).json({ message: "Task created successfully" });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 export const acceptTask = async (req, res) => {
   try {
-    const { id } = req.params;
-    const task = await Task.findById(id);
+    const { taskId } = req.params;
+    console.log("Accepting task with id:", taskId);
+    const task = await Task.findById(taskId);
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ success: false, msg: "Task not found" });
     }
     if (task.status !== "posted") {
-      return res
-        .status(400)
-        .json({ message: "Task cannot be accepted in its current status" });
+      return res.status(400).json({
+        success: false,
+        msg: "Task cannot be accepted in its current status",
+      });
     }
     task.status = "accepted";
     task.acceptedBy = req.user._id;
+    task.acceptedAt = new Date();
     await task.save();
-    res.status(200).json({ message: "Task accepted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Task accepted successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const startTask = async (req, res) => {
   try {
-    const { id } = req.params;
-    const task = await Task.findById(id);
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId);
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ success: false, msg: "Task not found" });
     }
     if (task.status !== "accepted") {
-      return res
-        .status(400)
-        .json({ message: "Task cannot be started in its current status" });
+      return res.status(400).json({
+        success: false,
+        msg: "Task cannot be started in its current status",
+      });
     }
-    task.status = "in_progress";
+    task.status = "in-progress";
     task.startedAt = new Date();
     await task.save();
-    res.status(200).json({ message: "Task started successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Task started successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.log(err);
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const completeTask = async (req, res) => {
   try {
-    const { id } = req.params;
-    const task = await Task.findById(id);
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId);
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ success: false, msg: "Task not found" });
     }
-    if (task.status !== "in_progress") {
-      return res
-        .status(400)
-        .json({ message: "Task cannot be completed in its current status" });
+    if (task.status !== "in-progress") {
+      return res.status(400).json({
+        success: false,
+        msg: "Task cannot be completed in its current status",
+      });
     }
     task.status = "completed";
     task.completedAt = new Date();
     await task.save();
-    res.status(200).json({ message: "Task completed successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Task completed successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const cancelTask = async (req, res) => {
   try {
-    const { id } = req.params;
-    const task = await Task.findById(id);
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId);
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ success: false, msg: "Task not found" });
     }
     if (task.status === "completed") {
       return res
         .status(400)
-        .json({ message: "Completed task cannot be canceled" });
+        .json({ success: false, msg: "Completed task cannot be canceled" });
+    }
+    if (task.status !== "posted") {
+      return res.status(400).json({
+        success: false,
+        msg: "Only tasks that are not started can be canceled",
+      });
     }
     task.status = "canceled";
     await task.save();
-    res.status(200).json({ message: "Task canceled successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Task canceled successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const requestTaskToCourier = async (req, res) => {
@@ -195,15 +218,15 @@ export const getMyTasks = async (req, res) => {
       const tasks = await Task.find({ createdBy: req.user._id }).populate(
         "acceptedBy",
       );
-      res.status(200).json({ tasks });
+      res.status(200).json({ success: true, tasks });
     } else if (req.user.role === "courier") {
       const tasks = await Task.find({ acceptedBy: req.user._id }).populate(
         "createdBy",
       );
-      res.status(200).json({ tasks });
+      res.status(200).json({ success: true, tasks });
     }
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 
@@ -266,8 +289,9 @@ export const getAvailableTasks = async (req, res) => {
         distanceText: "Unknown distance",
       }));
     }
-    res.status(200).json({ tasks });
+
+    res.status(200).json({ success: true, tasks });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
