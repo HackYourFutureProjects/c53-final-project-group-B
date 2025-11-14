@@ -18,7 +18,7 @@ const HeroSection = () => {
         </p>
         <div className={styles.buttons}>
           {!user && (
-            <Link to="/sign-up" className={styles.getStartedBtn}>
+            <Link to="/register" className={styles.getStartedBtn}>
               Get Started
             </Link>
           )}
