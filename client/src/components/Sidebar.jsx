@@ -1,4 +1,4 @@
-import styles from "./SideBar.module.css";
+import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ onChangeSection, active }) => {
   return (

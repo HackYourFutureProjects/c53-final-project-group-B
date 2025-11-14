@@ -1,5 +1,5 @@
 import styles from "./userDashboard.module.css";
-import Sidebar from "../../components/SideBar.jsx";
+import Sidebar from "../../components/Sidebar.jsx";
 import { UserContext } from "../../context/UserContext.js";
 import { useContext, useState } from "react";
 import MyTaskList from "../myTasks/mytasks.jsx";
