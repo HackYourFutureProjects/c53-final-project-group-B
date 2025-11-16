@@ -19,7 +19,9 @@ export const createTask = async (req, res) => {
       !pickupLocation ||
       !dropoffLocation
     ) {
-      return res.status(400).json({ message: "Missing required fields" });
+      return res
+        .status(400)
+        .json({ success: false, msg: "Missing required fields" });
     }
     const [pickupCoords, dropoffCoords] = await Promise.all([
       getCoordinates(pickupLocation),
@@ -27,9 +29,10 @@ export const createTask = async (req, res) => {
     ]);
 
     if (!pickupCoords || !dropoffCoords) {
-      return res
-        .status(400)
-        .json({ message: "Unable to geocode one or both addresses" });
+      return res.status(400).json({
+        success: false,
+        msg: "Unable to geocode one or both addresses",
+      });
     }
     await Task.create({
       title,
@@ -52,9 +55,11 @@ export const createTask = async (req, res) => {
         },
       },
     });
-    res.status(201).json({ message: "Task created successfully" });
+    res
+      .status(201)
+      .json({ success: true, message: "Task created successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const acceptTask = async (req, res) => {
@@ -173,7 +178,9 @@ export const requestTaskToCourier = async (req, res) => {
       !dropoffLocation ||
       !requestedTo
     ) {
-      return res.status(400).json({ message: "Missing required fields" });
+      return res
+        .status(400)
+        .json({ success: false, msg: "Missing required fields" });
     }
     const [pickupCoords, dropoffCoords] = await Promise.all([
       getCoordinates(pickupLocation),
@@ -181,9 +188,10 @@ export const requestTaskToCourier = async (req, res) => {
     ]);
 
     if (!pickupCoords || !dropoffCoords) {
-      return res
-        .status(400)
-        .json({ message: "Unable to geocode one or both addresses" });
+      return res.status(400).json({
+        success: false,
+        msg: "Unable to geocode one or both addresses",
+      });
     }
     await Task.create({
       title,
@@ -204,7 +212,7 @@ export const requestTaskToCourier = async (req, res) => {
     });
     res.status(201).json({ message: "Task created successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const getMyTasks = async (req, res) => {

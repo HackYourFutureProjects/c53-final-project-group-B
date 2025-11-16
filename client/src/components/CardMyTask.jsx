@@ -1,20 +1,20 @@
 import styles from "./TaskCard.module.css";
 import useFetch from "../hooks/useFetch";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext.js";
 
 const CardMyTask = ({ task, refreshMyTasks }) => {
   const { user } = useContext(UserContext);
+
   let buttonLabel = "";
   let action = "";
 
-  if (user.role === "client") {
+  if (user?.role === "client") {
     if (task.status === "posted") {
       buttonLabel = "Cancel";
       action = "cancel";
     }
-    // Clients can’t act on other statuses
-  } else if (user.role === "courier") {
+  } else if (user?.role === "courier") {
     if (task.status === "accepted") {
       buttonLabel = "Start";
       action = "start";
@@ -22,7 +22,6 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
       buttonLabel = "Complete";
       action = "complete";
     }
-    // No button if completed
   }
 
   const { performFetch, error } = useFetch(
@@ -32,9 +31,11 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
       refreshMyTasks();
     },
   );
-  if (error) {
-    alert("Error performing action: " + error);
-  }
+
+  useEffect(() => {
+    if (error) alert("Error performing action: " + error);
+  }, [error]);
+
   const handleButtonClick = () => {
     if (!action) return;
     performFetch({ method: "PUT" });
@@ -43,8 +44,8 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
   return (
     <div className={styles.card}>
       <h3 className={styles.title}>{task.title}</h3>
-
       <p className={styles.description}>{task.description}</p>
+
       <p>
         <strong>Status:</strong>{" "}
         <span
@@ -72,30 +73,31 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
           <strong>Dropoff:</strong> {task.dropoffLocation.address}
         </p>
       )}
+
       {task.distanceText && <p>Distance: {task.distanceText}</p>}
-      {user.role === "client" && (
-        <p>
-          acceptedBy:{task.acceptedBy?.name}
+
+      {user?.role === "client" && task.acceptedBy && (
+        <div>
+          <strong>Accepted By:</strong> {task.acceptedBy.name}
           <ul>
-            <li>email: {task.acceptedBy?.email}</li>
-            <li>phone: {task.acceptedBy?.phone}</li>
+            <li>Email: {task.acceptedBy.email}</li>
+            <li>Phone: {task.acceptedBy.phone}</li>
           </ul>
-        </p>
+        </div>
       )}
-      {user.role === "courier" && (
-        <p>
-          createdBy:{task.createdBy?.name}
+
+      {user?.role === "courier" && task.createdBy && (
+        <div>
+          <strong>Created By:</strong> {task.createdBy.name}
           <ul>
-            <li>email: {task.createdBy?.email}</li>
-            <li>phone: {task.createdBy?.phone}</li>
+            <li>Email: {task.createdBy.email}</li>
+            <li>Phone: {task.createdBy.phone}</li>
           </ul>
-        </p>
+        </div>
       )}
+
       {buttonLabel && (
-        <button
-          onClick={handleButtonClick}
-          className={`${styles.acceptButton}`}
-        >
+        <button onClick={handleButtonClick} className={styles.acceptButton}>
           {buttonLabel}
         </button>
       )}
