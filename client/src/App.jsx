@@ -13,16 +13,21 @@ import UserList from "./pages/User/UserList";
 import { UserProvider } from "./context/UserProvider.jsx";
 import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
+import UserDashboardLayout from "./pages/UserDashboard/userDashboard.jsx";
+import { useLocation } from "react-router-dom";
 
 const App = () => {
+  const { pathname } = useLocation();
+  const hideNavbar = pathname === "/user-dashboard";
   return (
     <UserProvider>
-      <Nav />
+      {!hideNavbar && <Nav />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/user" element={<UserList />} />
         <Route path="/user/create" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/user-dashboard" element={<UserDashboardLayout />} />
         <Route path="/register" element={<Register />} />
         <Route
           path="/client-dashboard"

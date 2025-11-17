@@ -1,0 +1,56 @@
+.card {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #eee;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.description {
+  color: #555;
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+.status {
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  color: white;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Status colors */
+.posted {
+  background-color: #3498db;
+}
+.accepted {
+  background-color: #f1c40f;
+}
+.in_progress {
+  background-color: #e67e22;
+}
+.completed {
+  background-color: #2ecc71;
+}
+.cancelled {
+  background-color: #e74c3c;
+}
+.requested {
+  background-color: #9b59b6;
+}

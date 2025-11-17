@@ -55,14 +55,15 @@ const LoginForm = () => {
         }
 
         // Otherwise, default to role-based dashboard
-        const role = result.user?.role;
+        navigate("/user-dashboard");
+        /*const role = result.user?.role;
         if (role === "client") {
           navigate("/client-dashboard");
         } else if (role === "courier") {
           navigate("/courier-dashboard");
         } else {
           navigate("/");
-        }
+        }*/
       } else {
         // Show server provided message (e.g. invalid credentials or not verified)
         setServerError(result.message || "Login failed");

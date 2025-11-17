@@ -1,6 +1,7 @@
 import express from "express";
 import { authMiddleware, authorizeRole } from "../middleware/auth.js";
 import {
+  acceptTask,
   createTask,
   getMyTasks,
   startTask,
@@ -31,6 +32,13 @@ taskRouter.put(
   authorizeRole("courier"),
   startTask,
 );
+taskRouter.put(
+  "/:taskId/accept",
+  authMiddleware,
+  authorizeRole("courier"),
+  acceptTask,
+);
+
 taskRouter.put(
   "/:taskId/complete",
   authMiddleware,

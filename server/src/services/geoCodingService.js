@@ -1,6 +1,9 @@
 import axios from "axios";
 export const getCoordinates = async (address) => {
-  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
+  const fullAddress = address.includes("Netherlands")
+    ? address
+    : `${address}, Netherlands`;
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fullAddress)}&format=json&limit=1`;
   const response = await axios.get(url, {
     headers: {
       "User-Agent": "TaskManager/1.0 (support@taskmanager.com)",
