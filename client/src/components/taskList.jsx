@@ -3,6 +3,11 @@ import useFetch from "../hooks/useFetch";
 import { UserContext } from "../context/UserContext.js";
 import TaskCard from "./taskCard.jsx";
 import styles from "./CourierList.module.css";
+import {
+  addMarker,
+  clearMarkers,
+  getMapInstance,
+} from "../controller/mapcontroller.js";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -18,12 +23,31 @@ const TaskList = () => {
       cancelFetch();
     };
   }, [locationReady]);
+  useEffect(() => {
+    if (!locationReady) return;
+
+    const map = getMapInstance();
+    if (!map) return;
+
+    clearMarkers();
+
+    tasks.forEach((task) => {
+      if (task.pickupLocation) {
+        addMarker(
+          task.pickupLocation.location.coordinates[1],
+          task.pickupLocation.location.coordinates[0],
+          task.title,
+        );
+      }
+    });
+  }, [tasks, locationReady]);
   if (isLoading) {
     return <div>Loading available tasks...</div>;
   }
   if (error) {
     return <div>Error loading available tasks: {error}</div>;
   }
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Available Tasks</h1>

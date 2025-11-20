@@ -3,6 +3,11 @@ import useFetch from "../hooks/useFetch";
 import CourierCard from "./courierCard";
 import { UserContext } from "../context/UserContext";
 import styles from "./CourierList.module.css";
+import {
+  addMarker,
+  clearMarkers,
+  getMapInstance,
+} from "../controller/mapcontroller";
 
 const CouriersList = () => {
   const [couriers, setCouriers] = useState([]);
@@ -18,6 +23,26 @@ const CouriersList = () => {
       cancelFetch();
     };
   }, [locationReady]);
+
+  useEffect(() => {
+    if (!locationReady) return;
+
+    const map = getMapInstance();
+    if (!map) return;
+
+    clearMarkers();
+
+    couriers.forEach((courier) => {
+      if (courier.location) {
+        addMarker(
+          courier.location.coordinates[1],
+          courier.location.coordinates[0],
+          courier.name,
+        );
+      }
+    });
+  }, [couriers, locationReady]);
+
   if (isLoading) {
     return <div>Loading available couriers...</div>;
   }
@@ -25,6 +50,15 @@ const CouriersList = () => {
   if (error) {
     return <div>Error loading available couriers: {error}</div>;
   }
+  /* couriers.forEach((courier) => {
+    if (courier.location) {
+      addMarker(
+        courier.location.coordinates[1],
+        courier.location.coordinates[0],
+        courier.name,
+      );
+    }
+  });*/
 
   return (
     <div className={styles.container}>

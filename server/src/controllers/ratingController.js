@@ -30,6 +30,8 @@ export const createRating = async (req, res) => {
       rating: score,
       comment,
     });
+    task.rated = true;
+    await task.save();
     const courier = await User.findById(task.acceptedBy);
     const totalRatings = await Rating.find({ ratedTo: courier._id });
     const averageScore =

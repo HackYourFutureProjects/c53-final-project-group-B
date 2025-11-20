@@ -11,6 +11,7 @@ const taskSchema = new mongoose.Schema(
       default: "delivery",
     },
     price: { type: Number, required: true },
+    rated: { type: Boolean, default: false },
     pickupLocation: {
       address: { type: String, required: true },
       location: {

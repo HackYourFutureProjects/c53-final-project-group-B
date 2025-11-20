@@ -14,21 +14,20 @@ const userSchema = new mongoose.Schema(
       type: { type: String, enum: ["Point"], default: "Point" },
       coordinates: { type: [Number], default: [0, 0] },
     },
-    preferences: {
-      taskTypes: {
-        type: [
-          {
-            type: String,
-            enum: ["delivery", "shopping", "smalljob"],
-          },
-        ],
-        default: ["delivery", "shopping", "smalljob"],
-        required: false,
-      },
-
-      maxDistance: { type: Number, required: false },
-      minPrice: { type: Number, required: false },
+    taskTypes: {
+      type: [
+        {
+          type: String,
+          enum: ["delivery", "shopping", "smalljob"],
+        },
+      ],
+      default: ["delivery", "shopping", "smalljob"],
+      required: false,
     },
+
+    maxDistance: { type: Number, required: false },
+    minPrice: { type: Number, required: false },
+
     isAvailable: { type: Boolean, default: true },
     trustScore: { type: Number, default: 0 },
     isOnline: { type: Boolean, default: false },

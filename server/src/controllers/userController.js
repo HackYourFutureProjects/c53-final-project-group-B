@@ -1,5 +1,8 @@
 import User from "../models/User.js";
-import { getAddressFromCoordinates } from "../services/geoCodingService.js";
+import {
+  getAddressFromCoordinates,
+  getCoordinates,
+} from "../services/geoCodingService.js";
 
 export const updateUserCoordinates = async (req, res) => {
   try {
@@ -89,5 +92,54 @@ export const getAvailableCouriers = async (req, res) => {
     res.status(200).json({ success: true, couriers });
   } catch (err) {
     res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId).select("-password");
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+export const updateUserProfile = async (req, res) => {
+  try {
+    const allowedUpdates = [
+      "name",
+      "email",
+      "phone",
+      "address",
+      "taskTypes",
+      "maxDistance",
+      "minPrice",
+    ];
+    const updates = Object.keys(req.body);
+    const isValid = updates.every((field) => allowedUpdates.includes(field));
+    if (!isValid) {
+      return res.status(400).json({ success: false, msg: "Invalid updates" });
+    }
+    if (req.body.address) {
+      const coords = await getCoordinates(req.body.address);
+      if (coords) {
+        req.body.location = {
+          type: "Point",
+          coordinates: [coords[1], coords[0]],
+        };
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, msg: "Unable to geocode the address" });
+      }
+    }
+
+    const userId = req.user._id;
+    const user = await User.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    }).select("-password");
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };

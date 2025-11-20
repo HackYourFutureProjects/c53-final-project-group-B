@@ -40,16 +40,13 @@ export const createUser = async (data) => {
     password: hashedPassword,
     phone,
     role,
-
-    preferences: {
-      taskTypes: Array.isArray(taskType)
-        ? taskType
-        : taskType
-          ? [taskType]
-          : undefined,
-      maxDistance: maxDistance ?? null,
-      minPrice: minPrice ?? null,
-    },
+    taskTypes: Array.isArray(taskType)
+      ? taskType
+      : taskType
+        ? [taskType]
+        : undefined,
+    maxDistance: maxDistance ?? null,
+    minPrice: minPrice ?? null,
   });
   return newUser;
 };

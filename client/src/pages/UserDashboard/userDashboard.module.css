@@ -7,5 +7,7 @@
 .content {
   flex: 1;
   padding: var(--space-xl);
-  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
 }

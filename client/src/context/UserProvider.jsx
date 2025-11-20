@@ -7,6 +7,7 @@ export function UserProvider({ children }) {
   );
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [locationReady, setLocationReady] = useState(false);
+  const [coordinates, setCoordinates] = useState(null);
   useEffect(() => {
     if (!token) return;
 
@@ -23,6 +24,10 @@ export function UserProvider({ children }) {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             }),
+          });
+          setCoordinates({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
           });
         } catch (err) {
           console.error("Failed to update location:", err);
@@ -112,7 +117,15 @@ export function UserProvider({ children }) {
 
   return (
     <UserContext.Provider
-      value={{ user, token, login, register, logout, locationReady }}
+      value={{
+        user,
+        token,
+        login,
+        register,
+        logout,
+        locationReady,
+        coordinates,
+      }}
     >
       {children}
     </UserContext.Provider>

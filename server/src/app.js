@@ -10,12 +10,7 @@ const app = express();
 
 // Tell express to use the json middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true, // if you send cookies or authentication headers
-  }),
-);
+app.use(cors());
 
 /****** Attach routes ******/
 /**
