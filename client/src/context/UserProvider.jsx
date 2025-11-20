@@ -14,7 +14,7 @@ export function UserProvider({ children }) {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
-          await fetch("http://localhost:3000/api/users/update-location", {
+          await fetch("/api/users/update-location", {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
