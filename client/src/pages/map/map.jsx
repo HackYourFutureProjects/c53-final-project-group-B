@@ -6,18 +6,28 @@ import styles from "./map.module.css";
 
 const Map = () => {
   const { coordinates, locationReady } = useContext(UserContext);
-  const mapInitialized = useRef(false);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     if (!locationReady || !coordinates) return;
 
-    if (!mapInitialized.current) {
-      initMap("map", coordinates.latitude, coordinates.longitude);
-      mapInitialized.current = true;
-    }
+    let mapInitialized = false;
+
+    const initializeMap = async () => {
+      if (!mapRef.current || mapInitialized) return;
+
+      await initMap(
+        mapRef.current,
+        coordinates.latitude,
+        coordinates.longitude,
+      );
+      mapInitialized = true;
+    };
+
+    initializeMap();
   }, [locationReady, coordinates]);
 
-  return <div id="map" className={styles.mapcontainer}></div>;
+  return <div id="map" className={styles.mapcontainer} ref={mapRef}></div>;
 };
 
 export default Map;

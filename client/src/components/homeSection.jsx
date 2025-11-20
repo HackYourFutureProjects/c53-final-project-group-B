@@ -7,6 +7,7 @@ import { UserContext } from "../context/UserContext.js";
 
 const HomeSection = () => {
   const { user } = useContext(UserContext);
+  if (!user) return null;
 
   return (
     <div className={styles.homeContainer}>

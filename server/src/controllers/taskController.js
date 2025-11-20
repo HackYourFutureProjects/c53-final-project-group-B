@@ -297,7 +297,7 @@ export const getAvailableTasks = async (req, res) => {
 
     res.status(200).json({ success: true, tasks });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const getRequestedTasks = async (req, res) => {

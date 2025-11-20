@@ -1,33 +1,42 @@
-// controller/mapcontroller.js
 import L from "leaflet";
 
 let mapInstance = null;
 let markerGroup = null;
+let resizeObserver = null;
 
-export const initMap = (containerOrId, lat = 52.37, lon = 4.89, zoom = 8) => {
-  // allow passing either DOM element or id string
+export const initMap = async (
+  containerOrId,
+  lat = 52.37,
+  lon = 4.89,
+  zoom = 8,
+) => {
   const container =
-    typeof containerOrId === "string" ? containerOrId : containerOrId; // pass-through if element
+    typeof containerOrId === "string"
+      ? document.getElementById(containerOrId)
+      : containerOrId;
 
-  if (mapInstance) {
-    mapInstance.remove();
-    mapInstance = null;
+  if (!container) return;
+
+  // Only initialize map once
+  if (!mapInstance) {
+    mapInstance = L.map(container).setView([lat, lon], zoom);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(mapInstance);
+
+    markerGroup = L.layerGroup().addTo(mapInstance);
+
+    // Resize observer
+    if (resizeObserver) resizeObserver.disconnect();
+    resizeObserver = new ResizeObserver(() => {
+      mapInstance.invalidateSize();
+    });
+    resizeObserver.observe(container);
+  } else {
+    // just update view if map exists
+    mapInstance.setView([lat, lon], zoom);
   }
-
-  // pass the container (id or element) to L.map
-  mapInstance = L.map(container).setView([lat, lon], zoom);
-  setTimeout(() => {
-    mapInstance.invalidateSize();
-  }, 100);
-
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-  }).addTo(mapInstance);
-  window.addEventListener("resize", () => {
-    if (mapInstance) mapInstance.invalidateSize();
-  });
-
-  markerGroup = L.layerGroup().addTo(mapInstance);
 
   return mapInstance;
 };
