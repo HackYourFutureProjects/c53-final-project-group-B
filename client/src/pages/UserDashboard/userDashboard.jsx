@@ -1,17 +1,15 @@
 import styles from "./userDashboard.module.css";
 import Sidebar from "../../components/Sidebar.jsx";
-import { UserContext } from "../../context/UserContext.js";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import MyTaskList from "../myTasks/mytasks.jsx";
 import CouriersList from "../../components/Couriers.jsx";
-import TaskList from "../../components/taskList.jsx";
+import HomeSection from "../../components/homeSection.jsx";
 
 const UserDashboardLayout = () => {
-  const { user } = useContext(UserContext);
   const [section, setSection] = useState("home");
   const renderSection = () => {
     if (section === "home") {
-      return user.role === "client" ? <CouriersList /> : <TaskList />;
+      return <HomeSection />;
     }
     if (section === "myTasks") {
       return <MyTaskList />;

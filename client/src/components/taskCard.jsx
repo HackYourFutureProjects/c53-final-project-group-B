@@ -1,5 +1,6 @@
 import styles from "./TaskCard.module.css";
 import useFetch from "../hooks/useFetch";
+import shortenAddress from "../controller/shortenAddress";
 
 const TaskCard = ({ task, refreshAvailableTasks }) => {
   const { performFetch, error } = useFetch(
@@ -39,13 +40,14 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
 
       {task.pickupLocation?.address && (
         <p>
-          <strong>Pickup:</strong> {task.pickupLocation.address}
+          <strong>Pickup:</strong> {shortenAddress(task.pickupLocation.address)}
         </p>
       )}
 
       {task.dropoffLocation?.address && (
         <p>
-          <strong>Dropoff:</strong> {task.dropoffLocation.address}
+          <strong>Dropoff:</strong>{" "}
+          {shortenAddress(task.dropoffLocation.address)}
         </p>
       )}
       {task.distanceText && <p>Distance: {task.distanceText}</p>}

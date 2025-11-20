@@ -17,6 +17,11 @@ export const createRating = async (req, res) => {
         .status(404)
         .json({ message: "Task not found or not completed" });
     }
+    if (task.createdBy.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "You are not allowed to rate this task" });
+    }
     const existingRating = await Rating.findOne({ taskId });
     if (existingRating) {
       return res
@@ -30,6 +35,8 @@ export const createRating = async (req, res) => {
       rating: score,
       comment,
     });
+    task.rated = true;
+    await task.save();
     const courier = await User.findById(task.acceptedBy);
     const totalRatings = await Rating.find({ ratedTo: courier._id });
     const averageScore =

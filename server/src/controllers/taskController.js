@@ -245,11 +245,11 @@ export const getAvailableTasks = async (req, res) => {
       typeof coords[1] === "number" &&
       coords[0] !== 0 &&
       coords[1] !== 0;
-    const { taskTypes, maxDistance, minPrice } = courier.preferences;
+
     const matchQuery = {
       status: "posted",
-      taskType: { $in: taskTypes },
-      ...(minPrice ? { price: { $gte: minPrice } } : {}),
+      taskType: { $in: courier.taskTypes },
+      ...(courier.minPrice ? { price: { $gte: courier.minPrice } } : {}),
     };
     let tasks;
     if (hasLocation) {
@@ -262,7 +262,9 @@ export const getAvailableTasks = async (req, res) => {
             distanceField: "distanceKm",
             spherical: true,
             distanceMultiplier: 0.001,
-            ...(maxDistance ? { maxDistance: maxDistance * 1000 } : {}),
+            ...(courier.maxDistance
+              ? { maxDistance: courier.maxDistance * 1000 }
+              : {}),
             query: matchQuery,
           },
         },
@@ -295,6 +297,17 @@ export const getAvailableTasks = async (req, res) => {
 
     res.status(200).json({ success: true, tasks });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+export const getRequestedTasks = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const tasks = await Task.find({ requestedTo: userId }).populate(
+      "createdBy",
+    );
+    res.status(200).json({ success: true, tasks });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };

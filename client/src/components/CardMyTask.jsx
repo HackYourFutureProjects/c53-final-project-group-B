@@ -1,10 +1,14 @@
 import styles from "./TaskCard.module.css";
 import useFetch from "../hooks/useFetch";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext.js";
+import shortenAddress from "../controller/shortenAddress.js";
 
 const CardMyTask = ({ task, refreshMyTasks }) => {
-  const { user } = useContext(UserContext);
+  const { user, token } = useContext(UserContext);
+  const [score, setScore] = useState(5);
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   let buttonLabel = "";
   let action = "";
@@ -40,6 +44,33 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
     if (!action) return;
     performFetch({ method: "PUT" });
   };
+  const submitRating = async () => {
+    if (!score) return alert("Please select a score");
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`/api/ratings/${task._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ score, comment }),
+      });
+
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message || "Error submitting rating");
+
+      alert("Rating submitted successfully");
+      refreshMyTasks();
+      setScore(5);
+      setComment("");
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className={styles.card}>
@@ -63,14 +94,15 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
       </p>
 
       {task.pickupLocation?.address && (
-        <p>
-          <strong>Pickup:</strong> {task.pickupLocation.address}
+        <p className={styles.address}>
+          <strong>Pickup:</strong> {shortenAddress(task.pickupLocation.address)}
         </p>
       )}
 
       {task.dropoffLocation?.address && (
-        <p>
-          <strong>Dropoff:</strong> {task.dropoffLocation.address}
+        <p className={styles.address}>
+          <strong>Dropoff:</strong>{" "}
+          {shortenAddress(task.dropoffLocation.address)}
         </p>
       )}
 
@@ -101,6 +133,41 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
           {buttonLabel}
         </button>
       )}
+      {user?.role === "client" &&
+        task.status === "completed" &&
+        !task.rated && (
+          <div className={styles.ratingContainer}>
+            <h4>Rate this task</h4>
+            <label>
+              Score:
+              <select
+                value={score}
+                onChange={(e) => setScore(Number(e.target.value))}
+              >
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Comment:
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Add a comment (optional)"
+              />
+            </label>
+            <button
+              onClick={submitRating}
+              disabled={isSubmitting}
+              className={styles.submitRatingButton}
+            >
+              {isSubmitting ? "Submitting..." : "Submit Rating"}
+            </button>
+          </div>
+        )}
     </div>
   );
 };

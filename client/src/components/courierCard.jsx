@@ -1,4 +1,5 @@
 import styles from "./CourierCard.module.css";
+import shortenAddress from "../controller/shortenAddress.js";
 const CourierCard = ({ courier }) => {
   return (
     <div className={styles.card}>
@@ -9,7 +10,9 @@ const CourierCard = ({ courier }) => {
       {courier.address &&
         courier.address !== "" &&
         courier.address !== "Unknown location" && (
-          <p>Address: {courier.address}</p>
+          <p className={styles.address}>
+            Address: {shortenAddress(courier.address)}
+          </p>
         )}
     </div>
   );

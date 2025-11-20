@@ -1,0 +1,31 @@
+/* homeSection.module.css */
+.homeContainer {
+  display: flex;
+  gap: 20px;
+  /* use viewport height minus header or top spacing you have.
+     Adjust the calc value if you have a top navbar/header height. */
+  height: calc(100vh - 40px); /* change 40px to your header height if any */
+  align-items: flex-start; /* align children at top */
+  padding: 20px; /* optional */
+  box-sizing: border-box;
+}
+
+/* Map column */
+.mapArea {
+  flex: 0 0 60%; /* map column takes 60% width (adjust) */
+  height: 100%; /* fill parent's height */
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  display: flex; /* so map div can stretch */
+  align-items: stretch;
+}
+
+/* List column */
+.listArea {
+  flex: 1; /* remaining width */
+  height: 100%;
+  overflow: hidden; /* hide overflow at the column level */
+  display: flex;
+  flex-direction: column; /* allow child to grow and scroll */
+}
