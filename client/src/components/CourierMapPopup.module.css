@@ -1,0 +1,143 @@
+.popupContainer {
+  min-width: 280px;
+  max-width: 320px;
+  padding: 0;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.courierHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.courierAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.courierInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.courierName {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trustScoreContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.star {
+  font-size: 16px;
+}
+
+.trustScore {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+.courierDetails {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.detailText {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.requestButton {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 0 0 16px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.requestButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5568d3 0%, #6941a0 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.requestButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.requestButton:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.buttonIcon {
+  font-size: 20px;
+}
+
+/* Leaflet popup customization */
+:global(.leaflet-popup-content-wrapper) {
+  padding: 0;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+:global(.leaflet-popup-content) {
+  margin: 0;
+  width: auto !important;
+}
+
+:global(.leaflet-popup-tip) {
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
+}

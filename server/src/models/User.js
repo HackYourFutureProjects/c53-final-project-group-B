@@ -32,6 +32,17 @@ const userSchema = new mongoose.Schema(
     trustScore: { type: Number, default: 0 },
     isOnline: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },
+
+    // Profile picture
+    profilePicture: { type: String, default: "" },
+
+    // Payment information
+    paymentMethod: {
+      cardNumber: { type: String, default: "" },
+      cardHolderName: { type: String, default: "" },
+      expiryDate: { type: String, default: "" },
+      cardType: { type: String, default: "" },
+    },
   },
   { timestamps: true },
 );

@@ -4,7 +4,7 @@ import { UserContext } from "../context/UserContext.js";
 import TaskCard from "./taskCard.jsx";
 import styles from "./CourierList.module.css";
 import {
-  addMarker,
+  addTaskMarker,
   clearMarkers,
   getMapInstance,
 } from "../controller/mapcontroller.js";
@@ -33,10 +33,10 @@ const TaskList = () => {
 
     tasks.forEach((task) => {
       if (task.pickupLocation) {
-        addMarker(
+        addTaskMarker(
           task.pickupLocation.location.coordinates[1],
           task.pickupLocation.location.coordinates[0],
-          task.title,
+          task,
         );
       }
     });

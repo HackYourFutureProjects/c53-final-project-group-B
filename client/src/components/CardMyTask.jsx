@@ -10,40 +10,64 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  let buttonLabel = "";
-  let action = "";
+  let primaryAction = null;
+  let secondaryAction = null;
 
   if (user?.role === "client") {
-    if (task.status === "posted") {
-      buttonLabel = "Cancel";
-      action = "cancel";
+    // Client actions
+    if (task.status === "requested" || task.status === "posted") {
+      primaryAction = { label: "Cancel", action: "cancel" };
+    } else if (task.status === "completed" || task.status === "cancelled") {
+      // Optionally add a "Remove" button to hide completed/cancelled tasks
+      // primaryAction = { label: "Remove", action: "remove" };
     }
   } else if (user?.role === "courier") {
-    if (task.status === "accepted") {
-      buttonLabel = "Start";
-      action = "start";
+    // Courier actions
+    if (task.status === "requested") {
+      primaryAction = { label: "Accept", action: "accept" };
+      secondaryAction = { label: "Decline", action: "decline" };
+    } else if (task.status === "accepted") {
+      primaryAction = { label: "Start", action: "start" };
     } else if (task.status === "in-progress") {
-      buttonLabel = "Complete";
-      action = "complete";
+      primaryAction = { label: "Complete", action: "complete" };
     }
   }
 
   const { performFetch, error } = useFetch(
-    action ? `/tasks/${task._id}/${action}` : "",
+    primaryAction ? `/tasks/${task._id}/${primaryAction.action}` : "",
     (data) => {
       alert(data.message);
       refreshMyTasks();
     },
   );
 
+  const { performFetch: performSecondaryFetch, error: secondaryError } =
+    useFetch(
+      secondaryAction ? `/tasks/${task._id}/${secondaryAction.action}` : "",
+      (data) => {
+        alert(data.message);
+        refreshMyTasks();
+      },
+    );
+
   useEffect(() => {
     if (error) alert("Error performing action: " + error);
   }, [error]);
 
-  const handleButtonClick = () => {
-    if (!action) return;
+  useEffect(() => {
+    if (secondaryError) alert("Error performing action: " + secondaryError);
+  }, [secondaryError]);
+
+  const handlePrimaryAction = () => {
+    if (!primaryAction) return;
     performFetch({ method: "PUT" });
   };
+
+  const handleSecondaryAction = () => {
+    if (!secondaryAction) return;
+    performSecondaryFetch({ method: "PUT" });
+  };
+
   const submitRating = async () => {
     if (!score) return alert("Please select a score");
     setIsSubmitting(true);
@@ -128,11 +152,22 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
         </div>
       )}
 
-      {buttonLabel && (
-        <button onClick={handleButtonClick} className={styles.acceptButton}>
-          {buttonLabel}
-        </button>
-      )}
+      <div className={styles.actionsContainer}>
+        {primaryAction && (
+          <button onClick={handlePrimaryAction} className={styles.acceptButton}>
+            {primaryAction.label}
+          </button>
+        )}
+        {secondaryAction && (
+          <button
+            onClick={handleSecondaryAction}
+            className={styles.declineButton}
+          >
+            {secondaryAction.label}
+          </button>
+        )}
+      </div>
+
       {user?.role === "client" &&
         task.status === "completed" &&
         !task.rated && (

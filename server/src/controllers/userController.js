@@ -119,12 +119,28 @@ export const updateUserProfile = async (req, res) => {
       "taskTypes",
       "maxDistance",
       "minPrice",
+      "profilePicture",
+      "paymentMethod",
+      "isAvailable",
     ];
     const updates = Object.keys(req.body);
     const isValid = updates.every((field) => allowedUpdates.includes(field));
     if (!isValid) {
       return res.status(400).json({ success: false, msg: "Invalid updates" });
     }
+
+    // Handle payment method updates securely
+    if (req.body.paymentMethod) {
+      // Only store last 4 digits of card number for security
+      if (req.body.paymentMethod.cardNumber) {
+        const cardNumber = req.body.paymentMethod.cardNumber.replace(/\s/g, "");
+        if (cardNumber.length >= 4) {
+          req.body.paymentMethod.cardNumber =
+            "**** **** **** " + cardNumber.slice(-4);
+        }
+      }
+    }
+
     if (req.body.address) {
       const coords = await getCoordinates(req.body.address);
       if (coords) {

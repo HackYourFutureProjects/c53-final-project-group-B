@@ -9,6 +9,7 @@ import {
   cancelTask,
   getAvailableTasks,
   requestTaskToCourier,
+  declineTask,
 } from "../controllers/taskController.js";
 const taskRouter = express.Router();
 
@@ -37,6 +38,13 @@ taskRouter.put(
   authMiddleware,
   authorizeRole("courier"),
   acceptTask,
+);
+
+taskRouter.put(
+  "/:taskId/decline",
+  authMiddleware,
+  authorizeRole("courier"),
+  declineTask,
 );
 
 taskRouter.put(
