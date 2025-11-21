@@ -4,6 +4,7 @@ import { useState } from "react";
 import MyTaskList from "../myTasks/mytasks.jsx";
 import CouriersList from "../../components/Couriers.jsx";
 import HomeSection from "../../components/homeSection.jsx";
+import Profile from "../Profile/Profile.jsx";
 
 const UserDashboardLayout = () => {
   const [section, setSection] = useState("home");
@@ -16,6 +17,9 @@ const UserDashboardLayout = () => {
     }
     if (section === "couriers") {
       return <CouriersList />;
+    }
+    if (section === "profile") {
+      return <Profile />;
     }
     return null;
   };
