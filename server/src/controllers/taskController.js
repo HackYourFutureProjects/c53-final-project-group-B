@@ -354,7 +354,8 @@ export const declineTask = async (req, res) => {
         msg: "This task was not requested to you",
       });
     }
-    task.status = "cancelled";
+    task.status = "posted";
+    task.requestedTo = undefined;
     await task.save();
     res
       .status(200)

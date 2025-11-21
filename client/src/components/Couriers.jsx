@@ -28,9 +28,7 @@ const CouriersList = () => {
   }, [locationReady]);
 
   const handleRequestDelivery = (courier) => {
-    console.log("handleRequestDelivery called with:", courier);
     setSelectedCourier(courier);
-    console.log("selectedCourier state updated");
   };
 
   const handleCloseModal = () => {

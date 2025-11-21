@@ -479,7 +479,7 @@ const Profile = () => {
                     maxLength="5"
                   />
                 </div>
-
+                {/* --- Pending decision to be deleted --- */}
                 <div className={styles.formGroup}>
                   <label>CVV</label>
                   <input
@@ -492,6 +492,7 @@ const Profile = () => {
                     maxLength="4"
                   />
                 </div>
+                {/* --- Pending decision to be deleted --- */}
               </div>
 
               <div className={styles.securityNote}>

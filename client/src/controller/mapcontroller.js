@@ -20,6 +20,14 @@ export const initMap = async (
 
   if (!container) return;
 
+  // if mapInstance exists but the container was recreated, rebuild map
+  if (mapInstance && !document.body.contains(mapInstance.getContainer())) {
+    mapInstance.remove();
+    mapInstance = null;
+    markerGroup = null;
+    reactRoots = new Map();
+  }
+
   // Only initialize map once
   if (!mapInstance) {
     mapInstance = L.map(container).setView([lat, lon], zoom);
@@ -30,14 +38,12 @@ export const initMap = async (
 
     markerGroup = L.layerGroup().addTo(mapInstance);
 
-    // Resize observer
     if (resizeObserver) resizeObserver.disconnect();
     resizeObserver = new ResizeObserver(() => {
       mapInstance.invalidateSize();
     });
     resizeObserver.observe(container);
   } else {
-    // just update view if map exists
     mapInstance.setView([lat, lon], zoom);
   }
 

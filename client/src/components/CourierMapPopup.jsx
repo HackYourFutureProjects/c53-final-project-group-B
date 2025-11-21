@@ -1,21 +1,21 @@
 import { useState } from "react";
 import styles from "./CourierMapPopup.module.css";
 import shortenAddress from "../controller/shortenAddress";
+import { logError } from "../util/logging.js";
 
 const CourierMapPopup = ({ courier, onRequestDelivery }) => {
   const [isRequesting, setIsRequesting] = useState(false);
 
   const handleRequest = async () => {
-    console.log("Request button clicked", courier, onRequestDelivery);
     if (!onRequestDelivery) {
-      console.error("onRequestDelivery callback is not defined");
+      logError("onRequestDelivery callback is not defined");
       return;
     }
     setIsRequesting(true);
     try {
       await onRequestDelivery(courier);
     } catch (error) {
-      console.error("Error requesting delivery:", error);
+      logError(error, { courierId: courier?.id });
     } finally {
       setIsRequesting(false);
     }

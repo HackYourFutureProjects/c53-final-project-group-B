@@ -4,7 +4,6 @@ import { UserContext } from "../context/UserContext";
 import styles from "./DeliveryRequestModal.module.css";
 
 const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
-  console.log("DeliveryRequestModal mounted with courier:", courier);
   const { token } = useContext(UserContext);
   const [formData, setFormData] = useState({
     title: "",
