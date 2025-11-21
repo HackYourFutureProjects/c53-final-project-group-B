@@ -47,6 +47,44 @@
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
 }
 
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.generalRequestButton {
+  padding: 12px 24px;
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.generalRequestButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: #f8f9ff;
+}
+
+.generalRequestButton:active {
+  transform: translateY(0);
+}
+
+.buttonIcon {
+  font-size: 20px;
+}
+
 .mapTitle {
   margin: 0 0 4px 0;
   font-size: 24px;

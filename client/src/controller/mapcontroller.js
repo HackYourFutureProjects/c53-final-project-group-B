@@ -47,7 +47,78 @@ export const initMap = async (
 export const addMarker = (lat, lon, popupText = "") => {
   if (!mapInstance || !markerGroup) return;
 
-  L.marker([lat, lon]).addTo(markerGroup).bindPopup(popupText);
+  // Create custom icon for task pickup location
+  const taskIcon = L.divIcon({
+    className: "task-marker",
+    html: `<div style="
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    ">📦</div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -18],
+  });
+
+  L.marker([lat, lon], { icon: taskIcon })
+    .addTo(markerGroup)
+    .bindPopup(popupText);
+};
+
+export const addTaskMarker = (lat, lon, task) => {
+  if (!mapInstance || !markerGroup) return;
+
+  // Create custom icon for task
+  const taskIcon = L.divIcon({
+    className: "task-marker",
+    html: `<div style="
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    ">📦</div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -18],
+  });
+
+  const popupContent = `
+    <div style="padding: 8px; min-width: 200px;">
+      <h3 style="margin: 0 0 8px 0; font-size: 16px; color: #333;">${task.title}</h3>
+      <p style="margin: 4px 0; font-size: 14px; color: #666;">${task.description}</p>
+      <p style="margin: 4px 0; font-size: 14px;"><strong>Type:</strong> ${task.taskType}</p>
+      <p style="margin: 4px 0; font-size: 14px;"><strong>Price:</strong> €${task.price}</p>
+      ${task.distanceText ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Distance:</strong> ${task.distanceText}</p>` : ""}
+    </div>
+  `;
+
+  const marker = L.marker([lat, lon], { icon: taskIcon })
+    .addTo(markerGroup)
+    .bindPopup(popupContent, {
+      maxWidth: 280,
+      minWidth: 220,
+    });
+
+  return marker;
 };
 
 export const addCourierMarker = (
