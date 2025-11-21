@@ -69,10 +69,21 @@ export const acceptTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ success: false, msg: "Task not found" });
     }
-    if (task.status !== "posted") {
+    // Can accept both posted tasks and requested tasks
+    if (task.status !== "posted" && task.status !== "requested") {
       return res.status(400).json({
         success: false,
         msg: "Task cannot be accepted in its current status",
+      });
+    }
+    // If it was a requested task, verify it was requested to this courier
+    if (
+      task.status === "requested" &&
+      task.requestedTo?.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        msg: "This task was not requested to you",
       });
     }
     task.status = "accepted";
@@ -203,11 +214,17 @@ export const requestTaskToCourier = async (req, res) => {
       requestedTo,
       pickupLocation: {
         address: pickupLocation,
-        coordinates: [pickupCoords.lon, pickupCoords.lat],
+        location: {
+          type: "Point",
+          coordinates: [pickupCoords.lon, pickupCoords.lat],
+        },
       },
       dropoffLocation: {
         address: dropoffLocation,
-        coordinates: [dropoffCoords.lon, dropoffCoords.lat],
+        location: {
+          type: "Point",
+          coordinates: [dropoffCoords.lon, dropoffCoords.lat],
+        },
       },
     });
     res.status(201).json({ message: "Task created successfully" });
@@ -223,9 +240,13 @@ export const getMyTasks = async (req, res) => {
       );
       res.status(200).json({ success: true, tasks });
     } else if (req.user.role === "courier") {
-      const tasks = await Task.find({ acceptedBy: req.user._id }).populate(
-        "createdBy",
-      );
+      // For couriers, get both accepted tasks and requested tasks
+      const tasks = await Task.find({
+        $or: [
+          { acceptedBy: req.user._id },
+          { requestedTo: req.user._id, status: "requested" },
+        ],
+      }).populate("createdBy");
       res.status(200).json({ success: true, tasks });
     }
   } catch (err) {
@@ -307,6 +328,37 @@ export const getRequestedTasks = async (req, res) => {
       "createdBy",
     );
     res.status(200).json({ success: true, tasks });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
+export const declineTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ success: false, msg: "Task not found" });
+    }
+    // Can only decline requested tasks
+    if (task.status !== "requested") {
+      return res.status(400).json({
+        success: false,
+        msg: "Only requested tasks can be declined",
+      });
+    }
+    // Verify it was requested to this courier
+    if (task.requestedTo?.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        msg: "This task was not requested to you",
+      });
+    }
+    task.status = "cancelled";
+    await task.save();
+    res
+      .status(200)
+      .json({ success: true, message: "Task declined successfully" });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
   }

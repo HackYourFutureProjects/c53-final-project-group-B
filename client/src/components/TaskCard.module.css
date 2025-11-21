@@ -92,3 +92,45 @@
   background-color: #999;
   cursor: not-allowed;
 }
+
+.actionsContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.acceptButton {
+  flex: 1;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.acceptButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.declineButton {
+  flex: 1;
+  padding: 10px 16px;
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.declineButton:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
