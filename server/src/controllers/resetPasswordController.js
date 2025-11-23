@@ -100,10 +100,8 @@ export const changePassword = async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
-    console.log("Password changed successfully for user:", userId);
     return res.json({ success: true, msg: "Password updated successfully." });
   } catch (err) {
-    console.error("Error changing password:", err);
     return res.status(500).json({ success: false, msg: "Server error." });
   }
 };
