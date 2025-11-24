@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { UserContext } from "./UserContext.js";
 import decodeToken from "../util/decodeToken.js";
 
@@ -10,7 +10,7 @@ export function UserProvider({ children }) {
   const [locationReady, setLocationReady] = useState(false);
   const [coordinates, setCoordinates] = useState(null);
 
-  async function tryRefresh() {
+  const tryRefresh = useCallback(async () => {
     try {
       const res = await fetch("/api/auth/refresh-token", {
         method: "POST",
@@ -20,19 +20,21 @@ export function UserProvider({ children }) {
         const data = await res.json();
         setToken(data.token); // update token state
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         setUser(data.user); // update user state if returned
       } else {
         setToken(null);
         setUser(null);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
       }
     } catch (err) {
       console.error("Refresh token failed", err);
       setToken(null);
       setUser(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
     }
-  }
-  useEffect(() => {
-    if (!token) tryRefresh();
   }, []);
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export function UserProvider({ children }) {
     }, refreshBefore);
 
     return () => clearTimeout(timer);
-  }, [token]);
+  }, [token, tryRefresh]);
 
   useEffect(() => {
     if (!token) return;

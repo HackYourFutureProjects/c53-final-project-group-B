@@ -15,6 +15,7 @@ import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
 import UserDashboardLayout from "./pages/UserDashboard/userDashboard.jsx";
 import { useLocation } from "react-router-dom";
+import HowItWorksSection from "./components/h.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -24,6 +25,8 @@ const App = () => {
       {!hideNavbar && <Nav />}
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/how-it-works" element={<HowItWorksSection />} />
+
         <Route path="/user" element={<UserList />} />
         <Route path="/user/create" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />

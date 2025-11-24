@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import styles from "./Profile.module.css";
+import { fetchWithRefresh } from "../../util/fetchWithRefresh";
 
 const Profile = () => {
-  const { token } = useContext(UserContext);
+  const { token, setToken } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState("personal");
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -44,11 +45,16 @@ const Profile = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetch("/api/users/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetchWithRefresh(
+        "/api/users/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+        token,
+        setToken,
+      );
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
@@ -110,7 +116,11 @@ const Profile = () => {
     setPasswordError("");
 
     if (!passwordData.oldPassword || !passwordData.newPassword) {
-      setPasswordError("Please fill all fields.");
+      setPasswordError("New password must be different from old password");
+      return;
+    }
+    if (passwordData.newPassword.length < 8) {
+      setPasswordError("New password must be at least 8 characters long.");
       return;
     }
 
@@ -122,23 +132,34 @@ const Profile = () => {
     setIsSaving(true);
 
     try {
-      const res = await fetch("/api/auth/change-password", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const res = await fetchWithRefresh(
+        "/api/auth/change-password",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            oldPassword: passwordData.oldPassword,
+            newPassword: passwordData.newPassword,
+          }),
         },
-        body: JSON.stringify({
-          oldPassword: passwordData.oldPassword,
-          newPassword: passwordData.newPassword,
-        }),
-      });
+        token,
+        setToken,
+      );
 
       const data = await res.json();
 
       if (!data.success) {
         setPasswordError(data.msg || "Failed to change password");
+        setPasswordData({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
         setIsSaving(false);
+
         return;
       }
 

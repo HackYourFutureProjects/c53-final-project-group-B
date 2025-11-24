@@ -9,6 +9,11 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_SECRET_REFRESH = process.env.JWT_SECRET_REFRESH;
 
+// WARNING: This in-memory Map is used to store refresh tokens (userId -> refreshToken).
+// This approach is NOT suitable for production as it does not persist data across server restarts
+// and does not scale across multiple server instances. For production, use a database-backed
+// solution (e.g., Redis, MongoDB, or another persistent store) to manage refresh tokens securely.
+
 const refreshTokenStore = new Map(); // userId -> refreshToken
 
 // Helpers
@@ -61,7 +66,10 @@ export const login = async (req, res) => {
     }
     const token = createToken(user);
     const refreshToken = createRefreshToken(user);
-    refreshTokenStore.set(user._id.toString(), refreshToken);
+    refreshTokenStore.set(user._id.toString(), {
+      current: refreshToken,
+      previous: null,
+    });
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -96,13 +104,25 @@ export const refreshToken = async (req, res) => {
       return res.status(401).json({ message: "Invalid refresh token" });
     }
     const storedToken = refreshTokenStore.get(payload.userId);
-    if (!storedToken || storedToken !== refreshToken) {
-      return res.status(401).json({ message: "Invalid refresh token" });
+    if (
+      !storedToken ||
+      (storedToken.current !== refreshToken &&
+        storedToken.previous !== refreshToken)
+    ) {
+      return res
+        .status(401)
+        .json({ success: false, msg: "Invalid refresh token" });
     }
     const user = await User.findById(payload.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, msg: "User not found" });
+    }
     const newToken = createToken(user);
     const newRefreshToken = createRefreshToken(user);
-    refreshTokenStore.set(user._id.toString(), newRefreshToken);
+    refreshTokenStore.set(user._id.toString(), {
+      previous: storedToken.current,
+      current: newRefreshToken,
+    });
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -128,7 +148,12 @@ export const logout = (req, res) => {
   try {
     const userId = req.user._id;
     refreshTokenStore.delete(userId.toString());
-    res.clearCookie("refreshToken", { path: "/" });
+    res.clearCookie("refreshToken", {
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    });
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
