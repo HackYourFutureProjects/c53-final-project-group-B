@@ -8,11 +8,11 @@ export const requestResetPassword = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
-      return res.status(400).json({ message: "Email is required" });
+      return res.status(400).json({ success: false, msg: "Email is required" });
     }
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ success: false, msg: "User not found" });
     }
     const token = crypto.randomBytes(32).toString("hex");
     await Token.deleteMany({ userId: user._id });
@@ -24,20 +24,25 @@ export const requestResetPassword = async (req, res) => {
       subject: "Password Reset Request",
       html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
     });
-    res.json({ message: "Password reset email sent successfully" });
+    res.json({
+      success: true,
+      message: "Password reset email sent successfully",
+    });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };
 export const resetPassword = async (req, res) => {
   try {
     const { userId, token } = req.params;
     if (!userId || !token) {
-      return res.status(400).json({ message: "Invalid request" });
+      return res.status(400).json({ success: false, msg: "Invalid request" });
     }
     const { newPassword } = req.body;
     if (!newPassword) {
-      return res.status(400).json({ message: "New password is required" });
+      return res
+        .status(400)
+        .json({ success: false, msg: "New password is required" });
     }
     const resetToken = await Token.findOne({
       userId,
@@ -45,24 +50,72 @@ export const resetPassword = async (req, res) => {
       purpose: "reset-password",
     });
     if (!resetToken) {
-      return res.status(404).json({ message: "Invalid request" });
+      return res.status(404).json({ success: false, msg: "Invalid request" });
     }
     // Ensure the new password is not the same as the old one
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ success: false, msg: "User not found" });
     }
     const isSameAsOld = await bcrypt.compare(newPassword, user.password);
     if (isSameAsOld) {
       return res.status(400).json({
-        message: "New password must be different from the old password",
+        success: false,
+        msg: "New password must be different from the old password",
       });
     }
     const hashedPassword = await bcrypt.hash(newPassword, 12);
     await User.findByIdAndUpdate(userId, { password: hashedPassword });
     await Token.deleteMany({ userId });
-    res.json({ message: "Password reset successfully" });
+    res.json({ success: true, message: "Password reset successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const userId = req.user._id;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        msg: "Both old and new passwords are required.",
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        msg: "New password must be at least 8 characters long.",
+      });
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, msg: "User not found." });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "Old password is incorrect." });
+    }
+    const isSameAsOld = await bcrypt.compare(newPassword, user.password);
+    if (isSameAsOld) {
+      return res.status(400).json({
+        success: false,
+        msg: "New password must be different from the old password.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({ success: true, msg: "Password updated successfully." });
+  } catch (err) {
+    return res.status(500).json({ success: false, msg: "Server error." });
   }
 };

@@ -1,13 +1,22 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import styles from "./Profile.module.css";
+import { fetchWithRefresh } from "../../util/fetchWithRefresh";
 
 const Profile = () => {
-  const { token } = useContext(UserContext);
+  const { token, setToken } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState("personal");
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [user, setUser] = useState(null);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [passwordError, setPasswordError] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,11 +45,16 @@ const Profile = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetch("/api/users/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetchWithRefresh(
+        "/api/users/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+        token,
+        setToken,
+      );
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
@@ -97,6 +111,73 @@ const Profile = () => {
         : [...prev.taskTypes, taskType];
       return { ...prev, taskTypes };
     });
+  };
+  const handleChangePassword = async () => {
+    setPasswordError("");
+
+    if (!passwordData.oldPassword || !passwordData.newPassword) {
+      setPasswordError("New password must be different from old password");
+      return;
+    }
+    if (passwordData.newPassword.length < 8) {
+      setPasswordError("New password must be at least 8 characters long.");
+      return;
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordError("New passwords do not match.");
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const res = await fetchWithRefresh(
+        "/api/auth/change-password",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            oldPassword: passwordData.oldPassword,
+            newPassword: passwordData.newPassword,
+          }),
+        },
+        token,
+        setToken,
+      );
+
+      const data = await res.json();
+
+      if (!data.success) {
+        setPasswordError(data.msg || "Failed to change password");
+        setPasswordData({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+        setIsSaving(false);
+
+        return;
+      }
+
+      alert("Password updated successfully ✔");
+
+      // Reset
+      setPasswordData({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      setShowPasswordForm(false);
+    } catch (err) {
+      console.error(err);
+      setPasswordError("Error changing password");
+    }
+
+    setIsSaving(false);
   };
 
   const handlePaymentChange = (e) => {
@@ -243,6 +324,10 @@ const Profile = () => {
     } finally {
       setIsSaving(false);
     }
+  };
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
   if (!user) {
@@ -604,46 +689,121 @@ const Profile = () => {
               <h2>Security Settings</h2>
             </div>
 
-            <div className={styles.securitySection}>
-              <div className={styles.securityItem}>
-                <div>
-                  <h3 className={styles.securityTitle}>Change Password</h3>
-                  <p className={styles.securityDescription}>
-                    Update your password to keep your account secure
-                  </p>
-                </div>
-                <button className={styles.secondaryButton}>
-                  Change Password
-                </button>
-              </div>
+            {/* 🔥 Toggle between security overview and password form */}
+            {!showPasswordForm ? (
+              /* ------------ SECURITY SETTINGS OVERVIEW ------------ */
+              <div className={styles.securitySection}>
+                <div className={styles.securityItem}>
+                  <div>
+                    <h3 className={styles.securityTitle}>Change Password</h3>
+                    <p className={styles.securityDescription}>
+                      Update your password to keep your account secure.
+                    </p>
+                  </div>
 
-              <div className={styles.securityItem}>
-                <div>
-                  <h3 className={styles.securityTitle}>
-                    Two-Factor Authentication
-                  </h3>
-                  <p className={styles.securityDescription}>
-                    Add an extra layer of security to your account
-                  </p>
-                </div>
-                <button className={styles.secondaryButton}>Enable 2FA</button>
-              </div>
-
-              <div className={styles.securityItem}>
-                <div>
-                  <h3 className={styles.securityTitle}>Email Verification</h3>
-                  <p className={styles.securityDescription}>
-                    Status:{" "}
-                    {user.isVerified ? "✅ Verified" : "⏳ Not verified"}
-                  </p>
-                </div>
-                {!user.isVerified && (
-                  <button className={styles.secondaryButton}>
-                    Resend Verification Email
+                  <button
+                    className={styles.secondaryButton}
+                    onClick={() => setShowPasswordForm(true)}
+                  >
+                    Change Password
                   </button>
-                )}
+                </div>
+
+                <div className={styles.securityItem}>
+                  <div>
+                    <h3 className={styles.securityTitle}>
+                      Two-Factor Authentication
+                    </h3>
+                    <p className={styles.securityDescription}>
+                      Add an extra layer of security to your account.
+                    </p>
+                  </div>
+                  <button className={styles.secondaryButton}>Enable 2FA</button>
+                </div>
+
+                <div className={styles.securityItem}>
+                  <div>
+                    <h3 className={styles.securityTitle}>Email Verification</h3>
+                    <p className={styles.securityDescription}>
+                      Status:{" "}
+                      {user.isVerified ? "✅ Verified" : "⏳ Not Verified"}
+                    </p>
+                  </div>
+
+                  {!user.isVerified && (
+                    <button className={styles.secondaryButton}>
+                      Resend Verification Email
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              /* ------------ PASSWORD FORM (REPLACES SECURITY LIST) ------------ */
+              <div className={styles.section}>
+                <h2>Change Password</h2>
+
+                <div className={styles.formGroup}>
+                  <label>Old Password</label>
+                  <input
+                    type="password"
+                    name="oldPassword"
+                    value={passwordData.oldPassword}
+                    onChange={handlePasswordChange}
+                    className={styles.input}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>New Password</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    className={styles.input}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Confirm New Password</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    className={styles.input}
+                  />
+                </div>
+
+                {passwordError && (
+                  <p style={{ color: "red", marginTop: "8px" }}>
+                    {passwordError}
+                  </p>
+                )}
+
+                <div
+                  style={{ marginTop: "20px", display: "flex", gap: "12px" }}
+                >
+                  <button
+                    className={styles.cancelButton}
+                    onClick={() => {
+                      setShowPasswordForm(false);
+                      setPasswordError("");
+                    }}
+                  >
+                    Back
+                  </button>
+
+                  <button
+                    className={styles.saveButton}
+                    disabled={isSaving}
+                    onClick={handleChangePassword}
+                  >
+                    {isSaving ? "Changing..." : "Change Password"}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

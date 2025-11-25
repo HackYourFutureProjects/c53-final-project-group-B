@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { fetchWithRefresh } from "../util/fetchWithRefresh.js";
 
 /**
  * Our useFetch hook should be used for all communication with the server.
@@ -19,7 +20,7 @@ const useFetch = (route, onReceived) => {
    * We use the AbortController which is supported by all modern browsers to handle cancellations
    * For more info: https://developer.mozilla.org/en-US/docs/Web/API/AbortController
    */
-  const { token } = useContext(UserContext);
+  const { token, setToken } = useContext(UserContext);
   const controller = new AbortController();
   const signal = controller.signal;
   const cancelFetch = () => {
@@ -55,7 +56,12 @@ const useFetch = (route, onReceived) => {
     const fetchData = async () => {
       // We add the /api subsection here to make it a single point of change if our configuration changes
       const url = `/api${route}`;
-      const res = await fetch(url, { ...baseOptions, ...options, signal });
+      const res = await fetchWithRefresh(
+        url,
+        { ...baseOptions, ...options, signal },
+        token,
+        setToken,
+      );
 
       if (!res.ok) {
         setError(

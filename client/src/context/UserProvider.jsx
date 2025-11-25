@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { UserContext } from "./UserContext.js";
+import decodeToken from "../util/decodeToken.js";
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(
@@ -8,6 +9,55 @@ export function UserProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [locationReady, setLocationReady] = useState(false);
   const [coordinates, setCoordinates] = useState(null);
+
+  const tryRefresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/auth/refresh-token", {
+        method: "POST",
+        credentials: "include", // send HttpOnly refresh cookie
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setToken(data.token); // update token state
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user); // update user state if returned
+      } else {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+    } catch (err) {
+      console.error("Refresh token failed", err);
+      setToken(null);
+      setUser(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const decoded = decodeToken(token);
+    if (!decoded || !decoded.exp) return;
+
+    const expiresInMs = decoded.exp * 1000 - Date.now();
+    const refreshBefore = expiresInMs - 5000;
+
+    if (refreshBefore <= 0) {
+      tryRefresh();
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      tryRefresh();
+    }, refreshBefore);
+
+    return () => clearTimeout(timer);
+  }, [token, tryRefresh]);
+
   useEffect(() => {
     if (!token) return;
 

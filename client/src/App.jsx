@@ -24,6 +24,7 @@ const App = () => {
       {!hideNavbar && <Nav />}
       <Routes>
         <Route path="/" element={<HomePage />} />
+
         <Route path="/user" element={<UserList />} />
         <Route path="/user/create" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />
