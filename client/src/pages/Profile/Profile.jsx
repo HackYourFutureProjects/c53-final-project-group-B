@@ -51,6 +51,14 @@ const Profile = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (response.status === 401) {
+        // Token expired or invalid, logout user
+        logout();
+        navigate("/login");
+        return;
+      }
+
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
@@ -139,6 +147,13 @@ const Profile = () => {
           newPassword: passwordData.newPassword,
         }),
       });
+
+      if (res.status === 401) {
+        // Token expired or invalid, logout user
+        logout();
+        navigate("/login");
+        return;
+      }
 
       const data = await res.json();
 

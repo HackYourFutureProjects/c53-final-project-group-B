@@ -30,7 +30,7 @@ const Sidebar = ({ onChangeSection, active }) => {
             className={`${styles.navItem} ${active === "myTasks" ? styles.active : ""}`}
             onClick={() => onChangeSection("myTasks")}
           >
-            My Tasks
+            My requests
           </button>
         )}
 

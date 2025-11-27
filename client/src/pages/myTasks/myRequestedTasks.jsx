@@ -23,7 +23,7 @@ const MyRequestedTasks = () => {
   }
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>My Tasks</h1>
+      <h1 className={styles.title}>My Requested Tasks</h1>
       {tasks.length === 0 ? (
         <p className={styles.empty}>No requested tasks.</p>
       ) : (

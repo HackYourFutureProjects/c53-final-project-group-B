@@ -488,7 +488,58 @@ export const declineTask = async (req, res) => {
     }
 
     if (task.status === "posted") {
-      // Just hide this posted task for this courier
+      // Validate courier eligibility before allowing decline
+      const courier = await User.findById(req.user._id);
+
+      // Check if task matches courier's preferences
+      const taskTypeMatches =
+        !courier.taskTypes?.length || courier.taskTypes.includes(task.taskType);
+
+      const priceMatches = !courier.minPrice || task.price >= courier.minPrice;
+
+      if (!taskTypeMatches || !priceMatches) {
+        return res.status(403).json({
+          success: false,
+          msg: "You don't have access to this task",
+        });
+      }
+
+      // Check distance if courier has location and maxDistance preference
+      if (courier.maxDistance && courier.location?.coordinates?.length === 2) {
+        const [courierLon, courierLat] = courier.location.coordinates;
+        const [taskLon, taskLat] = task.pickupLocation?.location
+          ?.coordinates || [0, 0];
+
+        if (
+          courierLon !== 0 &&
+          courierLat !== 0 &&
+          taskLon !== 0 &&
+          taskLat !== 0
+        ) {
+          // Calculate distance using Haversine formula
+          const toRadians = (deg) => deg * (Math.PI / 180);
+          const R = 6371; // Earth's radius in km
+          const dLat = toRadians(taskLat - courierLat);
+          const dLon = toRadians(taskLon - courierLon);
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRadians(courierLat)) *
+              Math.cos(toRadians(taskLat)) *
+              Math.sin(dLon / 2) *
+              Math.sin(dLon / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          const distance = R * c;
+
+          if (distance > courier.maxDistance) {
+            return res.status(403).json({
+              success: false,
+              msg: "You don't have access to this task",
+            });
+          }
+        }
+      }
+
+      // Task is valid for this courier, allow decline
       if (
         !task.declinedBy?.some(
           (id) => id.toString() === req.user._id.toString(),
