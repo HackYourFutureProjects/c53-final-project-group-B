@@ -27,6 +27,17 @@ const MyTaskList = () => {
       cancelFetch();
     };
   }, []);
+
+  // Filter tasks for couriers to show only accepted tasks
+  const displayedTasks = useMemo(() => {
+    if (user?.role === "courier") {
+      return tasks.filter((task) =>
+        ["accepted", "in-progress", "completed"].includes(task.status),
+      );
+    }
+    return tasks;
+  }, [tasks, user?.role]);
+
   if (isLoading) {
     return <div>Loading tasks...</div>;
   }
@@ -38,15 +49,15 @@ const MyTaskList = () => {
       <h1 className={styles.title}>
         {user?.role === "courier" ? "Tasks" : "My Orders"}
       </h1>
-      {tasks.length === 0 ? (
+      {displayedTasks.length === 0 ? (
         <p className={styles.empty}>
           {user?.role === "courier"
-            ? "No tasks available."
+            ? "No accepted tasks yet."
             : "You have no orders yet."}
         </p>
       ) : (
         <div className={styles.list}>
-          {tasks.map((task) => {
+          {displayedTasks.map((task) => {
             return (
               <CardMyTask
                 key={task._id}

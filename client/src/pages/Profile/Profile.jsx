@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import { fetchWithRefresh } from "../../util/fetchWithRefresh";
 import styles from "./Profile.module.css";
 
 const Profile = () => {
+  const { token, setToken, logout } = useContext(UserContext);
   const navigate = useNavigate();
-  const { token, logout } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState("personal");
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -46,11 +47,16 @@ const Profile = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetch("/api/users/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetchWithRefresh(
+        "/api/users/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+        token,
+        setToken,
+      );
 
       if (response.status === 401) {
         // Token expired or invalid, logout user
@@ -136,24 +142,22 @@ const Profile = () => {
     setIsSaving(true);
 
     try {
-      const res = await fetch("/api/auth/change-password", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const res = await fetchWithRefresh(
+        "/api/auth/change-password",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            oldPassword: passwordData.oldPassword,
+            newPassword: passwordData.newPassword,
+          }),
         },
-        body: JSON.stringify({
-          oldPassword: passwordData.oldPassword,
-          newPassword: passwordData.newPassword,
-        }),
-      });
-
-      if (res.status === 401) {
-        // Token expired or invalid, logout user
-        logout();
-        navigate("/login");
-        return;
-      }
+        token,
+        setToken,
+      );
 
       const data = await res.json();
 
