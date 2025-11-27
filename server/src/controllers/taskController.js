@@ -267,10 +267,27 @@ export const getAvailableTasks = async (req, res) => {
       coords[0] !== 0 &&
       coords[1] !== 0;
 
+    // Build dynamic match query:
+    // - Always include posted tasks
+    // - Also include requested tasks that are specifically requested to this courier
+    // - Only apply task type filter when courier preferences exist
+    const statusFilter = {
+      $or: [{ status: "posted" }, { status: "requested", requestedTo: userId }],
+    };
+
+    const taskTypeFilter =
+      Array.isArray(courier.taskTypes) && courier.taskTypes.length > 0
+        ? { taskType: { $in: courier.taskTypes } }
+        : {};
+
+    const priceFilter = courier.minPrice
+      ? { price: { $gte: courier.minPrice } }
+      : {};
+
     const matchQuery = {
-      status: "posted",
-      taskType: { $in: courier.taskTypes },
-      ...(courier.minPrice ? { price: { $gte: courier.minPrice } } : {}),
+      ...statusFilter,
+      ...taskTypeFilter,
+      ...priceFilter,
     };
     let tasks;
     if (hasLocation) {
@@ -301,14 +318,10 @@ export const getAvailableTasks = async (req, res) => {
           },
         },
         { $sort: { distanceKm: 1 } },
-        { $limit: 30 },
       ];
       tasks = await Task.aggregate(pipeline);
     } else {
-      tasks = await Task.find(matchQuery)
-        .sort({ createdAt: -1 })
-        .limit(30)
-        .lean();
+      tasks = await Task.find(matchQuery).sort({ createdAt: -1 }).lean();
       tasks = tasks.map((t) => ({
         ...t,
         distanceKm: null,
