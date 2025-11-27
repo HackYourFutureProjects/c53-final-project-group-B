@@ -5,7 +5,6 @@ export async function fetchWithRefresh(url, options, token, setToken) {
   const finalOptions = {
     ...options,
     headers: {
-      "content-type": "application/json",
       ...(options.headers || {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },

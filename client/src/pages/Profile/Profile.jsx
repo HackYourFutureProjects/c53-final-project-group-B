@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import styles from "./Profile.module.css";
-import { fetchWithRefresh } from "../../util/fetchWithRefresh";
 
 const Profile = () => {
-  const { token, setToken } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { token, logout } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState("personal");
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -45,16 +46,11 @@ const Profile = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetchWithRefresh(
-        "/api/users/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch("/api/users/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        token,
-        setToken,
-      );
+      });
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
@@ -116,7 +112,7 @@ const Profile = () => {
     setPasswordError("");
 
     if (!passwordData.oldPassword || !passwordData.newPassword) {
-      setPasswordError("New password must be different from old password");
+      setPasswordError("Both old and new passwords are required.");
       return;
     }
     if (passwordData.newPassword.length < 8) {
@@ -132,22 +128,17 @@ const Profile = () => {
     setIsSaving(true);
 
     try {
-      const res = await fetchWithRefresh(
-        "/api/auth/change-password",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            oldPassword: passwordData.oldPassword,
-            newPassword: passwordData.newPassword,
-          }),
+      const res = await fetch("/api/auth/change-password", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        token,
-        setToken,
-      );
+        body: JSON.stringify({
+          oldPassword: passwordData.oldPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
 
       const data = await res.json();
 
@@ -165,13 +156,19 @@ const Profile = () => {
 
       alert("Password updated successfully ✔");
 
-      // Reset
+      // Log out user and redirect to login
+      logout();
+
+      // Reset form state
       setPasswordData({
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
       });
       setShowPasswordForm(false);
+
+      // Redirect to login page
+      navigate("/login");
     } catch (err) {
       console.error(err);
       setPasswordError("Error changing password");

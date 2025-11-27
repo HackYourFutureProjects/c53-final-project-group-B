@@ -75,8 +75,15 @@ export const resetPassword = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   try {
+    console.log("Change password request received");
+    console.log("Request body:", req.body);
+    console.log("User from req.user:", req.user);
+
     const { oldPassword, newPassword } = req.body;
     const userId = req.user._id;
+
+    console.log("UserId:", userId);
+
     if (!oldPassword || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -116,6 +123,7 @@ export const changePassword = async (req, res) => {
 
     return res.json({ success: true, msg: "Password updated successfully." });
   } catch (err) {
+    console.error("Error in changePassword:", err);
     return res.status(500).json({ success: false, msg: "Server error." });
   }
 };
