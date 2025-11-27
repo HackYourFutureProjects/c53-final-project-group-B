@@ -13,7 +13,7 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const { locationReady } = useContext(UserContext);
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    "/tasks/availableTasks",
+    "/tasks/mapTasks",
     (data) => setTasks(data.tasks),
   );
   useEffect(() => {
@@ -50,7 +50,7 @@ const TaskList = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Available Tasks</h1>
+      <h1 className={styles.title}>Available & Requested Tasks</h1>
       {tasks.length === 0 ? (
         <p className={styles.empty}>No available tasks nearby.</p>
       ) : (

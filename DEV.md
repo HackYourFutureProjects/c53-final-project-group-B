@@ -103,3 +103,18 @@ Whenever a PR is made in our github, the pipelines start working. In the `.githu
 If the cypress tests fail and you are unsure why, the cypress job in the `Actions` tab will have an artifact that has all of the videos of the run. You can download these to see the browser as it was running through your test.
 
 Every PR will also have its own deployed version on heroku. In the PR there will be a link to this version so you can see how it runs in the deployed/production state. This is what the QA engineers can use to test the application.
+
+## 5. Courier Map Behavior
+
+There are two endpoints for available tasks:
+
+- **List View Endpoint** (`GET /api/tasks/availableTasks`):
+  - Returns all "posted" tasks, plus tasks "requested" specifically to the logged-in courier.
+  - Preference filters (task types, min price, max distance) apply only when set; if unset, couriers see everything.
+  - Used for the list view of available and requested tasks.
+  - List title shows "Available & Requested Tasks" and requested items are labeled with a small badge.
+- **Map View Endpoint** (`GET /api/tasks/mapTasks`):
+  - Returns tasks formatted for display on the map (may include location data and/or simplified fields).
+  - Applies the same filters as the list view, but optimized for map marker rendering.
+  - Used for the map view to show markers for every returned task.
+    Be sure to use the correct endpoint depending on whether you are rendering the list or the map. Both endpoints apply courier preferences and return tasks relevant to the logged-in courier.

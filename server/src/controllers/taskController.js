@@ -244,7 +244,11 @@ export const getMyTasks = async (req, res) => {
       const tasks = await Task.find({
         $or: [
           { acceptedBy: req.user._id },
-          { requestedTo: req.user._id, status: "requested" },
+          {
+            requestedTo: req.user._id,
+            status: "requested",
+            declinedBy: { $ne: req.user._id },
+          },
         ],
       }).populate("createdBy");
       res.status(200).json({ success: true, tasks });
@@ -254,7 +258,7 @@ export const getMyTasks = async (req, res) => {
   }
 };
 
-export const getAvailableTasks = async (req, res) => {
+export const getMapTasks = async (req, res) => {
   try {
     const userId = req.user._id;
     const courier = await User.findById(userId);
@@ -267,10 +271,28 @@ export const getAvailableTasks = async (req, res) => {
       coords[0] !== 0 &&
       coords[1] !== 0;
 
+    // Build dynamic match query for map markers:
+    // - Always include posted tasks
+    // - Also include requested tasks that are specifically requested to this courier
+    // - Only apply task type filter when courier preferences exist
+    const statusFilter = {
+      $or: [{ status: "posted" }, { status: "requested", requestedTo: userId }],
+    };
+
+    const taskTypeFilter =
+      Array.isArray(courier.taskTypes) && courier.taskTypes.length > 0
+        ? { taskType: { $in: courier.taskTypes } }
+        : {};
+
+    const priceFilter = courier.minPrice
+      ? { price: { $gte: courier.minPrice } }
+      : {};
+
     const matchQuery = {
-      status: "posted",
-      taskType: { $in: courier.taskTypes },
-      ...(courier.minPrice ? { price: { $gte: courier.minPrice } } : {}),
+      ...statusFilter,
+      ...taskTypeFilter,
+      ...priceFilter,
+      declinedBy: { $ne: userId },
     };
     let tasks;
     if (hasLocation) {
@@ -301,14 +323,99 @@ export const getAvailableTasks = async (req, res) => {
           },
         },
         { $sort: { distanceKm: 1 } },
-        { $limit: 30 },
       ];
       tasks = await Task.aggregate(pipeline);
     } else {
-      tasks = await Task.find(matchQuery)
-        .sort({ createdAt: -1 })
-        .limit(30)
-        .lean();
+      tasks = await Task.find(matchQuery).sort({ createdAt: -1 }).lean();
+      tasks = tasks.map((t) => ({
+        ...t,
+        distanceKm: null,
+        distanceText: "Unknown distance",
+      }));
+    }
+
+    res.status(200).json({ success: true, tasks });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
+export const getAvailableTasks = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const courier = await User.findById(userId);
+    const coords = courier.location.coordinates;
+    const hasLocation =
+      Array.isArray(coords) &&
+      coords.length === 2 &&
+      typeof coords[0] === "number" &&
+      typeof coords[1] === "number" &&
+      coords[0] !== 0 &&
+      coords[1] !== 0;
+
+    // Build dynamic match query:
+    // - Always include posted tasks (available to all couriers)
+    // - Also include tasks assigned to this courier across lifecycle
+    //   (accepted, in-progress, completed) so they don't disappear
+    // - Only apply task type filter when courier preferences exist
+    const statusFilter = {
+      $or: [
+        { status: "posted" },
+        {
+          status: { $in: ["accepted", "in-progress", "completed"] },
+          acceptedBy: userId,
+        },
+      ],
+    };
+
+    const taskTypeFilter =
+      Array.isArray(courier.taskTypes) && courier.taskTypes.length > 0
+        ? { taskType: { $in: courier.taskTypes } }
+        : {};
+
+    const priceFilter = courier.minPrice
+      ? { price: { $gte: courier.minPrice } }
+      : {};
+
+    const matchQuery = {
+      ...statusFilter,
+      ...taskTypeFilter,
+      ...priceFilter,
+      declinedBy: { $ne: userId },
+    };
+    let tasks;
+    if (hasLocation) {
+      const [lon, lat] = coords;
+      const pipeline = [
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [lon, lat] },
+            key: "pickupLocation.location",
+            distanceField: "distanceKm",
+            spherical: true,
+            distanceMultiplier: 0.001,
+            ...(courier.maxDistance
+              ? { maxDistance: courier.maxDistance * 1000 }
+              : {}),
+            query: matchQuery,
+          },
+        },
+        {
+          $addFields: {
+            distanceKm: { $round: ["$distanceKm", 1] },
+            distanceText: {
+              $concat: [
+                { $toString: { $round: ["$distanceKm", 1] } },
+                " km away",
+              ],
+            },
+          },
+        },
+        { $sort: { distanceKm: 1 } },
+      ];
+      tasks = await Task.aggregate(pipeline);
+    } else {
+      tasks = await Task.find(matchQuery).sort({ createdAt: -1 }).lean();
       tasks = tasks.map((t) => ({
         ...t,
         distanceKm: null,
@@ -324,9 +431,24 @@ export const getAvailableTasks = async (req, res) => {
 export const getRequestedTasks = async (req, res) => {
   try {
     const userId = req.user._id;
-    const tasks = await Task.find({ requestedTo: userId }).populate(
-      "createdBy",
-    );
+    const tasks = await Task.find({
+      requestedTo: userId,
+      declinedBy: { $ne: userId },
+    }).populate("createdBy");
+    res.status(200).json({ success: true, tasks });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
+export const getMyRequestedTasks = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const tasks = await Task.find({
+      requestedTo: userId,
+      status: "requested",
+      declinedBy: { $ne: userId },
+    }).populate("createdBy");
     res.status(200).json({ success: true, tasks });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
@@ -340,26 +462,101 @@ export const declineTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ success: false, msg: "Task not found" });
     }
-    // Can only decline requested tasks
-    if (task.status !== "requested") {
-      return res.status(400).json({
-        success: false,
-        msg: "Only requested tasks can be declined",
+    // Allow declining requested (revert to posted) and posted (hide for this courier) tasks
+    if (task.status === "requested") {
+      // Verify it was requested to this courier
+      if (task.requestedTo?.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+          success: false,
+          msg: "This task was not requested to you",
+        });
+      }
+      task.status = "posted";
+      task.requestedTo = undefined;
+      if (
+        !task.declinedBy?.some(
+          (id) => id.toString() === req.user._id.toString(),
+        )
+      ) {
+        task.declinedBy.push(req.user._id);
+      }
+      await task.save();
+      return res.status(200).json({
+        success: true,
+        message: "Requested task declined and hidden from your view",
       });
     }
-    // Verify it was requested to this courier
-    if (task.requestedTo?.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        msg: "This task was not requested to you",
-      });
+
+    if (task.status === "posted") {
+      // Validate courier eligibility before allowing decline
+      const courier = await User.findById(req.user._id);
+
+      // Check if task matches courier's preferences
+      const taskTypeMatches =
+        !courier.taskTypes?.length || courier.taskTypes.includes(task.taskType);
+
+      const priceMatches = !courier.minPrice || task.price >= courier.minPrice;
+
+      if (!taskTypeMatches || !priceMatches) {
+        return res.status(403).json({
+          success: false,
+          msg: "You don't have access to this task",
+        });
+      }
+
+      // Check distance if courier has location and maxDistance preference
+      if (courier.maxDistance && courier.location?.coordinates?.length === 2) {
+        const [courierLon, courierLat] = courier.location.coordinates;
+        const [taskLon, taskLat] = task.pickupLocation?.location
+          ?.coordinates || [0, 0];
+
+        if (
+          courierLon !== 0 &&
+          courierLat !== 0 &&
+          taskLon !== 0 &&
+          taskLat !== 0
+        ) {
+          // Calculate distance using Haversine formula
+          const toRadians = (deg) => deg * (Math.PI / 180);
+          const R = 6371; // Earth's radius in km
+          const dLat = toRadians(taskLat - courierLat);
+          const dLon = toRadians(taskLon - courierLon);
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRadians(courierLat)) *
+              Math.cos(toRadians(taskLat)) *
+              Math.sin(dLon / 2) *
+              Math.sin(dLon / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          const distance = R * c;
+
+          if (distance > courier.maxDistance) {
+            return res.status(403).json({
+              success: false,
+              msg: "You don't have access to this task",
+            });
+          }
+        }
+      }
+
+      // Task is valid for this courier, allow decline
+      if (
+        !task.declinedBy?.some(
+          (id) => id.toString() === req.user._id.toString(),
+        )
+      ) {
+        task.declinedBy.push(req.user._id);
+      }
+      await task.save();
+      return res
+        .status(200)
+        .json({ success: true, message: "Task hidden from your view" });
     }
-    task.status = "posted";
-    task.requestedTo = undefined;
-    await task.save();
-    res
-      .status(200)
-      .json({ success: true, message: "Task declined successfully" });
+
+    return res.status(400).json({
+      success: false,
+      msg: "Only posted or requested tasks can be declined",
+    });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
   }

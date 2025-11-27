@@ -8,8 +8,10 @@ import {
   completeTask,
   cancelTask,
   getAvailableTasks,
+  getMapTasks,
   requestTaskToCourier,
   declineTask,
+  getMyRequestedTasks,
 } from "../controllers/taskController.js";
 const taskRouter = express.Router();
 
@@ -22,10 +24,22 @@ taskRouter.post(
 );
 taskRouter.get("/my-tasks", authMiddleware, getMyTasks);
 taskRouter.get(
+  "/my-requested",
+  authMiddleware,
+  authorizeRole("courier"),
+  getMyRequestedTasks,
+);
+taskRouter.get(
   "/availableTasks",
   authMiddleware,
   authorizeRole("courier"),
   getAvailableTasks,
+);
+taskRouter.get(
+  "/mapTasks",
+  authMiddleware,
+  authorizeRole("courier"),
+  getMapTasks,
 );
 taskRouter.put(
   "/:taskId/start",

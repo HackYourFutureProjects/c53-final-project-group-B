@@ -6,6 +6,32 @@ let mapInstance = null;
 let markerGroup = null;
 let resizeObserver = null;
 let reactRoots = new Map();
+let coordinateUsage = new Map();
+
+const getCoordinateKey = (lat, lon) => `${lat.toFixed(5)},${lon.toFixed(5)}`;
+
+const getOffsetLatLon = (lat, lon) => {
+  const key = getCoordinateKey(lat, lon);
+  const count = coordinateUsage.get(key) || 0;
+  coordinateUsage.set(key, count + 1);
+
+  if (count === 0) return [lat, lon];
+
+  const offsetPatterns = [
+    [0.00035, 0],
+    [0, 0.00035],
+    [-0.00035, 0],
+    [0, -0.00035],
+    [0.00028, 0.00028],
+    [-0.00028, 0.00028],
+    [-0.00028, -0.00028],
+    [0.00028, -0.00028],
+  ];
+  const pattern = offsetPatterns[(count - 1) % offsetPatterns.length];
+  const ring = Math.floor((count - 1) / offsetPatterns.length) + 1;
+
+  return [lat + pattern[0] * ring, lon + pattern[1] * ring];
+};
 
 export const initMap = async (
   containerOrId,
@@ -37,6 +63,7 @@ export const initMap = async (
     }).addTo(mapInstance);
 
     markerGroup = L.layerGroup().addTo(mapInstance);
+    coordinateUsage = new Map();
 
     if (resizeObserver) resizeObserver.disconnect();
     resizeObserver = new ResizeObserver(() => {
@@ -84,6 +111,8 @@ export const addMarker = (lat, lon, popupText = "") => {
 export const addTaskMarker = (lat, lon, task) => {
   if (!mapInstance || !markerGroup) return;
 
+  const [adjustedLat, adjustedLon] = getOffsetLatLon(lat, lon);
+
   // Create custom icon for task
   const taskIcon = L.divIcon({
     className: "task-marker",
@@ -107,17 +136,32 @@ export const addTaskMarker = (lat, lon, task) => {
     popupAnchor: [0, -18],
   });
 
+  const isRequested = task.status === "requested";
+  const badge = isRequested
+    ? `<span style="
+        display:inline-flex;align-items:center;gap:6px;padding:2px 8px;
+        border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.2px;
+        text-transform:uppercase;background:linear-gradient(135deg,#fde68a 0%,#f59e0b 100%);
+        color:#1f2937;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 6px rgba(245,158,11,.25)
+      ">⚑ Requested to you</span>`
+    : "";
+
   const popupContent = `
-    <div style="padding: 8px; min-width: 200px;">
-      <h3 style="margin: 0 0 8px 0; font-size: 16px; color: #333;">${task.title}</h3>
-      <p style="margin: 4px 0; font-size: 14px; color: #666;">${task.description}</p>
-      <p style="margin: 4px 0; font-size: 14px;"><strong>Type:</strong> ${task.taskType}</p>
-      <p style="margin: 4px 0; font-size: 14px;"><strong>Price:</strong> €${task.price}</p>
-      ${task.distanceText ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Distance:</strong> ${task.distanceText}</p>` : ""}
+    <div style="padding: 10px 12px; min-width: 220px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <h3 style="margin:0;font-size:16px;color:#111827;font-weight:700;">${task.title}</h3>
+        ${badge}
+      </div>
+      <p style="margin:6px 0 8px 0; font-size:14px; color:#4b5563; line-height:1.35;">${task.description || ""}</p>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:13px;color:#374151;">
+        <div style="color:#6b7280;">Type</div><div>${task.taskType || "—"}</div>
+        <div style="color:#6b7280;">Price</div><div>€${task.price}</div>
+        ${task.distanceText ? `<div style="color:#6b7280;">Distance</div><div>${task.distanceText}</div>` : ""}
+      </div>
     </div>
   `;
 
-  const marker = L.marker([lat, lon], { icon: taskIcon })
+  const marker = L.marker([adjustedLat, adjustedLon], { icon: taskIcon })
     .addTo(markerGroup)
     .bindPopup(popupContent, {
       maxWidth: 280,
@@ -135,6 +179,8 @@ export const addCourierMarker = (
   onRequestDelivery,
 ) => {
   if (!mapInstance || !markerGroup) return;
+
+  const [adjustedLat, adjustedLon] = getOffsetLatLon(lat, lon);
 
   // Create custom icon for courier
   const courierIcon = L.divIcon({
@@ -159,7 +205,9 @@ export const addCourierMarker = (
     popupAnchor: [0, -20],
   });
 
-  const marker = L.marker([lat, lon], { icon: courierIcon }).addTo(markerGroup);
+  const marker = L.marker([adjustedLat, adjustedLon], {
+    icon: courierIcon,
+  }).addTo(markerGroup);
 
   // Create popup container
   const popupContainer = document.createElement("div");
@@ -190,6 +238,7 @@ export const clearMarkers = () => {
     reactRoots.clear();
 
     markerGroup.clearLayers();
+    coordinateUsage = new Map();
   }
 };
 

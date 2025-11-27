@@ -18,8 +18,7 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
     if (task.status === "requested" || task.status === "posted") {
       primaryAction = { label: "Cancel", action: "cancel" };
     } else if (task.status === "completed" || task.status === "cancelled") {
-      // Optionally add a "Remove" button to hide completed/cancelled tasks
-      // primaryAction = { label: "Remove", action: "remove" };
+      // We can add a "Remove" button to hide completed/cancelled tasks
     }
   } else if (user?.role === "courier") {
     // Courier actions

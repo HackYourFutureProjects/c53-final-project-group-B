@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
-import styles from "./Profile.module.css";
+import { useNavigate } from "react-router-dom";
 import { fetchWithRefresh } from "../../util/fetchWithRefresh";
+import styles from "./Profile.module.css";
 
 const Profile = () => {
-  const { token, setToken } = useContext(UserContext);
+  const { token, setToken, logout } = useContext(UserContext);
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("personal");
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -55,6 +57,14 @@ const Profile = () => {
         token,
         setToken,
       );
+
+      if (response.status === 401) {
+        // Token expired or invalid, logout user
+        logout();
+        navigate("/login");
+        return;
+      }
+
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
@@ -116,7 +126,7 @@ const Profile = () => {
     setPasswordError("");
 
     if (!passwordData.oldPassword || !passwordData.newPassword) {
-      setPasswordError("New password must be different from old password");
+      setPasswordError("Both old and new passwords are required.");
       return;
     }
     if (passwordData.newPassword.length < 8) {
@@ -165,13 +175,19 @@ const Profile = () => {
 
       alert("Password updated successfully ✔");
 
-      // Reset
+      // Log out user and redirect to login
+      logout();
+
+      // Reset form state
       setPasswordData({
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
       });
       setShowPasswordForm(false);
+
+      // Redirect to login page
+      navigate("/login");
     } catch (err) {
       console.error(err);
       setPasswordError("Error changing password");
