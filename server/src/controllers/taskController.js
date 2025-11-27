@@ -258,6 +258,88 @@ export const getMyTasks = async (req, res) => {
   }
 };
 
+export const getMapTasks = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const courier = await User.findById(userId);
+    const coords = courier.location.coordinates;
+    const hasLocation =
+      Array.isArray(coords) &&
+      coords.length === 2 &&
+      typeof coords[0] === "number" &&
+      typeof coords[1] === "number" &&
+      coords[0] !== 0 &&
+      coords[1] !== 0;
+
+    // Build dynamic match query for map markers:
+    // - Always include posted tasks
+    // - Also include requested tasks that are specifically requested to this courier
+    // - Only apply task type filter when courier preferences exist
+    const statusFilter = {
+      $or: [{ status: "posted" }, { status: "requested", requestedTo: userId }],
+    };
+
+    const taskTypeFilter =
+      Array.isArray(courier.taskTypes) && courier.taskTypes.length > 0
+        ? { taskType: { $in: courier.taskTypes } }
+        : {};
+
+    const priceFilter = courier.minPrice
+      ? { price: { $gte: courier.minPrice } }
+      : {};
+
+    const matchQuery = {
+      ...statusFilter,
+      ...taskTypeFilter,
+      ...priceFilter,
+      declinedBy: { $ne: userId },
+    };
+    let tasks;
+    if (hasLocation) {
+      const [lon, lat] = coords;
+      const pipeline = [
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [lon, lat] },
+            key: "pickupLocation.location",
+            distanceField: "distanceKm",
+            spherical: true,
+            distanceMultiplier: 0.001,
+            ...(courier.maxDistance
+              ? { maxDistance: courier.maxDistance * 1000 }
+              : {}),
+            query: matchQuery,
+          },
+        },
+        {
+          $addFields: {
+            distanceKm: { $round: ["$distanceKm", 1] },
+            distanceText: {
+              $concat: [
+                { $toString: { $round: ["$distanceKm", 1] } },
+                " km away",
+              ],
+            },
+          },
+        },
+        { $sort: { distanceKm: 1 } },
+      ];
+      tasks = await Task.aggregate(pipeline);
+    } else {
+      tasks = await Task.find(matchQuery).sort({ createdAt: -1 }).lean();
+      tasks = tasks.map((t) => ({
+        ...t,
+        distanceKm: null,
+        distanceText: "Unknown distance",
+      }));
+    }
+
+    res.status(200).json({ success: true, tasks });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
 export const getAvailableTasks = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -273,10 +355,10 @@ export const getAvailableTasks = async (req, res) => {
 
     // Build dynamic match query:
     // - Always include posted tasks
-    // - Also include requested tasks that are specifically requested to this courier
+    // - Also include accepted tasks that were accepted by this courier
     // - Only apply task type filter when courier preferences exist
     const statusFilter = {
-      $or: [{ status: "posted" }, { status: "requested", requestedTo: userId }],
+      $or: [{ status: "posted" }, { status: "accepted", acceptedBy: userId }],
     };
 
     const taskTypeFilter =

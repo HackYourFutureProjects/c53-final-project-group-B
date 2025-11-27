@@ -8,6 +8,7 @@ import {
   completeTask,
   cancelTask,
   getAvailableTasks,
+  getMapTasks,
   requestTaskToCourier,
   declineTask,
   getMyRequestedTasks,
@@ -33,6 +34,12 @@ taskRouter.get(
   authMiddleware,
   authorizeRole("courier"),
   getAvailableTasks,
+);
+taskRouter.get(
+  "/mapTasks",
+  authMiddleware,
+  authorizeRole("courier"),
+  getMapTasks,
 );
 taskRouter.put(
   "/:taskId/start",
