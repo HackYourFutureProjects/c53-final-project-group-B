@@ -21,6 +21,14 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
     <div className={styles.card}>
       <h3 className={styles.title}>{task.title}</h3>
 
+      {task.status === "requested" && (
+        <div className={styles.meta}>
+          <span className={`${styles.badge} ${styles.badgeRequested}`}>
+            {/* simple icon */}⚑ Requested to you
+          </span>
+        </div>
+      )}
+
       <p className={styles.description}>{task.description}</p>
       <p>
         <strong>Status:</strong>{" "}

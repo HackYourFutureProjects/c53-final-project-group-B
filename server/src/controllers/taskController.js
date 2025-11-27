@@ -244,7 +244,11 @@ export const getMyTasks = async (req, res) => {
       const tasks = await Task.find({
         $or: [
           { acceptedBy: req.user._id },
-          { requestedTo: req.user._id, status: "requested" },
+          {
+            requestedTo: req.user._id,
+            status: "requested",
+            declinedBy: { $ne: req.user._id },
+          },
         ],
       }).populate("createdBy");
       res.status(200).json({ success: true, tasks });
@@ -288,6 +292,7 @@ export const getAvailableTasks = async (req, res) => {
       ...statusFilter,
       ...taskTypeFilter,
       ...priceFilter,
+      declinedBy: { $ne: userId },
     };
     let tasks;
     if (hasLocation) {
@@ -337,9 +342,24 @@ export const getAvailableTasks = async (req, res) => {
 export const getRequestedTasks = async (req, res) => {
   try {
     const userId = req.user._id;
-    const tasks = await Task.find({ requestedTo: userId }).populate(
-      "createdBy",
-    );
+    const tasks = await Task.find({
+      requestedTo: userId,
+      declinedBy: { $ne: userId },
+    }).populate("createdBy");
+    res.status(200).json({ success: true, tasks });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
+export const getMyRequestedTasks = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const tasks = await Task.find({
+      requestedTo: userId,
+      status: "requested",
+      declinedBy: { $ne: userId },
+    }).populate("createdBy");
     res.status(200).json({ success: true, tasks });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
@@ -369,6 +389,7 @@ export const declineTask = async (req, res) => {
     }
     task.status = "posted";
     task.requestedTo = undefined;
+    task.declinedBy.push(req.user._id);
     await task.save();
     res
       .status(200)

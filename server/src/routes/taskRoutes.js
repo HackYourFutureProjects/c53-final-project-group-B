@@ -10,6 +10,7 @@ import {
   getAvailableTasks,
   requestTaskToCourier,
   declineTask,
+  getMyRequestedTasks,
 } from "../controllers/taskController.js";
 const taskRouter = express.Router();
 
@@ -21,6 +22,12 @@ taskRouter.post(
   requestTaskToCourier,
 );
 taskRouter.get("/my-tasks", authMiddleware, getMyTasks);
+taskRouter.get(
+  "/my-requested",
+  authMiddleware,
+  authorizeRole("courier"),
+  getMyRequestedTasks,
+);
 taskRouter.get(
   "/availableTasks",
   authMiddleware,

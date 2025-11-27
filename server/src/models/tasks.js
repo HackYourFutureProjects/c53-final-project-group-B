@@ -56,6 +56,7 @@ const taskSchema = new mongoose.Schema(
     },
     startedAt: { type: Date, default: null },
     completedAt: { type: Date, default: null },
+    declinedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
   },
   { timestamps: true },
 );
