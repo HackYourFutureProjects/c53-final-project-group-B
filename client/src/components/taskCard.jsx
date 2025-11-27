@@ -11,10 +11,24 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
     },
   );
 
+  const { performFetch: performDecline, error: declineError } = useFetch(
+    `/tasks/${task._id}/decline`,
+    (data) => {
+      alert(data.message);
+      refreshAvailableTasks();
+    },
+  );
+
   function handleAccept() {
     performFetch({ method: "PUT" });
     if (error) {
       alert("Error accepting task: " + error);
+    }
+  }
+  function handleDecline() {
+    performDecline({ method: "PUT" });
+    if (declineError) {
+      alert("Error declining task: " + declineError);
     }
   }
   return (
@@ -59,9 +73,14 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
         </p>
       )}
       {task.distanceText && <p>Distance: {task.distanceText}</p>}
-      <button onClick={handleAccept} className={`${styles.acceptButton}`}>
-        accept
-      </button>
+      <div style={{ display: "flex", gap: 8 }}>
+        <button onClick={handleAccept} className={`${styles.acceptButton}`}>
+          accept
+        </button>
+        <button onClick={handleDecline} className={`${styles.declineButton}`}>
+          decline
+        </button>
+      </div>
     </div>
   );
 };

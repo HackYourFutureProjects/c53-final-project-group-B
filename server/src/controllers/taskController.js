@@ -354,11 +354,18 @@ export const getAvailableTasks = async (req, res) => {
       coords[1] !== 0;
 
     // Build dynamic match query:
-    // - Always include posted tasks
-    // - Also include accepted tasks that were accepted by this courier
+    // - Always include posted tasks (available to all couriers)
+    // - Also include tasks assigned to this courier across lifecycle
+    //   (accepted, in-progress, completed) so they don't disappear
     // - Only apply task type filter when courier preferences exist
     const statusFilter = {
-      $or: [{ status: "posted" }, { status: "accepted", acceptedBy: userId }],
+      $or: [
+        { status: "posted" },
+        {
+          status: { $in: ["accepted", "in-progress", "completed"] },
+          acceptedBy: userId,
+        },
+      ],
     };
 
     const taskTypeFilter =
@@ -455,27 +462,50 @@ export const declineTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ success: false, msg: "Task not found" });
     }
-    // Can only decline requested tasks
-    if (task.status !== "requested") {
-      return res.status(400).json({
-        success: false,
-        msg: "Only requested tasks can be declined",
+    // Allow declining requested (revert to posted) and posted (hide for this courier) tasks
+    if (task.status === "requested") {
+      // Verify it was requested to this courier
+      if (task.requestedTo?.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+          success: false,
+          msg: "This task was not requested to you",
+        });
+      }
+      task.status = "posted";
+      task.requestedTo = undefined;
+      if (
+        !task.declinedBy?.some(
+          (id) => id.toString() === req.user._id.toString(),
+        )
+      ) {
+        task.declinedBy.push(req.user._id);
+      }
+      await task.save();
+      return res.status(200).json({
+        success: true,
+        message: "Requested task declined and hidden from your view",
       });
     }
-    // Verify it was requested to this courier
-    if (task.requestedTo?.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        msg: "This task was not requested to you",
-      });
+
+    if (task.status === "posted") {
+      // Just hide this posted task for this courier
+      if (
+        !task.declinedBy?.some(
+          (id) => id.toString() === req.user._id.toString(),
+        )
+      ) {
+        task.declinedBy.push(req.user._id);
+      }
+      await task.save();
+      return res
+        .status(200)
+        .json({ success: true, message: "Task hidden from your view" });
     }
-    task.status = "posted";
-    task.requestedTo = undefined;
-    task.declinedBy.push(req.user._id);
-    await task.save();
-    res
-      .status(200)
-      .json({ success: true, message: "Task declined successfully" });
+
+    return res.status(400).json({
+      success: false,
+      msg: "Only posted or requested tasks can be declined",
+    });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
   }

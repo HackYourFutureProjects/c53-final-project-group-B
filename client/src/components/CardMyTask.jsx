@@ -26,6 +26,10 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
     if (task.status === "requested") {
       primaryAction = { label: "Accept", action: "accept" };
       secondaryAction = { label: "Decline", action: "decline" };
+    } else if (task.status === "posted") {
+      // Allow accepting or declining posted tasks from Tasks list
+      primaryAction = { label: "Accept", action: "accept" };
+      secondaryAction = { label: "Decline", action: "decline" };
     } else if (task.status === "accepted") {
       primaryAction = { label: "Start", action: "start" };
     } else if (task.status === "in-progress") {

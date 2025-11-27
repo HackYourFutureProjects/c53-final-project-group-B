@@ -13,7 +13,7 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const { locationReady } = useContext(UserContext);
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    "/tasks/availableTasks",
+    "/tasks/mapTasks",
     (data) => setTasks(data.tasks),
   );
   useEffect(() => {
