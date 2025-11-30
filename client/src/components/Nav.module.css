@@ -152,7 +152,7 @@
 
 /* ===== Media Queries ===== */
 /* Tablet: 768px - 1024px */
-@media (max-width: 768px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .nav {
     padding: var(--space-md);
   }
@@ -197,7 +197,7 @@
 }
 
 /* Mobile: < 768px */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .nav {
     padding: var(--space-sm) var(--space-md);
   }

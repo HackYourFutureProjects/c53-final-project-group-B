@@ -4,6 +4,7 @@ import styles from "./LoginForm.module.css";
 import { UserContext } from "../context/UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BiHide, BiShow } from "react-icons/bi";
 import { useSearchParams } from "react-router-dom";
 
 const LoginForm = () => {
@@ -144,7 +145,7 @@ const LoginForm = () => {
             onClick={() => setShowPassword(!showPassword)}
             className={styles.showPasswordBtn}
           >
-            {showPassword ? "Hide" : "Show"}
+            {showPassword ? <BiHide /> : <BiShow />}
           </button>
         </div>
         {errors.password && (

@@ -65,7 +65,7 @@
   height: auto;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
   .hero {
     flex-direction: column;
     text-align: center;
@@ -73,5 +73,10 @@
 
   .animation {
     margin-top: 2rem;
+  }
+
+  .getStartedBtn {
+    margin: 0 auto;
+    display: block;
   }
 }

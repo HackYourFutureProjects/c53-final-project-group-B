@@ -23,6 +23,9 @@ const App = () => {
   const hideNavbar = pathname === "/user-dashboard";
   return (
     <UserProvider>
+      <div className="mobile-landscape-message">
+        Please rotate your device to portrait mode for the best experience.
+      </div>
       {!hideNavbar && <Nav />}
       <ToastContainer
         position="top-right"

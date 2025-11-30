@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { BiHide, BiShow } from "react-icons/bi";
 import styles from "./ResetPasswordForm.module.css";
 
 const ResetPasswordForm = () => {
@@ -57,40 +58,44 @@ const ResetPasswordForm = () => {
           Choose a strong password and confirm it.
         </p>
         <form onSubmit={handleSubmit}>
-          <label className={styles.label}>New password</label>
-          <div className={styles.passwordWrapper}>
-            <input
-              className={styles.input}
-              type={showNew ? "text" : "password"}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <button
-              type="button"
-              className={styles.showPasswordBtn}
-              onClick={() => setShowNew((s) => !s)}
-            >
-              {showNew ? "Hide" : "Show"}
-            </button>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>New password</label>
+            <div className={styles.passwordWrapper}>
+              <input
+                className={styles.input}
+                type={showNew ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className={styles.showPasswordBtn}
+                onClick={() => setShowNew((s) => !s)}
+              >
+                {showNew ? <BiHide /> : <BiShow />}
+              </button>
+            </div>
           </div>
 
-          <label className={styles.label}>Confirm password</label>
-          <div className={styles.passwordWrapper}>
-            <input
-              className={styles.input}
-              type={showConfirm ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              autoComplete="new-password"
-              required
-            />
-            <button
-              type="button"
-              className={styles.showPasswordBtn}
-              onClick={() => setShowConfirm((s) => !s)}
-            >
-              {showConfirm ? "Hide" : "Show"}
-            </button>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Confirm password</label>
+            <div className={styles.passwordWrapper}>
+              <input
+                className={styles.input}
+                type={showConfirm ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                autoComplete="new-password"
+                required
+              />
+              <button
+                type="button"
+                className={styles.showPasswordBtn}
+                onClick={() => setShowConfirm((s) => !s)}
+              >
+                {showConfirm ? <BiHide /> : <BiShow />}
+              </button>
+            </div>
           </div>
 
           {error && <div className={styles.error}>{error}</div>}

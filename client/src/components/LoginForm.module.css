@@ -64,14 +64,24 @@ input:focus {
   align-items: center;
 }
 
+.passwordWrapper input {
+  flex: 1;
+  padding-right: 2.5rem; /* space for the icon */
+}
+
 .showPasswordBtn {
   position: absolute;
   right: 0.75rem;
   background: none;
   border: none;
   color: var(--color-primary);
-  font-weight: 600;
+  font-size: 1.2rem;
   cursor: pointer;
+}
+
+.showPasswordBtn:hover {
+  color: var(--color-secondary);
+  background-color: transparent;
 }
 
 .actions {
@@ -130,10 +140,10 @@ input:focus {
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .form {
     padding: var(--space-lg);
-    margin: var(--space-lg);
+    margin: var(--space-lg) auto;
   }
 }
 
@@ -145,4 +155,10 @@ input:focus {
   border-radius: 6px;
   font-weight: 600;
   text-align: center;
+}
+
+.submitBtn {
+  padding: var(--space-md) var(--space-xl);
+  font-weight: 400;
+  margin: 1rem auto;
 }

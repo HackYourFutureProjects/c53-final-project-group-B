@@ -54,3 +54,40 @@
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
+
+/* Mobile toggle button */
+.mobileToggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1001;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -220px;
+    width: 220px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .mobileToggle {
+    display: block;
+  }
+}
