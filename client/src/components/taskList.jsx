@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import useFetch from "../hooks/useFetch";
 import { UserContext } from "../context/UserContext.js";
-import TaskCard from "./taskCard.jsx";
-import styles from "./CourierList.module.css";
+import TaskCard from "./TaskCard.jsx";
+import styles from "./taskList.module.css";
 import {
   addTaskMarker,
   clearMarkers,

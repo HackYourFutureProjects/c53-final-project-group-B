@@ -4,17 +4,11 @@ import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import { createUser, ServiceError } from "../services/userService.js";
 import { sendVerificationEmail } from "../services/emailService.js";
+import RefreshToken from "../models/refreshToken.js";
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_SECRET_REFRESH = process.env.JWT_SECRET_REFRESH;
-
-// WARNING: This in-memory Map is used to store refresh tokens (userId -> refreshToken).
-// This approach is NOT suitable for production as it does not persist data across server restarts
-// and does not scale across multiple server instances. For production, use a database-backed
-// solution (e.g., Redis, MongoDB, or another persistent store) to manage refresh tokens securely.
-
-const refreshTokenStore = new Map(); // userId -> refreshToken
 
 // Helpers
 function createToken(user) {
@@ -66,9 +60,10 @@ export const login = async (req, res) => {
     }
     const token = createToken(user);
     const refreshToken = createRefreshToken(user);
-    refreshTokenStore.set(user._id.toString(), {
-      current: refreshToken,
-      previous: null,
+    await RefreshToken.create({
+      userId: user._id,
+      refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000),
     });
     const cookieOptions = {
       httpOnly: true,
@@ -103,12 +98,11 @@ export const refreshToken = async (req, res) => {
     } catch (e) {
       return res.status(401).json({ message: "Invalid refresh token" });
     }
-    const storedToken = refreshTokenStore.get(payload.userId);
-    if (
-      !storedToken ||
-      (storedToken.current !== refreshToken &&
-        storedToken.previous !== refreshToken)
-    ) {
+    const storedToken = await RefreshToken.findOne({
+      userId: payload.userId,
+      refreshToken,
+    });
+    if (!storedToken || storedToken.expiresAt < new Date()) {
       return res
         .status(401)
         .json({ success: false, msg: "Invalid refresh token" });
@@ -119,10 +113,13 @@ export const refreshToken = async (req, res) => {
     }
     const newToken = createToken(user);
     const newRefreshToken = createRefreshToken(user);
-    refreshTokenStore.set(user._id.toString(), {
-      previous: storedToken.current,
-      current: newRefreshToken,
+    await RefreshToken.deleteMany({ userId: user._id });
+    await RefreshToken.create({
+      userId: user._id,
+      refreshToken: newRefreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
+
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -144,18 +141,21 @@ export const refreshToken = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-export const logout = (req, res) => {
+export const logout = async (req, res) => {
   try {
     const userId = req.user._id;
-    refreshTokenStore.delete(userId.toString());
     res.clearCookie("refreshToken", {
       path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     });
-    res.status(200).json({ message: "Logged out successfully" });
+    await RefreshToken.deleteMany({ userId });
+    res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      msg: "Server error during logout",
+    });
   }
 };

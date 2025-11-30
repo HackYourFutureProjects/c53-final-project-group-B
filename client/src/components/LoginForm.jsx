@@ -1,19 +1,34 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./LoginForm.module.css";
 import { UserContext } from "../context/UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useSearchParams } from "react-router-dom";
 
 const LoginForm = () => {
+  const [searchParams] = useSearchParams();
+  const verified = searchParams.get("verified");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
-  const { login } = useContext(UserContext);
+  const { login, token } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [serverError, setServerError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (verified) {
+      const message =
+        verified === "true"
+          ? "Email verified successfully! You can now log in."
+          : "Verification failed. Please try again.";
+
+      toast[verified === "true" ? "success" : "error"](message);
+    }
+  }, [verified]);
 
   const validate = () => {
     const newErrors = {};
@@ -37,6 +52,19 @@ const LoginForm = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+  const handleVerify = async () => {
+    const res = await fetch("/api/verify/resend-verification-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.msg || "Error resending verification email");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -138,6 +166,12 @@ const LoginForm = () => {
       >
         {isSubmitting ? "Logging in..." : "Log In"}
       </button>
+      {((!token && verified && verified === "false") ||
+        serverError === "Email not verified") && (
+        <button onClick={handleVerify} className={styles.verify}>
+          verify again
+        </button>
+      )}
 
       <p className={styles.footerText}>
         No account yet? <Link to="/register">Register</Link>

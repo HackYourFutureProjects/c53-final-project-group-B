@@ -1,0 +1,71 @@
+/* MAIN CONTAINER */
+.container {
+  padding: 20px 24px;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* TITLE */
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+/* LIST WRAPPER */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* EMPTY, LOADING, ERROR */
+.empty,
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 1rem;
+  color: #9ca3af;
+}
+
+.error {
+  text-align: center;
+  padding: 20px;
+  background: #ffe5e5;
+  color: #e53e3e;
+  border-radius: 10px;
+  margin: 20px;
+}
+
+/* OPTIONAL TASK STATS */
+.stats {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.statItem {
+  padding: 14px 18px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  min-width: 110px;
+  text-align: center;
+}
+
+.statNumber {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.statLabel {
+  font-size: 0.85rem;
+  color: #6b7280;
+}

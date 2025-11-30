@@ -15,6 +15,8 @@ import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
 import UserDashboardLayout from "./pages/UserDashboard/userDashboard.jsx";
 import { useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -22,6 +24,17 @@ const App = () => {
   return (
     <UserProvider>
       {!hideNavbar && <Nav />}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Routes>
         <Route path="/" element={<HomePage />} />
 

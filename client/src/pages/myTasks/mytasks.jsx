@@ -1,74 +1,93 @@
-import { useState, useEffect, useContext, useMemo } from "react";
+import { useState, useEffect, useContext } from "react";
 import useFetch from "../../hooks/useFetch.js";
-import styles from "../../components/CourierList.module.css";
 import CardMyTask from "../../components/CardMyTask.jsx";
+import styles from "./myTasks.module.css";
 import { UserContext } from "../../context/UserContext.js";
+import { AnimatePresence, motion } from "framer-motion";
 
 const MyTaskList = () => {
-  const [tasks, setTasks] = useState([]);
   const { user } = useContext(UserContext);
-
-  // Choose endpoint based on role:
-  // - Couriers see available tasks
-  // - Clients see their own orders
-  const route = useMemo(() => {
-    return user?.role === "courier"
-      ? "/tasks/availableTasks"
-      : "/tasks/my-tasks";
-  }, [user?.role]);
-
+  const [tasks, setTasks] = useState([]);
+  const [activeTab, setActiveTab] = useState(
+    user.role === "client" ? "posted" : "accepted",
+  ); // default tab
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    route,
+    "/tasks/my-tasks",
     (data) => setTasks(data.tasks),
   );
+
   useEffect(() => {
     performFetch();
-    return () => {
-      cancelFetch();
-    };
+    return () => cancelFetch();
   }, []);
 
-  // Filter tasks for couriers to show only accepted tasks
-  const displayedTasks = useMemo(() => {
-    if (user?.role === "courier") {
-      return tasks.filter((task) =>
-        ["accepted", "in-progress", "completed"].includes(task.status),
-      );
-    }
-    return tasks;
-  }, [tasks, user?.role]);
-
   if (isLoading) {
-    return <div>Loading tasks...</div>;
+    return <div>Loading available tasks...</div>;
   }
   if (error) {
-    return <div>Error loading tasks: {error}</div>;
+    return <div>Error loading available tasks: {error}</div>;
   }
+
+  // Filter tasks based on activeTab
+  const filteredTasks = tasks.filter((task) => task.status === activeTab);
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>
-        {user?.role === "courier" ? "Tasks" : "My Orders"}
-      </h1>
-      {displayedTasks.length === 0 ? (
-        <p className={styles.empty}>
-          {user?.role === "courier"
-            ? "No accepted tasks yet."
-            : "You have no orders yet."}
-        </p>
-      ) : (
-        <div className={styles.list}>
-          {displayedTasks.map((task) => {
-            return (
-              <CardMyTask
-                key={task._id}
-                refreshMyTasks={performFetch}
-                task={task}
-              />
-            );
-          })}
-        </div>
-      )}
+      <h1 className={styles.title}>My Tasks</h1>
+
+      {/* Tabs for status */}
+      <div className={styles.tabContainer}>
+        {[
+          ...(user.role === "client" ? ["posted"] : []),
+          ...(user.role === "client" ? ["requested"] : []),
+          ...(user.role === "client" ? ["cancelled"] : []),
+          "accepted",
+          "in-progress",
+          "completed",
+        ].map((status) => (
+          <button
+            key={status}
+            className={`${styles.tab} ${
+              activeTab === status ? styles.activeTab : ""
+            }`}
+            onClick={() => setActiveTab(status)}
+          >
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      <div className={styles.tasksScrollContainer}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className={styles.tabContent}
+          >
+            {filteredTasks.length === 0 ? (
+              <p className={styles.empty}>
+                No tasks with status `{activeTab}`.
+              </p>
+            ) : (
+              <div className={styles.list}>
+                {filteredTasks.map((task) => (
+                  <CardMyTask
+                    key={task._id}
+                    refreshMyTasks={performFetch}
+                    task={task}
+                  />
+                ))}
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
+
 export default MyTaskList;

@@ -6,7 +6,7 @@
      Adjust the calc value if you have a top navbar/header height. */
   height: calc(100vh - 40px); /* change 40px to your header height if any */
   align-items: flex-start; /* align children at top */
-  padding: 20px; /* optional */
+
   box-sizing: border-box;
 }
 
@@ -105,4 +105,30 @@
   border: 1px solid #e5e7eb;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.courierVerticalLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 15px;
+}
+
+/* Map at top */
+.mapAreaTop {
+  height: 50vh; /* adjust: 50% of screen height */
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+/* Tasks below the map */
+.tasksBelow {
+  flex: 1;
+  overflow-y: auto; /* scroll tasks */
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }

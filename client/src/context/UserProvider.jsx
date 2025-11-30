@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext.js";
 import decodeToken from "../util/decodeToken.js";
+import { fetchWithRefresh } from "../util/fetchWithRefresh.js";
+import { toast } from "react-toastify";
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(
@@ -9,6 +12,7 @@ export function UserProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [locationReady, setLocationReady] = useState(false);
   const [coordinates, setCoordinates] = useState(null);
+  const navigate = useNavigate();
 
   const tryRefresh = useCallback(async () => {
     try {
@@ -64,17 +68,22 @@ export function UserProvider({ children }) {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
-          await fetch("/api/users/update-location", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+          await fetchWithRefresh(
+            "/api/users/update-location",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              }),
             },
-            body: JSON.stringify({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            }),
-          });
+            token,
+            setToken,
+          );
           setCoordinates({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -158,11 +167,35 @@ export function UserProvider({ children }) {
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  const logout = async () => {
+    try {
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      const res = await fetchWithRefresh(
+        "/api/auth/logout",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+        token,
+        setToken,
+      );
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.msg || "Logout failed");
+      }
+      const data = await res.json();
+      toast.success("Logout successful: " + data.message);
+
+      navigate("/login");
+    } catch (err) {
+      toast.error("Logout error: " + err.message);
+    }
   };
 
   return (
