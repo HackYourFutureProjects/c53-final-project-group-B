@@ -19,18 +19,18 @@ const Sidebar = ({ onChangeSection, active }) => {
         </button>
 
         <button
-          className={`${styles.navItem} ${active === "tasks" ? styles.active : ""}`}
-          onClick={() => onChangeSection("tasks")}
+          className={`${styles.navItem} ${active === "myTasks" ? styles.active : ""}`}
+          onClick={() => onChangeSection("myTasks")}
         >
-          {isClient ? "My Orders" : "Tasks"}
+          {isClient ? "My Orders" : "My Tasks"}
         </button>
 
         {!isClient && (
           <button
-            className={`${styles.navItem} ${active === "myTasks" ? styles.active : ""}`}
-            onClick={() => onChangeSection("myTasks")}
+            className={`${styles.navItem} ${active === "Requests" ? styles.active : ""}`}
+            onClick={() => onChangeSection("Requests")}
           >
-            My requests
+            Requests
           </button>
         )}
 

@@ -161,7 +161,7 @@ export const cancelTask = async (req, res) => {
         msg: "Only tasks that are not started can be canceled",
       });
     }
-    task.status = "canceled";
+    task.status = "cancelled";
     await task.save();
     res
       .status(200)
@@ -170,6 +170,34 @@ export const cancelTask = async (req, res) => {
     res.status(500).json({ success: false, msg: "Server error" });
   }
 };
+export const removeCancelledTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ success: false, msg: "Task not found" });
+    }
+    if (task.status !== "cancelled") {
+      return res.status(400).json({
+        success: false,
+        msg: "Only cancelled tasks can be removed",
+      });
+    }
+    if (task.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        msg: "You can only remove your own tasks",
+      });
+    }
+    await Task.deleteOne({ _id: taskId });
+    res
+      .status(200)
+      .json({ success: true, message: "Cancelled task removed successfully" });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+
 export const requestTaskToCourier = async (req, res) => {
   try {
     const {

@@ -2,6 +2,8 @@ import Token from "../models/emailToken.js";
 import User from "../models/User.js";
 import crypto from "crypto";
 import transporter from "../util/mail.js";
+const FRONTEND_URL = process.env.FRONTEND_URL;
+const BACKEND_URL = process.env.BACKEND_URL;
 
 export const verifyEmail = async (req, res) => {
   try {
@@ -14,7 +16,8 @@ export const verifyEmail = async (req, res) => {
     }
     await User.findByIdAndUpdate(userId, { isVerified: true });
     await Token.deleteOne({ userId, token });
-    res.status(200).json({ message: "Email verified successfully" });
+    res.redirect(`${FRONTEND_URL}/login?verified=true`);
+    //res.status(200).json({ message: "Email verified successfully" });
     //res.redirect(`http://localhost:5173/login?verified=true`);
     // Alternatively, redirect to frontend with query param
   } catch (err) {
@@ -36,7 +39,7 @@ export const resendVerificationEmail = async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex");
     await Token.deleteMany({ userId: user._id });
     await Token.create({ userId: user._id, token, purpose: "verify-email" });
-    const verificationLink = `http://localhost:3000/api/verify/verify-email/${user._id}/${token}`;
+    const verificationLink = `${BACKEND_URL}/api/verify/verify-email/${user._id}/${token}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -44,8 +47,11 @@ export const resendVerificationEmail = async (req, res) => {
       subject: "Email Verification (Resent)",
       html: `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`,
     });
-    res.json({ message: "Verification email resent successfully" });
+    res.json({
+      success: true,
+      message: "Verification email resent successfully",
+    });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, msg: "Server error" });
   }
 };

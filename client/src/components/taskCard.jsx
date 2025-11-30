@@ -1,84 +1,72 @@
 import styles from "./TaskCard.module.css";
 import useFetch from "../hooks/useFetch";
 import shortenAddress from "../controller/shortenAddress";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const TaskCard = ({ task, refreshAvailableTasks }) => {
   const { performFetch, error } = useFetch(
     `/tasks/${task._id}/accept`,
     (data) => {
-      alert(data.message);
+      toast.success(data.message);
       refreshAvailableTasks();
     },
   );
-
-  const { performFetch: performDecline, error: declineError } = useFetch(
-    `/tasks/${task._id}/decline`,
-    (data) => {
-      alert(data.message);
-      refreshAvailableTasks();
-    },
-  );
+  useEffect(() => {
+    if (error) {
+      toast.error("Error accepting task: " + error);
+    }
+  }, [error]);
 
   function handleAccept() {
     performFetch({ method: "PUT" });
-    if (error) {
-      alert("Error accepting task: " + error);
-    }
-  }
-  function handleDecline() {
-    performDecline({ method: "PUT" });
-    if (declineError) {
-      alert("Error declining task: " + declineError);
-    }
   }
   return (
     <div className={styles.card}>
-      <h3 className={styles.title}>{task.title}</h3>
-
-      {task.status === "requested" && (
-        <div className={styles.meta}>
-          <span className={`${styles.badge} ${styles.badgeRequested}`}>
-            {/* simple icon */}⚑ Requested to you
-          </span>
-        </div>
-      )}
-
-      <p className={styles.description}>{task.description}</p>
-      <p>
-        <strong>Status:</strong>{" "}
+      <div className={styles.headerRow}>
+        <h3 className={styles.title}>{task.title}</h3>
         <span
           className={`${styles.status} ${styles[task.status.replace("-", "_")]}`}
         >
           {task.status}
         </span>
-      </p>
+      </div>
 
-      <p>
-        <strong>Type:</strong> {task.taskType}
-      </p>
-      <p>
-        <strong>Price:</strong> €{task.price}
-      </p>
+      <p className={styles.description}>{task.description}</p>
 
-      {task.pickupLocation?.address && (
+      <div className={styles.infoGrid}>
         <p>
-          <strong>Pickup:</strong> {shortenAddress(task.pickupLocation.address)}
+          <strong>Type:</strong> {task.taskType}
         </p>
-      )}
-
-      {task.dropoffLocation?.address && (
         <p>
-          <strong>Dropoff:</strong>{" "}
-          {shortenAddress(task.dropoffLocation.address)}
+          <strong>Price:</strong> €{task.price}
         </p>
-      )}
-      {task.distanceText && <p>Distance: {task.distanceText}</p>}
-      <div style={{ display: "flex", gap: 8 }}>
-        <button onClick={handleAccept} className={`${styles.acceptButton}`}>
-          accept
-        </button>
-        <button onClick={handleDecline} className={`${styles.declineButton}`}>
-          decline
+
+        {task.distanceText && (
+          <p>
+            <strong>Distance:</strong> {task.distanceText}
+          </p>
+        )}
+      </div>
+
+      <div className={styles.locationBox}>
+        {task.pickupLocation?.address && (
+          <p>
+            <strong>Pickup:</strong>{" "}
+            {shortenAddress(task.pickupLocation.address)}
+          </p>
+        )}
+        {task.dropoffLocation?.address && (
+          <p>
+            <strong>Dropoff:</strong>{" "}
+            {shortenAddress(task.dropoffLocation.address)}
+          </p>
+        )}
+      </div>
+
+      <div className={styles.actionRow}>
+        <button onClick={handleAccept} className={styles.acceptButton}>
+          Accept
         </button>
       </div>
     </div>

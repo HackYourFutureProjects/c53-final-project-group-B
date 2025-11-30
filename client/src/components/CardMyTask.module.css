@@ -1,0 +1,185 @@
+.card {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #eee;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  background-color: #fefefe;
+}
+
+.topSection {
+  margin-bottom: 12px;
+}
+
+.bottomSection {
+  margin-top: 12px;
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.description {
+  color: #555;
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+/* Info row */
+.infoRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.infoItem {
+  background: #f9f9f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Status badge */
+.status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px; /* pill shape */
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 0.85rem;
+  display: inline-block;
+  color: #fff;
+}
+
+/* Status colors */
+.posted {
+  background-color: #3498db;
+}
+.accepted {
+  background-color: #f1c40f;
+}
+.in_progress {
+  background-color: #e67e22;
+}
+.completed {
+  background-color: #2ecc71;
+}
+.cancelled {
+  background-color: #e74c3c;
+}
+.requested {
+  background-color: #9b59b6;
+}
+
+/* Address styling */
+.address {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Accepted / Created By box */
+.acceptedByContainer {
+  background-color: #f0f4ff;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.acceptedByContainer strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Action buttons */
+.actionsContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.acceptButton {
+  flex: 1;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.acceptButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.declineButton {
+  flex: 1;
+  padding: 10px 16px;
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.declineButton:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+/* Rating container */
+.ratingContainer {
+  margin-top: 15px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.ratingContainer label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.ratingContainer select,
+.ratingContainer textarea {
+  width: 100%;
+  padding: 5px;
+  margin-top: 4px;
+}
+
+.submitRatingButton {
+  margin-top: 8px;
+  background-color: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.submitRatingButton:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}

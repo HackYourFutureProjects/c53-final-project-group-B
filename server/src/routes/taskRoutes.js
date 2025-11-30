@@ -12,6 +12,7 @@ import {
   requestTaskToCourier,
   declineTask,
   getMyRequestedTasks,
+  removeCancelledTask,
 } from "../controllers/taskController.js";
 const taskRouter = express.Router();
 
@@ -73,4 +74,11 @@ taskRouter.put(
   authorizeRole("client"),
   cancelTask,
 );
+taskRouter.delete(
+  "/:taskId/remove",
+  authMiddleware,
+  authorizeRole("client"),
+  removeCancelledTask,
+);
+
 export default taskRouter;

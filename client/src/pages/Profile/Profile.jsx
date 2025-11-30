@@ -3,6 +3,7 @@ import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { fetchWithRefresh } from "../../util/fetchWithRefresh";
 import styles from "./Profile.module.css";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const { token, setToken, logout } = useContext(UserContext);
@@ -173,7 +174,7 @@ const Profile = () => {
         return;
       }
 
-      alert("Password updated successfully ✔");
+      toast.success("Password updated successfully ✔");
 
       // Log out user and redirect to login
       logout();

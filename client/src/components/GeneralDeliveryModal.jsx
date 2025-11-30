@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import { UserContext } from "../context/UserContext";
 import styles from "./DeliveryRequestModal.module.css";
+import { toast } from "react-toastify";
 
 const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
   const { token } = useContext(UserContext);
@@ -79,11 +80,11 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
         throw new Error(data.msg || "Failed to create delivery request");
       }
 
-      alert("Delivery request posted successfully!");
+      toast.success("Delivery request posted successfully!");
       onSuccess();
       onClose();
     } catch (error) {
-      alert(error.message || "Failed to post delivery request");
+      toast.error(error.message || "Failed to post delivery request");
     } finally {
       setIsSubmitting(false);
     }
