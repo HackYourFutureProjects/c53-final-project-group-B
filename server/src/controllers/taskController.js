@@ -183,6 +183,12 @@ export const removeCancelledTask = async (req, res) => {
         msg: "Only cancelled tasks can be removed",
       });
     }
+    if (task.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        msg: "You can only remove your own tasks",
+      });
+    }
     await Task.deleteOne({ _id: taskId });
     res
       .status(200)

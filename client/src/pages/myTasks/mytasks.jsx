@@ -9,7 +9,7 @@ const MyTaskList = () => {
   const { user } = useContext(UserContext);
   const [tasks, setTasks] = useState([]);
   const [activeTab, setActiveTab] = useState(
-    user.role === "client" ? "posted" : "accepted",
+    user?.role === "client" ? "posted" : "accepted",
   ); // default tab
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     "/tasks/my-tasks",
@@ -38,9 +38,9 @@ const MyTaskList = () => {
       {/* Tabs for status */}
       <div className={styles.tabContainer}>
         {[
-          ...(user.role === "client" ? ["posted"] : []),
-          ...(user.role === "client" ? ["requested"] : []),
-          ...(user.role === "client" ? ["cancelled"] : []),
+          ...(user?.role === "client" ? ["posted"] : []),
+          ...(user?.role === "client" ? ["requested"] : []),
+          ...(user?.role === "client" ? ["cancelled"] : []),
           "accepted",
           "in-progress",
           "completed",

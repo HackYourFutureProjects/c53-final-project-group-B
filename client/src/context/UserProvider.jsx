@@ -169,10 +169,6 @@ export function UserProvider({ children }) {
 
   const logout = async () => {
     try {
-      setUser(null);
-      setToken(null);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
       const res = await fetchWithRefresh(
         "/api/auth/logout",
         {
@@ -191,6 +187,10 @@ export function UserProvider({ children }) {
       }
       const data = await res.json();
       toast.success("Logout successful: " + data.message);
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
       navigate("/login");
     } catch (err) {

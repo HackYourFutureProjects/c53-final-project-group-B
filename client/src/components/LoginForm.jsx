@@ -54,16 +54,20 @@ const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
   const handleVerify = async () => {
-    const res = await fetch("/api/verify/resend-verification-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      toast.success(data.message);
-    } else {
-      toast.error(data.msg || "Error resending verification email");
+    try {
+      const res = await fetch("/api/verify/resend-verification-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.msg || "Error resending verification email");
+      }
+    } catch (err) {
+      toast.error("Error resending verification email: " + err.message);
     }
   };
 

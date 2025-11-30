@@ -60,10 +60,11 @@ export const login = async (req, res) => {
     }
     const token = createToken(user);
     const refreshToken = createRefreshToken(user);
+    await RefreshToken.deleteMany({ userId: user._id });
     await RefreshToken.create({
       userId: user._id,
       refreshToken,
-      expiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000),
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
     const cookieOptions = {
       httpOnly: true,

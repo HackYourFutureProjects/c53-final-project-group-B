@@ -2,6 +2,7 @@ import styles from "./TaskCard.module.css";
 import useFetch from "../hooks/useFetch";
 import shortenAddress from "../controller/shortenAddress";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const TaskCard = ({ task, refreshAvailableTasks }) => {
   const { performFetch, error } = useFetch(
@@ -11,12 +12,14 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
       refreshAvailableTasks();
     },
   );
-
-  function handleAccept() {
-    performFetch({ method: "PUT" });
+  useEffect(() => {
     if (error) {
       toast.error("Error accepting task: " + error);
     }
+  }, [error]);
+
+  function handleAccept() {
+    performFetch({ method: "PUT" });
   }
   return (
     <div className={styles.card}>
