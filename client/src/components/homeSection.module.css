@@ -132,3 +132,24 @@
   flex-direction: column;
   gap: 15px;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+  .homeContainer {
+    flex-direction: column;
+    height: calc(100vh - 80px); /* adjust for mobile header */
+    gap: 15px;
+  }
+
+  .mapArea {
+    flex: none;
+    height: 50vh; /* map takes half screen height */
+    width: 100%;
+  }
+
+  .listArea {
+    flex: 1;
+    width: 100%;
+    height: auto;
+  }
+}
