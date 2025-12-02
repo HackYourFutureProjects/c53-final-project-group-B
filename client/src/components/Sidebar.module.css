@@ -71,7 +71,9 @@
   font-size: var(--font-size-sm);
 }
 
-/* Mobile styles */
+.mobileToggle:hover {
+  background: var(--color-primary);
+}
 @media (max-width: 767px) {
   .sidebar {
     position: fixed;
@@ -89,5 +91,16 @@
 
   .mobileToggle {
     display: block;
+    background: transparent;
+    color: var(--color-primary);
+    border: none;
+    top: 5px;
+    left: -2px;
+  }
+
+  .mobileToggle:hover {
+    display: block;
+    background: transparent;
+    color: var(--color-primary);
   }
 }

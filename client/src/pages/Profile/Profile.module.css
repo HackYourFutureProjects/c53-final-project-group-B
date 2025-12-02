@@ -464,6 +464,14 @@
     grid-template-columns: 1fr;
   }
 
+  .sectionHeader {
+    display: block;
+  }
+
+  .sectionHeader h2 {
+    margin-bottom: 16px;
+  }
+
   .securityItem {
     flex-direction: column;
     gap: 16px;
