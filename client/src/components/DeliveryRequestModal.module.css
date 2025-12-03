@@ -181,3 +181,61 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* React Select Custom Styles */
+.react-select__control {
+  border: 2px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  box-sizing: border-box !important;
+  min-height: 48px !important;
+}
+
+.react-select__control:hover {
+  border-color: #667eea !important;
+}
+
+.react-select__control--is-focused {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+  outline: none !important;
+}
+
+.react-select__menu {
+  max-width: calc(100vw - 40px) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  z-index: 9999 !important;
+}
+
+.react-select__option {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.react-select__option--is-selected {
+  background-color: #667eea !important;
+}
+
+.react-select__option--is-focused {
+  background-color: rgba(102, 126, 234, 0.1) !important;
+}
+
+@media (max-width: 767px) {
+  .modalOverlay {
+    padding: 5px;
+    margin-bottom: 20px;
+  }
+  .modalHeader h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .formActions {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

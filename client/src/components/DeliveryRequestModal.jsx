@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import { UserContext } from "../context/UserContext";
+import Select from "react-select";
 import styles from "./DeliveryRequestModal.module.css";
 import { toast } from "react-toastify";
 
@@ -9,13 +10,25 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    taskType: courier.taskTypes?.[0] || "delivery",
+    taskType: courier.taskTypes?.[0]
+      ? {
+          value: courier.taskTypes[0],
+          label:
+            courier.taskTypes[0].charAt(0).toUpperCase() +
+            courier.taskTypes[0].slice(1),
+        }
+      : { value: "delivery", label: "Delivery" },
     pickupLocation: "",
     dropoffLocation: "",
     price: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const taskTypeOptions = courier.taskTypes?.map((type) => ({
+    value: type,
+    label: type.charAt(0).toUpperCase() + type.slice(1),
+  })) || [{ value: "delivery", label: "Delivery" }];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,6 +83,7 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
         },
         body: JSON.stringify({
           ...formData,
+          taskType: formData.taskType.value,
           price: parseFloat(formData.price),
           requestedTo: courier._id,
         }),
@@ -136,18 +150,17 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
 
           <div className={styles.formGroup}>
             <label htmlFor="taskType">Delivery Type *</label>
-            <select
+            <Select
               id="taskType"
               name="taskType"
               value={formData.taskType}
-              onChange={handleChange}
-            >
-              {courier.taskTypes?.map((type) => (
-                <option key={type} value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </option>
-              ))}
-            </select>
+              onChange={(selectedOption) =>
+                setFormData((prev) => ({ ...prev, taskType: selectedOption }))
+              }
+              options={taskTypeOptions}
+              className={styles.select}
+              classNamePrefix="react-select"
+            />
           </div>
 
           <div className={styles.formGroup}>

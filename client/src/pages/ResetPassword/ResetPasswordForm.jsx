@@ -72,7 +72,7 @@ const ResetPasswordForm = () => {
                 className={styles.showPasswordBtn}
                 onClick={() => setShowNew((s) => !s)}
               >
-                {showNew ? <BiHide /> : <BiShow />}
+                {showNew ? <BiShow /> : <BiHide />}
               </button>
             </div>
           </div>
@@ -93,7 +93,7 @@ const ResetPasswordForm = () => {
                 className={styles.showPasswordBtn}
                 onClick={() => setShowConfirm((s) => !s)}
               >
-                {showConfirm ? <BiHide /> : <BiShow />}
+                {showConfirm ? <BiShow /> : <BiHide />}
               </button>
             </div>
           </div>

@@ -145,7 +145,7 @@ const LoginForm = () => {
             onClick={() => setShowPassword(!showPassword)}
             className={styles.showPasswordBtn}
           >
-            {showPassword ? <BiHide /> : <BiShow />}
+            {showPassword ? <BiShow /> : <BiHide />}
           </button>
         </div>
         {errors.password && (

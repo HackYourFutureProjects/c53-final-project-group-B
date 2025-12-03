@@ -33,7 +33,7 @@ const MyTaskList = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>My Tasks</h1>
+      {user?.role === "client" ? <h1>My Deliveries</h1> : <h1>My Tasks</h1>}
 
       {/* Tabs for status */}
       <div className={styles.tabContainer}>
