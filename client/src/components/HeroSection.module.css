@@ -69,6 +69,10 @@
   .hero {
     flex-direction: column;
     text-align: center;
+    padding: 2.5rem 8%;
+  }
+  .title {
+    font-size: 2rem;
   }
 
   .animation {

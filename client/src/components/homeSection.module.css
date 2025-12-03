@@ -145,14 +145,15 @@
 @media (max-width: 767px) {
   .homeContainer {
     flex-direction: column;
-    height: calc(100vh - 80px); /* adjust for mobile header */
-    gap: 15px;
+    height: calc(100vh - 30px); /* adjust for mobile header */
+    gap: 10px;
+    width: 100%;
     margin-top: -20px;
   }
 
   .mapArea {
     flex: none;
-    height: 50vh; /* map takes half screen height */
+    height: 40vh; /* map takes half screen height */
     width: 100%;
   }
 
@@ -165,13 +166,14 @@
   /* Client mobile styles */
   .fullMapContainer {
     max-width: 100%;
-    margin: 5px auto;
-    padding: 0 var(--space-xs);
+    margin: 0px auto;
+    padding: 18px var(--space-xs);
   }
 
   .mapHeader {
     padding: var(--space-md);
     text-align: center;
+    margin-top: 10px;
   }
 
   .headerContent {
@@ -187,9 +189,9 @@
   }
 
   .taskTitle {
-    font-size: 1.4rem;
-    margin-bottom: 8px;
-    text-align: center;
+    font-size: 1.1rem;
+    margin: 0;
+    margin-left: 40px;
   }
 }
 
@@ -197,5 +199,21 @@
 @media (min-width: 768px) {
   .taskTitle {
     display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .leaflet-popup .courier-popup .leaflet-zoom-animated {
+    transform: translate3d(1px, 100px, 0px);
+    bottom: 100px;
+    left: -150px;
+  }
+
+  .leaflet-popup {
+    margin-bottom: 20px;
+  }
+
+  .courier-popup.leaflet-zoom-animated .leaflet-popup-content-wrapper {
+    max-width: 45vw !important;
   }
 }

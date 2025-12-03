@@ -107,16 +107,20 @@
 
   .sidebar.open {
     left: 0;
+    z-index: 1001;
   }
 
   .mobileToggle {
     display: block;
+    width: 25px;
+    height: 25px;
     background: transparent;
     color: var(--color-primary);
     border: none;
     top: 5px;
-    left: -132px;
+    left: -5px;
     position: relative;
+    z-index: 1002;
   }
 
   .mobileToggle:hover {
@@ -124,4 +128,8 @@
     background: transparent;
     color: var(--color-primary);
   }
+}
+
+.sidebar.open ~ .homeContainer .leaflet-control-container {
+  z-index: 999 !important;
 }
