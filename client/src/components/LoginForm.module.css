@@ -41,6 +41,7 @@ input {
   border-radius: var(--radius-md);
   font-family: var(--font-main);
   transition: border-color 0.2s ease;
+  box-sizing: border-box;
 }
 
 input:focus {
@@ -142,8 +143,20 @@ input:focus {
 /* ===== Responsive ===== */
 @media (max-width: 767px) {
   .form {
-    padding: var(--space-lg);
+    padding: 12px;
     margin: var(--space-lg) auto;
+  }
+
+  .input {
+    padding: 6px 8px;
+  }
+
+  .passwordWrapper input {
+    padding-right: 1.5rem;
+  }
+
+  .showPasswordBtn {
+    right: 0.5rem;
   }
 }
 

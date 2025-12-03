@@ -115,7 +115,8 @@
     color: var(--color-primary);
     border: none;
     top: 5px;
-    left: -2px;
+    left: -132px;
+    position: relative;
   }
 
   .mobileToggle:hover {

@@ -501,6 +501,10 @@
 }
 
 @media (max-width: 768px) {
+  .profileContainer {
+    padding: 10px;
+  }
+
   .profileHeader {
     flex-direction: column;
     text-align: center;
@@ -509,6 +513,18 @@
 
   .formGrid {
     grid-template-columns: 1fr;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 15px;
+  }
+
+  .input {
+    padding: 10px 12px;
   }
 
   .sectionHeader {

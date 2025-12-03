@@ -199,7 +199,7 @@
 /* Mobile: < 768px */
 @media (max-width: 767px) {
   .nav {
-    padding: var(--space-sm) var(--space-md);
+    padding: 0rem 0.5rem;
   }
 
   .navBrand {
@@ -222,12 +222,14 @@
     width: 100%;
   }
 
-  .mobileButtonsContainer .loginBtn,
-  .mobileButtonsContainer .getStartedBtn {
+  .mobileButtonsContainer .mobileButtonsContainer .getStartedBtn {
     width: 40%;
     margin: 0 auto;
     padding: var(--space-sm) var(--space-md);
     font-size: var(--font-size-base);
+  }
+  .loginBtn {
+    padding: var(--space-xs) var(--space-md);
   }
 }
 
@@ -239,5 +241,39 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 380px) {
+  .nav {
+    padding: 0rem 0.5rem;
+  }
+  .navBrand {
+    gap: var(--space-xs);
+  }
+  .logo {
+    font-size: var(--font-size-xs);
+  }
+
+  .logoIcon {
+    font-size: 1rem;
+  }
+
+  .navLinksLink {
+    font-size: var(--font-size-xs);
+  }
+
+  .loginBtn {
+    padding: 3px 6px;
+    font-size: var(--font-size-xs);
+  }
+
+  .navLinks {
+    gap: var(--space-md);
+    font-size: var(--font-size-xs);
+  }
+
+  .navButtons {
+    gap: var(--space-xs);
   }
 }

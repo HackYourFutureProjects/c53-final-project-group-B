@@ -147,7 +147,7 @@
     flex-direction: column;
     height: calc(100vh - 80px); /* adjust for mobile header */
     gap: 15px;
-    margin-top: 35px;
+    margin-top: -20px;
   }
 
   .mapArea {
