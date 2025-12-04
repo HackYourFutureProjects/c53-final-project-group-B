@@ -33,7 +33,9 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const parsedValue =
+      name === "acceptDeadLineMinutes" ? parseInt(value, 10) : value;
+    setFormData((prev) => ({ ...prev, [name]: parsedValue }));
     // Clear error for this field
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
