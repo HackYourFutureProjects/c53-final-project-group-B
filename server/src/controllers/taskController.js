@@ -269,6 +269,7 @@ export const repostTask = async (req, res) => {
     task.expiredAt = new Date(
       Date.now() + task.acceptDeadLineMinutes * 60 * 1000,
     );
+    task.requestedTo = undefined;
     task.declinedBy = [];
     await task.save();
     res
