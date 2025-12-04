@@ -14,6 +14,7 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
     pickupLocation: "",
     dropoffLocation: "",
     price: "",
+    acceptDeadLineMinutes: 5,
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,7 +27,9 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const parsedValue =
+      name === "acceptDeadLineMinutes" ? parseInt(value, 10) : value;
+    setFormData((prev) => ({ ...prev, [name]: parsedValue }));
     // Clear error for this field
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -186,6 +189,21 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
             {errors.dropoffLocation && (
               <span className={styles.errorText}>{errors.dropoffLocation}</span>
             )}
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="taskAcceptanceTime">Task acceptance time</label>
+            <select
+              id="acceptDeadLineMinutes"
+              name="acceptDeadLineMinutes"
+              value={formData.acceptDeadLineMinutes}
+              onChange={handleChange}
+            >
+              {[5, 10, 15].map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className={styles.formGroup}>

@@ -2,14 +2,16 @@ import styles from "./TaskCard.module.css";
 import useFetch from "../hooks/useFetch";
 import shortenAddress from "../controller/shortenAddress";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const TaskCard = ({ task, refreshAvailableTasks }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const { performFetch, error } = useFetch(
     `/tasks/${task._id}/accept`,
     (data) => {
       toast.success(data.message);
       refreshAvailableTasks();
+      setIsLoading(false);
     },
   );
   useEffect(() => {
@@ -19,6 +21,7 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
   }, [error]);
 
   function handleAccept() {
+    setIsLoading(true);
     performFetch({ method: "PUT" });
   }
   return (
@@ -40,6 +43,16 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
         </p>
         <p>
           <strong>Price:</strong> €{task.price}
+        </p>
+        <p>
+          <strong>expire At:</strong>{" "}
+          {new Date(task.expiredAt).toLocaleString()}
+        </p>
+        <p>
+          <strong>Created At:</strong>{" "}
+          {task.repostedAt
+            ? new Date(task.repostedAt).toLocaleString()
+            : new Date(task.createdAt).toLocaleString()}
         </p>
 
         {task.distanceText && (
@@ -65,8 +78,12 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
       </div>
 
       <div className={styles.actionRow}>
-        <button onClick={handleAccept} className={styles.acceptButton}>
-          Accept
+        <button
+          onClick={handleAccept}
+          className={styles.acceptButton}
+          disabled={isLoading}
+        >
+          {isLoading ? "Loading..." : "Accept"}
         </button>
       </div>
     </div>

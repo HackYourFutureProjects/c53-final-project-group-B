@@ -85,6 +85,9 @@
 .requested {
   background-color: #9b59b6;
 }
+.expired {
+  background-color: #7f8c8d;
+}
 
 /* Address styling */
 .address {

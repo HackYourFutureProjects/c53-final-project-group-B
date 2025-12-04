@@ -9,6 +9,7 @@ import {
   cancelTask,
   getAvailableTasks,
   getMapTasks,
+  repostTask,
   requestTaskToCourier,
   declineTask,
   getMyRequestedTasks,
@@ -60,6 +61,12 @@ taskRouter.put(
   authMiddleware,
   authorizeRole("courier"),
   declineTask,
+);
+taskRouter.put(
+  "/:taskId/repost",
+  authMiddleware,
+  authorizeRole("client"),
+  repostTask,
 );
 
 taskRouter.put(

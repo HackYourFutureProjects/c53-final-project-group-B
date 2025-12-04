@@ -1,6 +1,8 @@
 import Task from "../models/tasks.js";
 import User from "../models/User.js";
 import { getCoordinates } from "../services/geoCodingService.js";
+//import transporter from "../util/mail.js";
+import haversineDistance from "../util/distanceCalculator.js";
 
 export const createTask = async (req, res) => {
   try {
@@ -11,6 +13,7 @@ export const createTask = async (req, res) => {
       price,
       pickupLocation,
       dropoffLocation,
+      acceptDeadLineMinutes,
     } = req.body;
     if (
       !title ||
@@ -34,6 +37,8 @@ export const createTask = async (req, res) => {
         msg: "Unable to geocode one or both addresses",
       });
     }
+    const parsedMinutes = parseInt(acceptDeadLineMinutes, 10);
+    const minutes = Math.min(Math.max(parsedMinutes || 10, 5), 15);
     await Task.create({
       title,
       description,
@@ -54,6 +59,8 @@ export const createTask = async (req, res) => {
           coordinates: [dropoffCoords.lon, dropoffCoords.lat],
         },
       },
+      expiredAt: new Date(Date.now() + minutes * 60 * 1000),
+      acceptDeadLineMinutes: minutes,
     });
     res
       .status(201)
@@ -86,10 +93,30 @@ export const acceptTask = async (req, res) => {
         msg: "This task was not requested to you",
       });
     }
+    if (task.expiredAt && task.expiredAt < new Date()) {
+      return res.status(400).json({
+        success: false,
+        msg: "Task acceptance time has expired",
+      });
+    }
     task.status = "accepted";
     task.acceptedBy = req.user._id;
     task.acceptedAt = new Date();
     await task.save();
+    //const user = await User.findById(task.createdBy);
+    //const courier = await User.findById(req.user._id);
+    // Send email notification to the task creator
+    /*try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: "Your task has been accepted",
+        text: `Your task "${task.title}" has been accepted by a courier (${courier.name}). To see the detail you can check your dashboard. They will contact you shortly to arrange the details. Thank you for using our service!`,
+      });
+    } catch {
+      // Log the error but don't fail the whole request
+    }*/
+
     res
       .status(200)
       .json({ success: true, message: "Task accepted successfully" });
@@ -104,6 +131,8 @@ export const startTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ success: false, msg: "Task not found" });
     }
+    const courier = await User.findById(task.acceptedBy);
+    //const client = await User.findById(task.createdBy);
     if (task.status !== "accepted") {
       return res.status(400).json({
         success: false,
@@ -113,6 +142,30 @@ export const startTask = async (req, res) => {
     task.status = "in-progress";
     task.startedAt = new Date();
     await task.save();
+    // Estimate arrival time based on courier speed (e.g., 40 km/h)
+    const courierCoords = courier.location.coordinates;
+    const [pickupLon, pickupLat] = task.pickupLocation.location.coordinates;
+    const distanceKm = haversineDistance(
+      pickupLat,
+      pickupLon,
+      courierCoords[1],
+      courierCoords[0],
+    );
+    const averageSpeedKmh = 40;
+    const etaMinutes = Math.round((distanceKm / averageSpeedKmh) * 60);
+    task.estimatedArrivalTime = new Date(Date.now() + etaMinutes * 60 * 1000);
+    await task.save();
+    /*try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: client.email,
+        subject: "Your task is now in progress",
+        text: `Your task "${task.title}" is now in progress. The courier (${courier.name}) is on their way to the pickup location. Estimated arrival time is approximately ${etaMinutes} minutes. Thank you for using our service!`,
+      });
+    } catch {
+      // Log the error but don't fail the whole request
+    }*/
+
     res
       .status(200)
       .json({ success: true, message: "Task started successfully" });
@@ -136,6 +189,29 @@ export const completeTask = async (req, res) => {
     task.status = "completed";
     task.completedAt = new Date();
     await task.save();
+    //const client = await User.findById(task.createdBy);
+    //const courier = await User.findById(task.acceptedBy);
+    /*try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: client.email,
+        subject: "Your task has been completed",
+        text: `Your task "${task.title}" has been completed. Thank you for using our service!`,
+      });
+    } catch {
+      // Log the error but don't fail the whole request
+    }*/
+
+    /*try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: courier.email,
+        subject: "Task completed",
+        text: `The task "${task.title}" you accepted has been completed. and payment has been processed. Thank you for your service!`,
+      });
+    } catch {
+      // Log the error but don't fail the whole request
+    }*/
     res
       .status(200)
       .json({ success: true, message: "Task completed successfully" });
@@ -155,7 +231,7 @@ export const cancelTask = async (req, res) => {
         .status(400)
         .json({ success: false, msg: "Completed task cannot be canceled" });
     }
-    if (task.status !== "posted") {
+    if (task.status !== "posted" && task.status !== "requested") {
       return res.status(400).json({
         success: false,
         msg: "Only tasks that are not started can be canceled",
@@ -166,6 +242,40 @@ export const cancelTask = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "Task canceled successfully" });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
+export const repostTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ success: false, msg: "Task not found" });
+    }
+    if (task.status !== "expired") {
+      return res.status(400).json({
+        success: false,
+        msg: "Only expired tasks can be reposted",
+      });
+    }
+    if (task.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        msg: "You can only repost your own tasks",
+      });
+    }
+    task.status = "posted";
+    task.repostedAt = new Date();
+    task.expiredAt = new Date(
+      Date.now() + task.acceptDeadLineMinutes * 60 * 1000,
+    );
+    task.requestedTo = undefined;
+    task.declinedBy = [];
+    await task.save();
+    res
+      .status(200)
+      .json({ success: true, message: "Task reposted successfully" });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
   }
@@ -208,6 +318,7 @@ export const requestTaskToCourier = async (req, res) => {
       pickupLocation,
       dropoffLocation,
       requestedTo,
+      acceptDeadLineMinutes,
     } = req.body;
     if (
       !title ||
@@ -232,6 +343,8 @@ export const requestTaskToCourier = async (req, res) => {
         msg: "Unable to geocode one or both addresses",
       });
     }
+    const parsedMinutes = parseInt(acceptDeadLineMinutes, 10);
+    const minutes = Math.min(Math.max(parsedMinutes || 10, 5), 15);
     await Task.create({
       title,
       description,
@@ -254,7 +367,20 @@ export const requestTaskToCourier = async (req, res) => {
           coordinates: [dropoffCoords.lon, dropoffCoords.lat],
         },
       },
+      expiredAt: new Date(Date.now() + minutes * 60 * 1000),
+      acceptDeadLineMinutes: minutes,
     });
+    // const courier = await User.findById(requestedTo);
+    /*try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: courier.email,
+        subject: "New Task Request",
+        text: `You have a new task request: "${title}". Please check your dashboard for details.`,
+      });
+    } catch {
+      // Log the error but don't fail the whole request
+    }*/
     res.status(201).json({ message: "Task created successfully" });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
@@ -263,9 +389,10 @@ export const requestTaskToCourier = async (req, res) => {
 export const getMyTasks = async (req, res) => {
   try {
     if (req.user.role === "client") {
-      const tasks = await Task.find({ createdBy: req.user._id }).populate(
-        "acceptedBy",
-      );
+      const tasks = await Task.find({ createdBy: req.user._id })
+        .populate("acceptedBy")
+        .sort({ createdAt: -1 });
+
       res.status(200).json({ success: true, tasks });
     } else if (req.user.role === "courier") {
       // For couriers, get both accepted tasks and requested tasks
@@ -278,7 +405,9 @@ export const getMyTasks = async (req, res) => {
             declinedBy: { $ne: req.user._id },
           },
         ],
-      }).populate("createdBy");
+      })
+        .populate("createdBy")
+        .sort({ createdAt: -1 });
       res.status(200).json({ success: true, tasks });
     }
   } catch (err) {
@@ -501,6 +630,9 @@ export const declineTask = async (req, res) => {
       }
       task.status = "posted";
       task.requestedTo = undefined;
+      task.expiredAt = new Date(
+        Date.now() + task.acceptDeadLineMinutes * 60 * 1000,
+      );
       if (
         !task.declinedBy?.some(
           (id) => id.toString() === req.user._id.toString(),

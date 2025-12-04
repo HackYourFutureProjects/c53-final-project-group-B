@@ -38,12 +38,13 @@ const MyTaskList = () => {
       {/* Tabs for status */}
       <div className={styles.tabContainer}>
         {[
-          ...(user?.role === "client" ? ["posted"] : []),
           ...(user?.role === "client" ? ["requested"] : []),
-          ...(user?.role === "client" ? ["cancelled"] : []),
+          ...(user?.role === "client" ? ["posted"] : []),
           "accepted",
           "in-progress",
           "completed",
+          ...(user?.role === "client" ? ["cancelled"] : []),
+          ...(user?.role === "client" ? ["expired"] : []),
         ].map((status) => (
           <button
             key={status}

@@ -35,6 +35,7 @@ const taskSchema = new mongoose.Schema(
         "in-progress",
         "completed",
         "cancelled",
+        "expired",
       ],
       default: "posted",
     },
@@ -57,6 +58,10 @@ const taskSchema = new mongoose.Schema(
     startedAt: { type: Date, default: null },
     completedAt: { type: Date, default: null },
     declinedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+    expiredAt: { type: Date, default: null },
+    estimatedArrivalTime: { type: Date, default: null },
+    repostedAt: { type: Date, default: null },
+    acceptDeadLineMinutes: { type: Number, default: 10 },
   },
   { timestamps: true },
 );
