@@ -21,6 +21,6 @@ cron.schedule("* * * * *", async () => {
       await task.save();
     }
   } catch {
-    console.error("Error expiring tasks");
+    // Handle errors if necessary
   }
 });
