@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import Task from "../models/tasks.js";
 import transporter from "../util/mail.js";
-cron.schedule("* * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
   try {
     const now = new Date();
     const tasksToExpire = await Task.find({
@@ -14,7 +14,7 @@ cron.schedule("* * * * *", async () => {
           from: process.env.EMAIL_USER,
           to: task.createdBy.email,
           subject: "Task Expired Notification",
-          text: `Dear ${task.createdBy.name},\n\nYour task titled "${task.title}" has expired as it was not accepted within the specified deadline. The task has been moved to expired status you can find it in your dashboard.\n\nThank you for using our service.\n\nBest regards,\nDelivery Service Team`,
+          text: `Dear ${task.createdBy.name},\n\nYour task titled "${task.title}" has expired as it was not accepted within the specified deadline. The task has been moved to expired status. You can find it in your dashboard.\n\nThank you for using our service.\n\nBest regards,\nDelivery Service Team`,
         });
       }
       task.status = "expired";

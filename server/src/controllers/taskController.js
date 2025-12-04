@@ -127,11 +127,11 @@ export const startTask = async (req, res) => {
   try {
     const { taskId } = req.params;
     const task = await Task.findById(taskId);
-    const courier = await User.findById(task.acceptedBy);
-    const client = await User.findById(task.createdBy);
     if (!task) {
       return res.status(404).json({ success: false, msg: "Task not found" });
     }
+    const courier = await User.findById(task.acceptedBy);
+    const client = await User.findById(task.createdBy);
     if (task.status !== "accepted") {
       return res.status(400).json({
         success: false,
@@ -201,7 +201,6 @@ export const completeTask = async (req, res) => {
       // Log the error but don't fail the whole request
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 1200));
     try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
@@ -259,11 +258,18 @@ export const repostTask = async (req, res) => {
         msg: "Only expired tasks can be reposted",
       });
     }
+    if (task.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        msg: "You can only repost your own tasks",
+      });
+    }
     task.status = "posted";
     task.repostedAt = new Date();
     task.expiredAt = new Date(
       Date.now() + task.acceptDeadLineMinutes * 60 * 1000,
     );
+    task.declinedBy = [];
     await task.save();
     res
       .status(200)
