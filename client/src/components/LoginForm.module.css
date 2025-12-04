@@ -41,6 +41,7 @@ input {
   border-radius: var(--radius-md);
   font-family: var(--font-main);
   transition: border-color 0.2s ease;
+  box-sizing: border-box;
 }
 
 input:focus {
@@ -64,14 +65,24 @@ input:focus {
   align-items: center;
 }
 
+.passwordWrapper input {
+  flex: 1;
+  padding-right: 2.5rem; /* space for the icon */
+}
+
 .showPasswordBtn {
   position: absolute;
   right: 0.75rem;
   background: none;
   border: none;
   color: var(--color-primary);
-  font-weight: 600;
+  font-size: 1.2rem;
   cursor: pointer;
+}
+
+.showPasswordBtn:hover {
+  color: var(--color-secondary);
+  background-color: transparent;
 }
 
 .actions {
@@ -130,10 +141,22 @@ input:focus {
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .form {
-    padding: var(--space-lg);
-    margin: var(--space-lg);
+    padding: 12px;
+    margin: var(--space-lg) auto;
+  }
+
+  .input {
+    padding: 6px 8px;
+  }
+
+  .passwordWrapper input {
+    padding-right: 1.5rem;
+  }
+
+  .showPasswordBtn {
+    right: 0.5rem;
   }
 }
 
@@ -145,4 +168,10 @@ input:focus {
   border-radius: 6px;
   font-weight: 600;
   text-align: center;
+}
+
+.submitBtn {
+  padding: var(--space-md) var(--space-xl);
+  font-weight: 400;
+  margin: 1rem auto;
 }

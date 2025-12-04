@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const UserDashboardLayout = () => {
   const [section, setSection] = useState("home");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const renderSection = () => {
     if (section === "home") {
       return <HomeSection />;
@@ -30,7 +31,15 @@ const UserDashboardLayout = () => {
   };
   return (
     <div className={styles.dashboard}>
-      <Sidebar onChangeSection={setSection} active={section} />
+      <Sidebar
+        onChangeSection={(sec) => {
+          setSection(sec);
+          setSidebarOpen(false); // Close sidebar on mobile after selection
+        }}
+        active={section}
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+      />
 
       <main className={styles.content}>
         <AnimatePresence mode="wait">

@@ -141,3 +141,71 @@
 :global(.leaflet-popup-tip) {
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 767px) {
+  .leaflet-popup .courier-popup .leaflet-zoom-animated {
+    transform: translate3d(1px, 100px, 0px);
+    bottom: 100px;
+    left: -150px;
+  }
+
+  .leaflet-popup {
+    margin-bottom: 20px;
+  }
+
+  .courier-popup.leaflet-zoom-animated .leaflet-popup-content-wrapper {
+    max-width: 45vw !important;
+  }
+
+  .popupContainer {
+    max-width: 40vw;
+    min-width: 200px;
+  }
+
+  .courierHeader {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .courierAvatar {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .courierName {
+    font-size: 14px;
+  }
+
+  .trustScore {
+    font-size: 12px;
+  }
+
+  .star {
+    font-size: 14px;
+  }
+
+  .courierDetails {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .detailRow {
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .icon {
+    font-size: 16px;
+    width: 20px;
+  }
+
+  .requestButton {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .buttonIcon {
+    font-size: 18px;
+  }
+}

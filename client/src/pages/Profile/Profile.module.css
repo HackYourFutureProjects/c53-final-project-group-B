@@ -133,6 +133,7 @@
 
 .tab:hover {
   color: #667eea;
+  background-color: transparent;
 }
 
 .activeTab {
@@ -142,7 +143,7 @@
 .activeTab::after {
   content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: 0px;
   left: 0;
   right: 0;
   height: 2px;
@@ -190,7 +191,15 @@
 .formGroup {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
+  width: 100%;
 }
 
 .formGroup label {
@@ -219,6 +228,39 @@
   cursor: not-allowed;
 }
 
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.passwordWrapper input {
+  flex: 1;
+  padding-right: 2.5rem; /* space for the icon */
+  width: 100%;
+}
+
+.showPasswordBtn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.showPasswordBtn:hover {
+  color: var(--color-secondary);
+  background-color: transparent;
+}
+
+.errorMessage {
+  color: red;
+  margin-top: 8px;
+}
+
 .helpText {
   font-size: 12px;
   color: #6b7280;
@@ -226,6 +268,10 @@
 
 .buttonGroup {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
   gap: 12px;
 }
 
@@ -455,13 +501,38 @@
 }
 
 @media (max-width: 768px) {
+  .profileContainer {
+    padding: 10px;
+  }
+
   .profileHeader {
     flex-direction: column;
     text-align: center;
+    margin-top: 15px;
   }
 
   .formGrid {
     grid-template-columns: 1fr;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 15px;
+  }
+
+  .input {
+    padding: 10px 12px;
+  }
+
+  .sectionHeader {
+    display: block;
+  }
+
+  .sectionHeader h2 {
+    margin-bottom: 16px;
   }
 
   .securityItem {
@@ -472,5 +543,19 @@
 
   .secondaryButton {
     width: 100%;
+  }
+  .editButton,
+  .saveButton,
+  .cancelButton {
+    width: 100%;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .saveButton,
+  .cancelButton {
+    margin-top: 10px;
   }
 }

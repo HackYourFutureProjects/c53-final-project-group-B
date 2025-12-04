@@ -3,19 +3,26 @@ import { createPortal } from "react-dom";
 import { UserContext } from "../context/UserContext";
 import styles from "./DeliveryRequestModal.module.css";
 import { toast } from "react-toastify";
+import Select from "react-select";
 
 const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
   const { token } = useContext(UserContext);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    taskType: "delivery",
+    taskType: { value: "delivery", label: "Delivery" },
     pickupLocation: "",
     dropoffLocation: "",
     price: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const taskTypeOptions = [
+    { value: "delivery", label: "Delivery" },
+    { value: "shopping", label: "Shopping" },
+    { value: "smalljob", label: "Small Job" },
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,6 +77,7 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
         },
         body: JSON.stringify({
           ...formData,
+          taskType: formData.taskType.value,
           price: parseFloat(formData.price),
         }),
       });
@@ -135,16 +143,17 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
 
           <div className={styles.formGroup}>
             <label htmlFor="taskType">Delivery Type *</label>
-            <select
+            <Select
               id="taskType"
               name="taskType"
               value={formData.taskType}
-              onChange={handleChange}
-            >
-              <option value="delivery">Delivery</option>
-              <option value="shopping">Shopping</option>
-              <option value="smalljob">Small Job</option>
-            </select>
+              onChange={(selectedOption) =>
+                setFormData((prev) => ({ ...prev, taskType: selectedOption }))
+              }
+              options={taskTypeOptions}
+              className={styles.select}
+              classNamePrefix="react-select"
+            />
           </div>
 
           <div className={styles.formGroup}>

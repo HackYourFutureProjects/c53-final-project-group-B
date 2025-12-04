@@ -228,7 +228,7 @@ const RegisterForm = () => {
               onClick={() => setShowPassword(!showPassword)}
               className={styles.showPasswordBtn}
             >
-              {showPassword ? <BiHide /> : <BiShow />}
+              {showPassword ? <BiShow /> : <BiHide />}
             </button>
           )}
         </div>
@@ -256,7 +256,7 @@ const RegisterForm = () => {
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className={styles.showPasswordBtn}
             >
-              {showConfirmPassword ? <BiHide /> : <BiShow />}
+              {showConfirmPassword ? <BiShow /> : <BiHide />}
             </button>
           )}
         </div>

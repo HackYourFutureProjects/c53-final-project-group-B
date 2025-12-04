@@ -69,3 +69,18 @@
   font-size: 0.85rem;
   color: #6b7280;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+  .title {
+    display: none;
+  }
+
+  .container {
+    padding: 16px 20px;
+  }
+
+  .list {
+    gap: 12px;
+  }
+}

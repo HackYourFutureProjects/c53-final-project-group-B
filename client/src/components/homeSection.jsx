@@ -51,6 +51,9 @@ const HomeSection = () => {
       ) : (
         // Courier view: Map on left, task list on right (existing layout)
         <>
+          {!isClient && (
+            <h1 className={styles.taskTitle}>Available & Requested Tasks</h1>
+          )}
           <div className={styles.mapArea}>
             <Map />
           </div>

@@ -45,14 +45,16 @@ const RequestResetPassword = () => {
           reset your password.
         </p>
         <form onSubmit={handleSubmit}>
-          <label className={styles.label}>Email</label>
-          <input
-            className={styles.input}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-          />
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Email</label>
+            <input
+              className={styles.input}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+            />
+          </div>
 
           {error && <div className={styles.error}>{error}</div>}
           {message && <div className={styles.message}>{message}</div>}

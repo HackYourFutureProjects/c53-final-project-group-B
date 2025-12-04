@@ -1,20 +1,11 @@
 import LoginForm from "../../components/LoginForm.jsx";
+import styles from "./Login.module.css";
 
 const Login = () => {
   return (
-    <>
+    <div className={styles.container}>
       <LoginForm />
-      <main
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "calc(20vh - 80px)",
-          backgroundColor: "var(--color-bg-light)",
-          padding: "1rem",
-        }}
-      ></main>
-    </>
+    </div>
   );
 };
 

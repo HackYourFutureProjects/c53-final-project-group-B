@@ -1,47 +1,67 @@
 import styles from "./Sidebar.module.css";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { CgMenuLeft } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
-const Sidebar = ({ onChangeSection, active }) => {
-  const { user } = useContext(UserContext);
+const Sidebar = ({ onChangeSection, active, isOpen, onToggle }) => {
+  const { user, logout } = useContext(UserContext);
+  const navigate = useNavigate();
   const isClient = user?.role === "client";
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+    onToggle(); // Close sidebar on mobile after logout
+  };
+
   return (
-    <aside className={styles.sidebar}>
-      <h2 className={styles.logo}>CourierGo</h2>
+    <>
+      {/* Mobile toggle button */}
+      <button className={styles.mobileToggle} onClick={onToggle}>
+        <CgMenuLeft size={30} />
+      </button>
 
-      <nav className={styles.nav}>
-        <button
-          className={`${styles.navItem} ${active === "home" ? styles.active : ""}`}
-          onClick={() => onChangeSection("home")}
-        >
-          {isClient ? "Request a Delivery" : "Home"}
-        </button>
+      <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
+        <h2 className={styles.logo}>CourierGo</h2>
 
-        <button
-          className={`${styles.navItem} ${active === "myTasks" ? styles.active : ""}`}
-          onClick={() => onChangeSection("myTasks")}
-        >
-          {isClient ? "My Orders" : "My Tasks"}
-        </button>
-
-        {!isClient && (
+        <nav className={styles.nav}>
           <button
-            className={`${styles.navItem} ${active === "Requests" ? styles.active : ""}`}
-            onClick={() => onChangeSection("Requests")}
+            className={`${styles.navItem} ${active === "home" ? styles.active : ""}`}
+            onClick={() => onChangeSection("home")}
           >
-            Requests
+            {isClient ? "Home" : "Home"}
           </button>
-        )}
 
-        <button
-          className={`${styles.navItem} ${active === "profile" ? styles.active : ""}`}
-          onClick={() => onChangeSection("profile")}
-        >
-          Profile
-        </button>
-      </nav>
-    </aside>
+          <button
+            className={`${styles.navItem} ${active === "myTasks" ? styles.active : ""}`}
+            onClick={() => onChangeSection("myTasks")}
+          >
+            {isClient ? "My Deliveries" : "My Tasks"}
+          </button>
+
+          {!isClient && (
+            <button
+              className={`${styles.navItem} ${active === "Requests" ? styles.active : ""}`}
+              onClick={() => onChangeSection("Requests")}
+            >
+              My Requested Tasks
+            </button>
+          )}
+
+          <button
+            className={`${styles.navItem} ${active === "profile" ? styles.active : ""}`}
+            onClick={() => onChangeSection("profile")}
+          >
+            My Profile
+          </button>
+
+          <button className={styles.navItem} onClick={handleLogout}>
+            Logout
+          </button>
+        </nav>
+      </aside>
+    </>
   );
 };
 

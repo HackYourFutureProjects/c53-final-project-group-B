@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchWithRefresh } from "../../util/fetchWithRefresh";
 import styles from "./Profile.module.css";
 import { toast } from "react-toastify";
+import { BiShow, BiHide } from "react-icons/bi";
 
 const Profile = () => {
   const { token, setToken, logout } = useContext(UserContext);
@@ -19,6 +20,9 @@ const Profile = () => {
     confirmPassword: "",
   });
   const [passwordError, setPasswordError] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -760,47 +764,81 @@ const Profile = () => {
                 <h2>Change Password</h2>
 
                 <div className={styles.formGroup}>
-                  <label>Old Password</label>
-                  <input
-                    type="password"
-                    name="oldPassword"
-                    value={passwordData.oldPassword}
-                    onChange={handlePasswordChange}
-                    className={styles.input}
-                  />
+                  <label htmlFor="oldPassword">Old Password</label>
+                  <div className={styles.passwordWrapper}>
+                    <input
+                      type={showOldPassword ? "text" : "password"}
+                      name="oldPassword"
+                      value={passwordData.oldPassword}
+                      onChange={handlePasswordChange}
+                      className={styles.input}
+                    />
+                    {passwordData.oldPassword && (
+                      <button
+                        type="button"
+                        aria-label="Toggle password visibility"
+                        onClick={() => setShowOldPassword(!showOldPassword)}
+                        className={styles.showPasswordBtn}
+                      >
+                        {showOldPassword ? <BiShow /> : <BiHide />}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label>New Password</label>
-                  <input
-                    type="password"
-                    name="newPassword"
-                    value={passwordData.newPassword}
-                    onChange={handlePasswordChange}
-                    className={styles.input}
-                  />
+                  <label htmlFor="newPassword">New Password</label>
+                  <div className={styles.passwordWrapper}>
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      name="newPassword"
+                      value={passwordData.newPassword}
+                      onChange={handlePasswordChange}
+                      className={styles.input}
+                    />
+                    {passwordData.newPassword && (
+                      <button
+                        type="button"
+                        aria-label="Toggle password visibility"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        className={styles.showPasswordBtn}
+                      >
+                        {showNewPassword ? <BiShow /> : <BiHide />}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label>Confirm New Password</label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={passwordData.confirmPassword}
-                    onChange={handlePasswordChange}
-                    className={styles.input}
-                  />
+                  <label htmlFor="confirmPassword">Confirm New Password</label>
+                  <div className={styles.passwordWrapper}>
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={passwordData.confirmPassword}
+                      onChange={handlePasswordChange}
+                      className={styles.input}
+                    />
+                    {passwordData.confirmPassword && (
+                      <button
+                        type="button"
+                        aria-label="Toggle password visibility"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className={styles.showPasswordBtn}
+                      >
+                        {showConfirmPassword ? <BiShow /> : <BiHide />}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {passwordError && (
-                  <p style={{ color: "red", marginTop: "8px" }}>
-                    {passwordError}
-                  </p>
+                  <p className={styles.errorMessage}>{passwordError}</p>
                 )}
 
-                <div
-                  style={{ marginTop: "20px", display: "flex", gap: "12px" }}
-                >
+                <div className={styles.buttonGroup}>
                   <button
                     className={styles.cancelButton}
                     onClick={() => {

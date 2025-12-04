@@ -21,6 +21,7 @@
 
 .tab:hover {
   color: #667eea;
+  background-color: transparent;
 }
 
 .activeTab {
@@ -30,7 +31,7 @@
 .activeTab::after {
   content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: 0px;
   left: 0;
   right: 0;
   height: 2px;
@@ -54,4 +55,13 @@
   display: flex;
   flex-direction: column;
   gap: 15px; /* space between task cards */
+}
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 }
