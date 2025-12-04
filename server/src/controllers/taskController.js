@@ -37,7 +37,8 @@ export const createTask = async (req, res) => {
         msg: "Unable to geocode one or both addresses",
       });
     }
-    const minutes = Math.min(Math.max(acceptDeadLineMinutes || 10, 5), 15);
+    const parsedMinutes = parseInt(acceptDeadLineMinutes, 10);
+    const minutes = Math.min(Math.max(parsedMinutes || 10, 5), 15);
     await Task.create({
       title,
       description,

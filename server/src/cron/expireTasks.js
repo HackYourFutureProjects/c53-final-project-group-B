@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import Task from "../models/tasks.js";
 import transporter from "../util/mail.js";
-cron.schedule("*/5 * * * *", async () => {
+cron.schedule("* * * * *", async () => {
   try {
     const now = new Date();
     const tasksToExpire = await Task.find({
