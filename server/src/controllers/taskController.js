@@ -231,7 +231,7 @@ export const cancelTask = async (req, res) => {
         .status(400)
         .json({ success: false, msg: "Completed task cannot be canceled" });
     }
-    if (task.status !== "posted") {
+    if (task.status !== "posted" && task.status !== "requested") {
       return res.status(400).json({
         success: false,
         msg: "Only tasks that are not started can be canceled",
@@ -318,6 +318,7 @@ export const requestTaskToCourier = async (req, res) => {
       pickupLocation,
       dropoffLocation,
       requestedTo,
+      acceptDeadLineMinutes,
     } = req.body;
     if (
       !title ||
@@ -342,6 +343,8 @@ export const requestTaskToCourier = async (req, res) => {
         msg: "Unable to geocode one or both addresses",
       });
     }
+    const parsedMinutes = parseInt(acceptDeadLineMinutes, 10);
+    const minutes = Math.min(Math.max(parsedMinutes || 10, 5), 15);
     await Task.create({
       title,
       description,
@@ -364,6 +367,8 @@ export const requestTaskToCourier = async (req, res) => {
           coordinates: [dropoffCoords.lon, dropoffCoords.lat],
         },
       },
+      expiredAt: new Date(Date.now() + minutes * 60 * 1000),
+      acceptDeadLineMinutes: minutes,
     });
     // const courier = await User.findById(requestedTo);
     /*try {

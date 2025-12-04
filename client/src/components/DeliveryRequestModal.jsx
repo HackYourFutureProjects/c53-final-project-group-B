@@ -21,7 +21,7 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
     pickupLocation: "",
     dropoffLocation: "",
     price: "",
-    acceptDeadLineMinutes: 10,
+    acceptDeadLineMinutes: 5,
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
