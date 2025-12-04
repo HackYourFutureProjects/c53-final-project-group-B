@@ -1,7 +1,7 @@
 import Task from "../models/tasks.js";
 import User from "../models/User.js";
 import { getCoordinates } from "../services/geoCodingService.js";
-import transporter from "../util/mail.js";
+//import transporter from "../util/mail.js";
 import haversineDistance from "../util/distanceCalculator.js";
 
 export const createTask = async (req, res) => {
@@ -103,10 +103,10 @@ export const acceptTask = async (req, res) => {
     task.acceptedBy = req.user._id;
     task.acceptedAt = new Date();
     await task.save();
-    const user = await User.findById(task.createdBy);
-    const courier = await User.findById(req.user._id);
+    //const user = await User.findById(task.createdBy);
+    //const courier = await User.findById(req.user._id);
     // Send email notification to the task creator
-    try {
+    /*try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: user.email,
@@ -115,7 +115,7 @@ export const acceptTask = async (req, res) => {
       });
     } catch {
       // Log the error but don't fail the whole request
-    }
+    }*/
 
     res
       .status(200)
@@ -132,7 +132,7 @@ export const startTask = async (req, res) => {
       return res.status(404).json({ success: false, msg: "Task not found" });
     }
     const courier = await User.findById(task.acceptedBy);
-    const client = await User.findById(task.createdBy);
+    //const client = await User.findById(task.createdBy);
     if (task.status !== "accepted") {
       return res.status(400).json({
         success: false,
@@ -155,7 +155,7 @@ export const startTask = async (req, res) => {
     const etaMinutes = Math.round((distanceKm / averageSpeedKmh) * 60);
     task.estimatedArrivalTime = new Date(Date.now() + etaMinutes * 60 * 1000);
     await task.save();
-    try {
+    /*try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: client.email,
@@ -164,7 +164,7 @@ export const startTask = async (req, res) => {
       });
     } catch {
       // Log the error but don't fail the whole request
-    }
+    }*/
 
     res
       .status(200)
@@ -189,9 +189,9 @@ export const completeTask = async (req, res) => {
     task.status = "completed";
     task.completedAt = new Date();
     await task.save();
-    const client = await User.findById(task.createdBy);
-    const courier = await User.findById(task.acceptedBy);
-    try {
+    //const client = await User.findById(task.createdBy);
+    //const courier = await User.findById(task.acceptedBy);
+    /*try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: client.email,
@@ -200,9 +200,9 @@ export const completeTask = async (req, res) => {
       });
     } catch {
       // Log the error but don't fail the whole request
-    }
+    }*/
 
-    try {
+    /*try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: courier.email,
@@ -211,7 +211,7 @@ export const completeTask = async (req, res) => {
       });
     } catch {
       // Log the error but don't fail the whole request
-    }
+    }*/
     res
       .status(200)
       .json({ success: true, message: "Task completed successfully" });
@@ -365,8 +365,8 @@ export const requestTaskToCourier = async (req, res) => {
         },
       },
     });
-    const courier = await User.findById(requestedTo);
-    try {
+    // const courier = await User.findById(requestedTo);
+    /*try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: courier.email,
@@ -375,7 +375,7 @@ export const requestTaskToCourier = async (req, res) => {
       });
     } catch {
       // Log the error but don't fail the whole request
-    }
+    }*/
     res.status(201).json({ message: "Task created successfully" });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
