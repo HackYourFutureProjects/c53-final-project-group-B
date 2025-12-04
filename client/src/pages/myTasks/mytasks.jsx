@@ -41,6 +41,7 @@ const MyTaskList = () => {
           ...(user?.role === "client" ? ["posted"] : []),
           ...(user?.role === "client" ? ["requested"] : []),
           ...(user?.role === "client" ? ["cancelled"] : []),
+          ...(user?.role === "client" ? ["expired"] : []),
           "accepted",
           "in-progress",
           "completed",

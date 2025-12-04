@@ -21,6 +21,7 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
     pickupLocation: "",
     dropoffLocation: "",
     price: "",
+    acceptDeadLineMinutes: 10,
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -193,6 +194,21 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
             {errors.dropoffLocation && (
               <span className={styles.errorText}>{errors.dropoffLocation}</span>
             )}
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="taskAcceptanceTime">Task acceptance time</label>
+            <select
+              id="acceptDeadLineMinutes"
+              name="acceptDeadLineMinutes"
+              value={formData.acceptDeadLineMinutes}
+              onChange={handleChange}
+            >
+              {[5, 10, 15].map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className={styles.formGroup}>

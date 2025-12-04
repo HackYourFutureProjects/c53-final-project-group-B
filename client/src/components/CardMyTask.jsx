@@ -10,6 +10,8 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
   const [score, setScore] = useState(5);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPrimaryLoading, setIsPrimaryLoading] = useState(false);
+  const [isSecondaryLoading, setIsSecondaryLoading] = useState(false);
 
   let primaryAction = null;
   let secondaryAction = null;
@@ -19,6 +21,8 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
       primaryAction = { label: "Cancel", action: "cancel" };
     } else if (task.status === "cancelled") {
       primaryAction = { label: "Remove", action: "remove" };
+    } else if (task.status === "expired") {
+      primaryAction = { label: "Repost", action: "repost" };
     }
   } else if (user?.role === "courier") {
     if (task.status === "requested") {
@@ -36,6 +40,7 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
     (data) => {
       toast.success(data.message);
       refreshMyTasks();
+      setIsPrimaryLoading(false);
     },
   );
 
@@ -45,6 +50,7 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
       (data) => {
         toast.success(data.message);
         refreshMyTasks();
+        setIsSecondaryLoading(false);
       },
     );
 
@@ -58,12 +64,14 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
 
   const handlePrimaryAction = () => {
     if (!primaryAction) return;
+    setIsPrimaryLoading(true);
     const method = primaryAction.action === "remove" ? "DELETE" : "PUT";
     performFetch({ method });
   };
 
   const handleSecondaryAction = () => {
     if (!secondaryAction) return;
+    setIsSecondaryLoading(true);
     performSecondaryFetch({ method: "PUT" });
   };
 
@@ -113,6 +121,15 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
               Distance: {task.distanceText}
             </span>
           )}
+          <span className={styles.infoItem}>
+            Created At:{" "}
+            {task.repostedAt
+              ? new Date(task.repostedAt).toLocaleString()
+              : new Date(task.createdAt).toLocaleString()}
+          </span>
+          <span className={styles.infoItem}>
+            expire At: {new Date(task.expiredAt).toLocaleString()}
+          </span>
         </div>
       </div>
 
@@ -157,16 +174,18 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
             <button
               onClick={handlePrimaryAction}
               className={styles.acceptButton}
+              disabled={isPrimaryLoading}
             >
-              {primaryAction.label}
+              {isPrimaryLoading ? "Loading..." : primaryAction.label}
             </button>
           )}
           {secondaryAction && (
             <button
               onClick={handleSecondaryAction}
               className={styles.declineButton}
+              disabled={isSecondaryLoading}
             >
-              {secondaryAction.label}
+              {isSecondaryLoading ? "Loading..." : secondaryAction.label}
             </button>
           )}
         </div>

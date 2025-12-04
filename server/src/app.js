@@ -7,6 +7,7 @@ import ratingRouter from "./routes/ratingRoutes.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
+import "./cron/expireTasks.js";
 // Create an express server
 const app = express();
 
