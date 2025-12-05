@@ -57,6 +57,110 @@
   gap: 15px; /* space between task cards */
 }
 
+/* Large Desktop */
+@media (min-width: 1440px) {
+  .tabContainer {
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+
+  .tab {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+
+  .tabContent {
+    min-height: 400px;
+  }
+
+  .section {
+    padding: 30px;
+  }
+
+  .tasksScrollContainer {
+    max-height: 70vh;
+    gap: 15px;
+  }
+}
+
+/* Small Desktop / Laptop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .tabContainer {
+    gap: 7px;
+    margin-bottom: 28px;
+  }
+
+  .tab {
+    padding: 11px 22px;
+    font-size: 15px;
+  }
+
+  .tabContent {
+    min-height: 380px;
+  }
+
+  .section {
+    padding: 28px;
+  }
+
+  .tasksScrollContainer {
+    max-height: 68vh;
+    gap: 14px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tabContainer {
+    gap: 6px;
+    margin-bottom: 26px;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .tabContent {
+    min-height: 360px;
+  }
+
+  .section {
+    padding: 26px;
+  }
+
+  .tasksScrollContainer {
+    max-height: 66vh;
+    gap: 13px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  .tabContainer {
+    gap: 5px;
+    margin-bottom: 24px;
+  }
+
+  .tab {
+    padding: 9px 18px;
+    font-size: 13px;
+  }
+
+  .tabContent {
+    min-height: 340px;
+  }
+
+  .section {
+    padding: 24px;
+  }
+
+  .tasksScrollContainer {
+    max-height: 64vh;
+    gap: 12px;
+  }
+}
+
 /* Mobile responsive styles */
 @media (max-width: 767px) {
   h1 {

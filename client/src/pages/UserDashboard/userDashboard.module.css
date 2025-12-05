@@ -76,6 +76,17 @@
   }
 }
 
+/* Mobile styles */
+@media (max-width: 767px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: var(--space-lg);
+  }
+}
+
 /* Extra small devices */
 @media (max-width: 380px) {
   .dashboard {
@@ -94,16 +105,5 @@
 
   .motionContainer {
     height: 100%;
-  }
-}
-
-/* Mobile styles */
-@media (max-width: 767px) {
-  .dashboard {
-    flex-direction: column;
-  }
-
-  .content {
-    padding: var(--space-lg);
   }
 }

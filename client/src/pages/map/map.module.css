@@ -6,3 +6,31 @@
   border-radius: inherit;
   box-sizing: border-box;
 }
+
+/* Large Desktop */
+@media (min-width: 1440px) {
+  .mapcontainer {
+    min-height: 400px;
+  }
+}
+
+/* Small Desktop / Laptop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .mapcontainer {
+    min-height: 380px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mapcontainer {
+    min-height: 350px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  .mapcontainer {
+    min-height: 300px;
+  }
+}
