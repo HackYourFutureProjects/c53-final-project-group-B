@@ -1,11 +1,11 @@
-import styles from "./userDashboard.module.css";
-import Sidebar from "../../components/Sidebar.jsx";
 import { useState } from "react";
+import Sidebar from "../../components/Sidebar.jsx";
 import MyTaskList from "../myTasks/mytasks.jsx";
 import MyRequestedTasks from "../myTasks/myRequestedTasks.jsx";
 import CouriersList from "../../components/Couriers.jsx";
 import HomeSection from "../../components/homeSection.jsx";
 import Profile from "../Profile/Profile.jsx";
+import styles from "./userDashboard.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 
 const UserDashboardLayout = () => {
@@ -45,6 +45,7 @@ const UserDashboardLayout = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={section}
+            className={styles.motionContainer}
             initial={{
               opacity: 0,
               y: 20,
@@ -71,7 +72,6 @@ const UserDashboardLayout = () => {
                 ease: "easeIn",
               },
             }}
-            style={{ height: "100%" }}
           >
             {renderSection()}
           </motion.div>

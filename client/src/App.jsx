@@ -2,10 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import ClientDashboard from "./pages/ClientDashboard/ClientDashboard";
-import CourierDashboard from "./pages/CourierDashboard/CourierDashboard";
-import RequireAuth from "./components/RequireAuth";
-import RequireRole from "./components/RequireRole";
 import Forbidden from "./pages/Forbidden/Forbidden";
 import HomePage from "./pages/Home/HomePage";
 import CreateUser from "./pages/User/CreateUser";
@@ -46,26 +42,6 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/user-dashboard" element={<UserDashboardLayout />} />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/client-dashboard"
-          element={
-            <RequireAuth>
-              <RequireRole allowed={["client"]}>
-                <ClientDashboard />
-              </RequireRole>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/courier-dashboard"
-          element={
-            <RequireAuth>
-              <RequireRole allowed={["courier"]}>
-                <CourierDashboard />
-              </RequireRole>
-            </RequireAuth>
-          }
-        />
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="/reset-password" element={<RequestResetPassword />} />
         <Route
