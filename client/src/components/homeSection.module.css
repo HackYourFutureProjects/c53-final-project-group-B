@@ -108,7 +108,7 @@
 }
 
 .taskTitle {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 800;
   text-align: center;
   color: var(--color-primary);
@@ -189,7 +189,7 @@
   }
 
   .taskTitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin: 0;
     margin-left: 40px;
   }
@@ -215,5 +215,11 @@
 
   .courier-popup.leaflet-zoom-animated .leaflet-popup-content-wrapper {
     max-width: 45vw !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .taskTitle {
+    font-size: 1rem;
   }
 }

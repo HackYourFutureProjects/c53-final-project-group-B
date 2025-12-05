@@ -643,7 +643,7 @@ const Profile = () => {
               <div className={styles.formGroup}>
                 <label>Task Types I Accept</label>
                 <div className={styles.checkboxGroup}>
-                  {["delivery", "shopping", "smalljob"].map((type) => (
+                  {["delivery", "shopping", "small job"].map((type) => (
                     <label key={type} className={styles.checkboxLabel}>
                       <input
                         type="checkbox"

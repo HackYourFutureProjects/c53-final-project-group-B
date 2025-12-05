@@ -122,13 +122,13 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
             </span>
           )}
           <span className={styles.infoItem}>
-            Created At:{" "}
+            Created at:{" "}
             {task.repostedAt
               ? new Date(task.repostedAt).toLocaleString()
               : new Date(task.createdAt).toLocaleString()}
           </span>
           <span className={styles.infoItem}>
-            expire At: {new Date(task.expiredAt).toLocaleString()}
+            Expires at: {new Date(task.expiredAt).toLocaleString()}
           </span>
         </div>
       </div>

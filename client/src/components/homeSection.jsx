@@ -1,10 +1,10 @@
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext.js";
 import CouriersList from "./Couriers.jsx";
 import TaskList from "./taskList.jsx";
 import Map from "../pages/map/map.jsx";
 import GeneralDeliveryModal from "./GeneralDeliveryModal.jsx";
 import styles from "./homeSection.module.css";
-import { useContext, useState } from "react";
-import { UserContext } from "../context/UserContext.js";
 
 const HomeSection = () => {
   const { user } = useContext(UserContext);
@@ -44,7 +44,7 @@ const HomeSection = () => {
             <Map />
           </div>
           {/* Hidden component that still fetches and adds markers to map */}
-          <div style={{ display: "none" }}>
+          <div className={styles.hiddenCouriers}>
             <CouriersList />
           </div>
         </div>

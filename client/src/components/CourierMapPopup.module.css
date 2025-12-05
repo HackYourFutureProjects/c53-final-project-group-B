@@ -142,6 +142,226 @@
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
 }
 
+/* Large Desktop */
+@media (min-width: 1440px) {
+  .popupContainer {
+    min-width: 280px;
+    max-width: 320px;
+  }
+
+  .courierHeader {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .courierAvatar {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  .courierName {
+    font-size: 18px;
+  }
+
+  .trustScore {
+    font-size: 15px;
+  }
+
+  .star {
+    font-size: 16px;
+  }
+
+  .courierDetails {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .detailRow {
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  .icon {
+    font-size: 18px;
+    width: 24px;
+  }
+
+  .requestButton {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .buttonIcon {
+    font-size: 20px;
+  }
+}
+
+/* Small Desktop / Laptop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .popupContainer {
+    min-width: 260px;
+    max-width: 300px;
+  }
+
+  .courierHeader {
+    gap: 11px;
+    padding: 15px;
+  }
+
+  .courierAvatar {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+
+  .courierName {
+    font-size: 17px;
+  }
+
+  .trustScore {
+    font-size: 14px;
+  }
+
+  .star {
+    font-size: 15px;
+  }
+
+  .courierDetails {
+    padding: 15px;
+    gap: 11px;
+  }
+
+  .detailRow {
+    font-size: 13px;
+    gap: 9px;
+  }
+
+  .icon {
+    font-size: 17px;
+    width: 22px;
+  }
+
+  .requestButton {
+    padding: 15px;
+    font-size: 15px;
+  }
+
+  .buttonIcon {
+    font-size: 19px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .popupContainer {
+    min-width: 240px;
+    max-width: 280px;
+  }
+
+  .courierHeader {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .courierAvatar {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .courierName {
+    font-size: 16px;
+  }
+
+  .trustScore {
+    font-size: 13px;
+  }
+
+  .star {
+    font-size: 14px;
+  }
+
+  .courierDetails {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .detailRow {
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .icon {
+    font-size: 16px;
+    width: 20px;
+  }
+
+  .requestButton {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .buttonIcon {
+    font-size: 18px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  .popupContainer {
+    min-width: 220px;
+    max-width: 260px;
+  }
+
+  .courierHeader {
+    gap: 9px;
+    padding: 12px;
+  }
+
+  .courierAvatar {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .courierName {
+    font-size: 15px;
+  }
+
+  .trustScore {
+    font-size: 12px;
+  }
+
+  .star {
+    font-size: 13px;
+  }
+
+  .courierDetails {
+    padding: 12px;
+    gap: 9px;
+  }
+
+  .detailRow {
+    font-size: 11px;
+    gap: 7px;
+  }
+
+  .icon {
+    font-size: 15px;
+    width: 18px;
+  }
+
+  .requestButton {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .buttonIcon {
+    font-size: 17px;
+  }
+}
+
 @media (max-width: 767px) {
   .leaflet-popup .courier-popup .leaflet-zoom-animated {
     transform: translate3d(1px, 100px, 0px);

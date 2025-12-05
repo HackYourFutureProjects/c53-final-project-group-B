@@ -70,6 +70,286 @@
   color: #6b7280;
 }
 
+/* Large Desktop */
+@media (min-width: 1440px) {
+  .container {
+    padding: 24px 28px;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .empty,
+  .loading {
+    text-align: center;
+    padding: 50px 24px;
+    font-size: 1.1rem;
+    color: #9ca3af;
+  }
+
+  .error {
+    text-align: center;
+    padding: 24px;
+    background: #ffe5e5;
+    color: #e53e3e;
+    border-radius: 12px;
+    margin: 24px;
+  }
+
+  .stats {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .statItem {
+    padding: 16px 20px;
+    background: #f3f4f6;
+    border-radius: 12px;
+    min-width: 130px;
+    text-align: center;
+  }
+
+  .statNumber {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #667eea;
+  }
+
+  .statLabel {
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+}
+
+/* Small Desktop / Laptop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .container {
+    padding: 20px 24px;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  .empty,
+  .loading {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 1rem;
+    color: #9ca3af;
+  }
+
+  .error {
+    text-align: center;
+    padding: 20px;
+    background: #ffe5e5;
+    color: #e53e3e;
+    border-radius: 10px;
+    margin: 20px;
+  }
+
+  .stats {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .statItem {
+    padding: 14px 18px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    min-width: 110px;
+    text-align: center;
+  }
+
+  .statNumber {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #667eea;
+  }
+
+  .statLabel {
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 18px 22px;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 1rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .empty,
+  .loading {
+    text-align: center;
+    padding: 35px 18px;
+    font-size: 0.95rem;
+    color: #9ca3af;
+  }
+
+  .error {
+    text-align: center;
+    padding: 18px;
+    background: #ffe5e5;
+    color: #e53e3e;
+    border-radius: 10px;
+    margin: 18px;
+  }
+
+  .stats {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .statItem {
+    padding: 12px 16px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .statNumber {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #667eea;
+  }
+
+  .statLabel {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  .container {
+    padding: 12px 16px;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .empty,
+  .loading {
+    text-align: center;
+    padding: 25px 12px;
+    font-size: 0.9rem;
+    color: #9ca3af;
+  }
+
+  .error {
+    text-align: center;
+    padding: 12px;
+    background: #ffe5e5;
+    color: #e53e3e;
+    border-radius: 8px;
+    margin: 12px;
+  }
+
+  .stats {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .statItem {
+    padding: 10px 14px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .statNumber {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #667eea;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+}
+
 /* Mobile responsive styles */
 @media (max-width: 767px) {
   .title {

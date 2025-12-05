@@ -89,6 +89,202 @@
   line-height: 1.6;
 }
 
+/* Large Desktop */
+@media (min-width: 1440px) {
+  .howItWorks {
+    padding: 5rem 8%;
+  }
+
+  .container {
+    max-width: 1200px;
+  }
+
+  .sectionTitle {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 1.125rem;
+    margin-bottom: 4rem;
+  }
+
+  .stepsGrid {
+    gap: 2rem;
+  }
+
+  .stepCard {
+    padding: 2rem;
+  }
+
+  .stepNumber {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .stepIcon {
+    font-size: 3rem;
+    margin: 1.5rem 0 1rem;
+  }
+
+  .stepTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .stepDescription {
+    font-size: 1rem;
+  }
+}
+
+/* Small Desktop / Laptop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .howItWorks {
+    padding: 4.5rem 7%;
+  }
+
+  .container {
+    max-width: 1100px;
+  }
+
+  .sectionTitle {
+    font-size: 2.3rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 1.1rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .stepsGrid {
+    gap: 1.8rem;
+  }
+
+  .stepCard {
+    padding: 1.8rem;
+  }
+
+  .stepNumber {
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+  }
+
+  .stepIcon {
+    font-size: 2.8rem;
+    margin: 1.4rem 0 0.9rem;
+  }
+
+  .stepTitle {
+    font-size: 1.4rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .stepDescription {
+    font-size: 0.95rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .howItWorks {
+    padding: 4rem 6%;
+  }
+
+  .container {
+    max-width: 1000px;
+  }
+
+  .sectionTitle {
+    font-size: 2.1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .stepsGrid {
+    gap: 1.6rem;
+  }
+
+  .stepCard {
+    padding: 1.6rem;
+  }
+
+  .stepNumber {
+    width: 36px;
+    height: 36px;
+    font-size: 1.15rem;
+  }
+
+  .stepIcon {
+    font-size: 2.6rem;
+    margin: 1.3rem 0 0.8rem;
+  }
+
+  .stepTitle {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .stepDescription {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  .howItWorks {
+    padding: 3.5rem 5%;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .sectionTitle {
+    font-size: 1.9rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stepsGrid {
+    gap: 1.4rem;
+  }
+
+  .stepCard {
+    padding: 1.4rem;
+  }
+
+  .stepNumber {
+    width: 34px;
+    height: 34px;
+    font-size: 1.1rem;
+  }
+
+  .stepIcon {
+    font-size: 2.4rem;
+    margin: 1.2rem 0 0.7rem;
+  }
+
+  .stepTitle {
+    font-size: 1.2rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .stepDescription {
+    font-size: 0.85rem;
+  }
+}
+
 @media (max-width: 767px) {
   .howItWorks {
     padding: 3rem 5%;
