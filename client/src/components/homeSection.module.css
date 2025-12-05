@@ -198,7 +198,7 @@
 /* Hide taskTitle on desktop */
 @media (min-width: 768px) {
   .taskTitle {
-    font-size: 0;
+    display: none;
   }
 }
 

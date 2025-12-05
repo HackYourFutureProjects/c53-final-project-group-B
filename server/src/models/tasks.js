@@ -6,7 +6,7 @@ const taskSchema = new mongoose.Schema(
     description: { type: String, required: true },
     taskType: {
       type: String,
-      enum: ["delivery", "shopping", "small job"],
+      enum: ["delivery", "shopping", "smalljob"],
       required: true,
       default: "delivery",
     },

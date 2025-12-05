@@ -18,10 +18,10 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           type: String,
-          enum: ["delivery", "shopping", "small job"],
+          enum: ["delivery", "shopping", "smalljob"],
         },
       ],
-      default: ["delivery", "shopping", "small job"],
+      default: ["delivery", "shopping", "smalljob"],
       required: false,
     },
 

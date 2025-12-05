@@ -22,7 +22,7 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
   const taskTypeOptions = [
     { value: "delivery", label: "Delivery" },
     { value: "shopping", label: "Shopping" },
-    { value: "small job", label: "Small Job" },
+    { value: "smalljob", label: "Small Job" },
   ];
 
   const acceptanceTimeOptions = [

@@ -12,10 +12,7 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
     description: "",
     taskType: courier.taskTypes?.[0]
       ? {
-          value:
-            courier.taskTypes[0] === "smalljob"
-              ? "small job"
-              : courier.taskTypes[0],
+          value: courier.taskTypes[0],
           label:
             courier.taskTypes[0].charAt(0).toUpperCase() +
             courier.taskTypes[0].slice(1),
@@ -36,8 +33,11 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
   ];
 
   const taskTypeOptions = courier.taskTypes?.map((type) => ({
-    value: type === "smalljob" ? "small job" : type,
-    label: type.charAt(0).toUpperCase() + type.slice(1),
+    value: type,
+    label: type
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" "),
   })) || [{ value: "delivery", label: "Delivery" }];
 
   const handleChange = (e) => {
