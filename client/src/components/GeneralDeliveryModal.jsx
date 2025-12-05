@@ -1,9 +1,9 @@
 import { useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import { UserContext } from "../context/UserContext";
+import Select from "react-select";
 import styles from "./DeliveryRequestModal.module.css";
 import { toast } from "react-toastify";
-import Select from "react-select";
 
 const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
   const { token } = useContext(UserContext);
@@ -14,7 +14,7 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
     pickupLocation: "",
     dropoffLocation: "",
     price: "",
-    acceptDeadLineMinutes: 5,
+    acceptDeadLineMinutes: { value: 5, label: "5 minutes" },
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,11 +25,15 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
     { value: "small job", label: "Small Job" },
   ];
 
+  const acceptanceTimeOptions = [
+    { value: 5, label: "5 minutes" },
+    { value: 10, label: "10 minutes" },
+    { value: 15, label: "15 minutes" },
+  ];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const parsedValue =
-      name === "acceptDeadLineMinutes" ? parseInt(value, 10) : value;
-    setFormData((prev) => ({ ...prev, [name]: parsedValue }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error for this field
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -79,9 +83,13 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          ...formData,
+          title: formData.title,
+          description: formData.description,
           taskType: formData.taskType.value,
+          pickupLocation: formData.pickupLocation,
+          dropoffLocation: formData.dropoffLocation,
           price: parseFloat(formData.price),
+          acceptDeadLineMinutes: formData.acceptDeadLineMinutes.value,
         }),
       });
 
@@ -190,20 +198,23 @@ const GeneralDeliveryModal = ({ onClose, onSuccess }) => {
               <span className={styles.errorText}>{errors.dropoffLocation}</span>
             )}
           </div>
+
           <div className={styles.formGroup}>
-            <label htmlFor="taskAcceptanceTime">Task acceptance time</label>
-            <select
+            <label htmlFor="taskAcceptanceTime">Task Acceptance Time</label>
+            <Select
               id="acceptDeadLineMinutes"
               name="acceptDeadLineMinutes"
               value={formData.acceptDeadLineMinutes}
-              onChange={handleChange}
-            >
-              {[5, 10, 15].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
+              onChange={(selectedOption) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  acceptDeadLineMinutes: selectedOption,
+                }))
+              }
+              options={acceptanceTimeOptions}
+              className={styles.select}
+              classNamePrefix="react-select"
+            />
           </div>
 
           <div className={styles.formGroup}>
