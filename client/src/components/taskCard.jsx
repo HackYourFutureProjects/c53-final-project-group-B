@@ -45,11 +45,11 @@ const TaskCard = ({ task, refreshAvailableTasks }) => {
           <strong>Price:</strong> €{task.price}
         </p>
         <p>
-          <strong>expire At:</strong>{" "}
+          <strong>Expires at:</strong>{" "}
           {new Date(task.expiredAt).toLocaleString()}
         </p>
         <p>
-          <strong>Created At:</strong>{" "}
+          <strong>Created at:</strong>{" "}
           {task.repostedAt
             ? new Date(task.repostedAt).toLocaleString()
             : new Date(task.createdAt).toLocaleString()}

@@ -286,6 +286,8 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  max-width: 200px;
+  margin-top: 20px;
 }
 
 .editButton:hover,
@@ -311,6 +313,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  max-width: 200px;
 }
 
 .cancelButton:hover {
@@ -491,6 +494,7 @@
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  max-width: 200px;
 }
 
 .secondaryButton:hover {
@@ -539,6 +543,11 @@
     font-size: 18px;
   }
 
+  .tab {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
   .section {
     padding: 30px;
   }
@@ -553,9 +562,13 @@
   }
 
   .primaryButton,
-  .secondaryButton {
+  .secondaryButton,
+  .editButton,
+  .saveButton,
+  .cancelButton {
     padding: 12px 24px;
     font-size: 16px;
+    max-width: 250px;
   }
 }
 
@@ -598,6 +611,11 @@
     font-size: 17px;
   }
 
+  .tab {
+    padding: 9px 18px;
+    font-size: 15px;
+  }
+
   .section {
     padding: 28px;
   }
@@ -612,9 +630,13 @@
   }
 
   .primaryButton,
-  .secondaryButton {
+  .secondaryButton,
+  .editButton,
+  .saveButton,
+  .cancelButton {
     padding: 11px 22px;
     font-size: 15px;
+    max-width: 220px;
   }
 }
 
@@ -657,6 +679,11 @@
     font-size: 16px;
   }
 
+  .tab {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
   .section {
     padding: 26px;
   }
@@ -671,9 +698,13 @@
   }
 
   .primaryButton,
-  .secondaryButton {
+  .secondaryButton,
+  .editButton,
+  .saveButton,
+  .cancelButton {
     padding: 10px 20px;
     font-size: 14px;
+    max-width: 180px;
   }
 }
 
@@ -716,6 +747,11 @@
     font-size: 15px;
   }
 
+  .tab {
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+
   .section {
     padding: 24px;
   }
@@ -730,9 +766,13 @@
   }
 
   .primaryButton,
-  .secondaryButton {
+  .secondaryButton,
+  .editButton,
+  .saveButton,
+  .cancelButton {
     padding: 9px 18px;
     font-size: 13px;
+    max-width: 150px;
   }
 }
 
@@ -745,6 +785,20 @@
     flex-direction: column;
     text-align: center;
     margin-top: 15px;
+  }
+
+  .tabContainer {
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .tabContent {
+    min-height: 320px;
   }
 
   .formGrid {
@@ -779,11 +833,13 @@
 
   .secondaryButton {
     width: 100%;
+    max-width: none;
   }
   .editButton,
   .saveButton,
   .cancelButton {
     width: 100%;
+    max-width: none;
   }
 
   .buttonGroup {
