@@ -84,3 +84,123 @@
     display: block;
   }
 }
+
+@media (min-width: 1440px) {
+  .hero {
+    padding: 6rem 10%;
+  }
+
+  .content {
+    max-width: 550px;
+  }
+
+  .title {
+    font-size: 3.3rem;
+  }
+
+  .description {
+    font-size: 1.24rem;
+  }
+
+  .buttons {
+    gap: calc(var(--space-md) * 1.2);
+  }
+
+  .getStartedBtn {
+    padding: calc(var(--space-sm) * 1.2) calc(var(--space-md) * 1.2);
+  }
+
+  .animation canvas {
+    max-width: 660px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .hero {
+    padding: 5rem 8%;
+  }
+
+  .content {
+    max-width: 500px;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .description {
+    font-size: 1.125rem;
+  }
+
+  .buttons {
+    gap: var(--space-md);
+  }
+
+  .getStartedBtn {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .animation canvas {
+    max-width: 600px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero {
+    padding: 4rem 6%;
+  }
+
+  .content {
+    max-width: 450px;
+  }
+
+  .title {
+    font-size: 2.7rem;
+  }
+
+  .description {
+    font-size: 1.01rem;
+  }
+
+  .buttons {
+    gap: calc(var(--space-md) * 0.9);
+  }
+
+  .getStartedBtn {
+    padding: calc(var(--space-sm) * 0.9) calc(var(--space-md) * 0.9);
+  }
+
+  .animation canvas {
+    max-width: 540px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero {
+    padding: 3rem 4%;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 2.4rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .buttons {
+    gap: calc(var(--space-md) * 0.8);
+  }
+
+  .getStartedBtn {
+    padding: calc(var(--space-sm) * 0.8) calc(var(--space-md) * 0.8);
+  }
+
+  .animation canvas {
+    max-width: 480px;
+  }
+}

@@ -720,6 +720,42 @@ input:focus {
   }
 }
 
+@media (max-width: 380px) {
+  .form {
+    padding: calc(var(--space-md) * 0.8);
+    max-width: 300px;
+    margin: 0.8rem auto;
+    gap: calc(var(--space-sm) * 0.8);
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .input {
+    padding: calc(var(--space-sm) * 0.8);
+    font-size: 0.9rem;
+  }
+
+  .submitBtn {
+    padding: calc(var(--space-md) * 0.8) calc(var(--space-xl) * 0.8);
+    font-size: 0.9rem;
+  }
+
+  .footerText {
+    font-size: 0.85rem;
+  }
+
+  .serverError {
+    padding: 0.4rem;
+    font-size: 0.85rem;
+  }
+}
+
 .serverError {
   background: #ffe6e6;
   color: #b00020;

@@ -186,3 +186,171 @@
   background-color: #999;
   cursor: not-allowed;
 }
+
+@media (min-width: 1440px) {
+  .card {
+    padding: calc(var(--space-md) * 1.2);
+  }
+
+  .title {
+    font-size: 1.32rem;
+  }
+
+  .infoRow {
+    gap: 12px;
+  }
+
+  .infoItem {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+
+  .status {
+    padding: 0.35rem 0.9rem;
+    font-size: 0.9rem;
+  }
+
+  .acceptedByContainer {
+    padding: 12px;
+  }
+
+  .actionsContainer {
+    gap: 12px;
+  }
+
+  .acceptButton,
+  .declineButton {
+    padding: 12px 18px;
+    font-size: 16px;
+  }
+
+  .ratingContainer {
+    padding: 12px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .card {
+    padding: var(--space-md);
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .infoRow {
+    gap: 10px;
+  }
+
+  .infoItem {
+    padding: 4px 8px;
+    font-size: 0.85rem;
+  }
+
+  .status {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .acceptedByContainer {
+    padding: 10px;
+  }
+
+  .actionsContainer {
+    gap: 10px;
+  }
+
+  .acceptButton,
+  .declineButton {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  .ratingContainer {
+    padding: 10px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .card {
+    padding: calc(var(--space-md) * 0.9);
+  }
+
+  .title {
+    font-size: 1.08rem;
+  }
+
+  .infoRow {
+    gap: 8px;
+  }
+
+  .infoItem {
+    padding: 3px 6px;
+    font-size: 0.8rem;
+  }
+
+  .status {
+    padding: 0.25rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  .acceptedByContainer {
+    padding: 8px;
+  }
+
+  .actionsContainer {
+    gap: 8px;
+  }
+
+  .acceptButton,
+  .declineButton {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .ratingContainer {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .card {
+    padding: calc(var(--space-md) * 0.8);
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .infoRow {
+    gap: 6px;
+  }
+
+  .infoItem {
+    padding: 2px 4px;
+    font-size: 0.75rem;
+  }
+
+  .status {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .acceptedByContainer {
+    padding: 6px;
+  }
+
+  .actionsContainer {
+    gap: 6px;
+  }
+
+  .acceptButton,
+  .declineButton {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .ratingContainer {
+    padding: 6px;
+  }
+}

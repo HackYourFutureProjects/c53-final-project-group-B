@@ -63,3 +63,48 @@
     --space-xs: 0.2rem;
   }
 }
+
+@media (min-width: 1440px) {
+  :root {
+    --font-size-base: 1.1rem;
+    --font-size-lg: 1.24rem;
+    --font-size-xl: 2.2rem;
+    --space-md: 1.1rem;
+    --space-lg: 2.2rem;
+    --space-xl: 4.4rem;
+    --space-sm: 0.55rem;
+    --space-xs: 0.275rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  :root {
+    /* Base values */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --font-size-base: 0.95rem;
+    --font-size-lg: 1.07rem;
+    --font-size-xl: 1.9rem;
+    --space-md: 0.9rem;
+    --space-lg: 1.8rem;
+    --space-xl: 3.6rem;
+    --space-sm: 0.45rem;
+    --space-xs: 0.225rem;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --font-size-base: 0.85rem;
+    --font-size-lg: 0.96rem;
+    --font-size-xl: 1.7rem;
+    --space-md: 0.8rem;
+    --space-lg: 1.6rem;
+    --space-xl: 3.2rem;
+    --space-sm: 0.4rem;
+    --space-xs: 0.2rem;
+  }
+}
