@@ -3,6 +3,7 @@ import transporter from "../util/mail.js";
 import Token from "../models/emailToken.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 export const requestResetPassword = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ export const requestResetPassword = async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex");
     await Token.deleteMany({ userId: user._id });
     await Token.create({ userId: user._id, token, purpose: "reset-password" });
-    const resetLink = `http://localhost:5173/reset-password/${user._id}/${token}`;
+    const resetLink = `${FRONTEND_URL}/reset-password/${user._id}/${token}`;
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: user.email,

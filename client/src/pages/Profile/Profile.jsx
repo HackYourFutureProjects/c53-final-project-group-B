@@ -263,13 +263,13 @@ const Profile = () => {
       if (data.success) {
         setUser(data.user);
         setIsEditing(false);
-        alert("Profile updated successfully!");
+        toast.success("Profile updated successfully!");
       } else {
-        alert(data.msg || "Failed to update profile");
+        toast.error(data.msg || "Failed to update profile");
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Error updating profile");
+      toast.error("Error updating profile");
     } finally {
       setIsSaving(false);
     }
@@ -299,13 +299,13 @@ const Profile = () => {
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
-        alert("Courier settings updated successfully!");
+        toast.success("Courier settings updated successfully!");
       } else {
-        alert(data.msg || "Failed to update settings");
+        toast.error(data.msg || "Failed to update settings");
       }
     } catch (error) {
       console.error("Error updating settings:", error);
-      alert("Error updating settings");
+      toast.error("Error updating settings");
     } finally {
       setIsSaving(false);
     }
@@ -333,15 +333,15 @@ const Profile = () => {
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
-        alert("Payment method updated successfully!");
+        toast.success("Payment method updated successfully!");
         // Clear CVV for security
         setPaymentData((prev) => ({ ...prev, cvv: "" }));
       } else {
-        alert(data.msg || "Failed to update payment method");
+        toast.error(data.msg || "Failed to update payment method");
       }
     } catch (error) {
       console.error("Error updating payment method:", error);
-      alert("Error updating payment method");
+      toast.error("Error updating payment method");
     } finally {
       setIsSaving(false);
     }
