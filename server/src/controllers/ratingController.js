@@ -49,7 +49,6 @@ export const createRating = async (req, res) => {
     await courier.save();
     res.status(201).json({ message: "Rating created successfully", rating });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Server error" });
   }
 };
