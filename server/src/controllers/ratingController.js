@@ -32,7 +32,7 @@ export const createRating = async (req, res) => {
       taskId,
       ratedBy: req.user._id,
       ratedTo: task.acceptedBy,
-      rating: score,
+      rating: parseInt(score, 10),
       comment,
     });
     task.rated = true;
@@ -42,6 +42,10 @@ export const createRating = async (req, res) => {
     const averageScore =
       totalRatings.reduce((acc, r) => acc + r.rating, 0) / totalRatings.length;
     courier.trustScore = averageScore.toFixed(2);
+    courier.taskTypes = courier.taskTypes.map((t) =>
+      t === "small job" ? "smalljob" : t,
+    );
+
     await courier.save();
     res.status(201).json({ message: "Rating created successfully", rating });
   } catch (err) {

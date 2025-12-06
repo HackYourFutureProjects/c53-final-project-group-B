@@ -55,11 +55,12 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
     );
 
   useEffect(() => {
-    if (error) alert("Error performing action: " + error);
+    if (error) toast.error("Error performing action: " + error);
   }, [error]);
 
   useEffect(() => {
-    if (secondaryError) alert("Error performing action: " + secondaryError);
+    if (secondaryError)
+      toast.error("Error performing action: " + secondaryError);
   }, [secondaryError]);
 
   const handlePrimaryAction = () => {
@@ -76,7 +77,7 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
   };
 
   const submitRating = async () => {
-    if (!score) return alert("Please select a score");
+    if (!score) return toast.error("Please select a score");
     setIsSubmitting(true);
     try {
       const response = await fetch(`/api/ratings/${task._id}`, {
