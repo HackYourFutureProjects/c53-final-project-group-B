@@ -15,25 +15,18 @@ const Nav = () => {
   const toggleMenu = () => setOpen((prev) => !prev);
 
   const handleHomeClick = (e) => {
-    // If already on home page, smooth scroll to top
     if (location.pathname === "/") {
       e.preventDefault();
       window.history.pushState(null, "", "/");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // If on another page, let the Link navigate normally
-
-    // Close mobile menu if open
     setOpen(false);
   };
 
   const handleHowItWorksClick = (e) => {
     e.preventDefault();
-
-    // If not on home page, navigate to home first with hash
     if (location.pathname !== "/") {
       navigate("/#how-it-works");
-      // Wait for navigation to complete, then scroll
       setTimeout(() => {
         const element = document.getElementById("how-it-works");
         if (element) {
@@ -41,21 +34,17 @@ const Nav = () => {
         }
       }, 100);
     } else {
-      // Already on home page, update hash and scroll
       window.history.pushState(null, "", "#how-it-works");
       const element = document.getElementById("how-it-works");
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
-
-    // Close mobile menu if open
     setOpen(false);
   };
 
   return (
     <nav className={styles.nav}>
-      {/* Left: logo + Droppit + main links */}
       <div className={styles.navBrand}>
         <Link
           to="/"
@@ -63,7 +52,7 @@ const Nav = () => {
           data-testid="nav-brand"
           onClick={handleHomeClick}
         >
-          <PiPackageFill className={styles.logoIcon} /> Droppit
+          <PiPackageFill className={styles.logoIcon} /> DropIt
         </Link>
 
         <ul className={`${styles.navLinks} ${open ? styles.open : ""}`}>
@@ -86,7 +75,6 @@ const Nav = () => {
               How it works
             </Link>
           </li>
-          {/* Mobile buttons inside hamburger menu */}
           <li className={styles.mobileButtonsContainer}>
             {!isLoginPage &&
               (user ? (
@@ -107,8 +95,6 @@ const Nav = () => {
           </li>
         </ul>
       </div>
-
-      {/* Right: buttons (desktop only) */}
       <div className={styles.navButtons}>
         {!isLoginPage &&
           (user ? (
@@ -127,8 +113,6 @@ const Nav = () => {
             </Link>
           ))}
       </div>
-
-      {/* Hamburger toggle */}
       <button
         className={styles.navToggle}
         onClick={toggleMenu}

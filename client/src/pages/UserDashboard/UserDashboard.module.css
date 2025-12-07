@@ -16,7 +16,6 @@
   height: 100%;
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .dashboard {
     display: flex;
@@ -36,7 +35,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .dashboard {
     display: flex;
@@ -56,7 +54,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .dashboard {
     display: flex;
@@ -76,7 +73,6 @@
   }
 }
 
-/* Mobile styles */
 @media (max-width: 767px) {
   .dashboard {
     flex-direction: column;
@@ -87,7 +83,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .dashboard {
     display: flex;

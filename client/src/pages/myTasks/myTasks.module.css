@@ -55,15 +55,14 @@ h1 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 .tasksScrollContainer {
-  max-height: 70vh; /* adjust height as needed */
-  overflow-y: auto; /* vertical scroll */
-  padding-right: 10px; /* optional, for scrollbar space */
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 10px;
   display: flex;
   flex-direction: column;
-  gap: 15px; /* space between task cards */
+  gap: 15px;
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .tabContainer {
     gap: 8px;
@@ -95,7 +94,6 @@ h1 {
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .tabContainer {
     gap: 7px;
@@ -127,7 +125,6 @@ h1 {
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .tabContainer {
     gap: 6px;
@@ -159,7 +156,6 @@ h1 {
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .tabContainer {
     gap: 5px;
@@ -189,7 +185,6 @@ h1 {
   }
 }
 
-/* Mobile responsive styles */
 @media (max-width: 767px) {
   h1 {
     font-size: 1.2rem;

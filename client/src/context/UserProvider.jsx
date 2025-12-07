@@ -18,14 +18,14 @@ export function UserProvider({ children }) {
     try {
       const res = await fetch("/api/auth/refresh-token", {
         method: "POST",
-        credentials: "include", // send HttpOnly refresh cookie
+        credentials: "include",
       });
       if (res.ok) {
         const data = await res.json();
-        setToken(data.token); // update token state
+        setToken(data.token);
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        setUser(data.user); // update user state if returned
+        setUser(data.user);
       } else {
         setToken(null);
         setUser(null);
@@ -110,14 +110,12 @@ export function UserProvider({ children }) {
       });
       const data = await res.json();
       if (res.ok) {
-        // Successful login - server returns { token, user }
         setUser(data.user);
         setToken(data.token);
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         return { success: true, user: data.user, token: data.token };
       } else {
-        // Pass through any server-provided flags like needVerification
         return {
           success: false,
           message: data.message || "Login failed",

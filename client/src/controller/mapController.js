@@ -46,7 +46,6 @@ export const initMap = async (
 
   if (!container) return;
 
-  // if mapInstance exists but the container was recreated, rebuild map
   if (mapInstance && !document.body.contains(mapInstance.getContainer())) {
     mapInstance.remove();
     mapInstance = null;
@@ -54,7 +53,6 @@ export const initMap = async (
     reactRoots = new Map();
   }
 
-  // Only initialize map once
   if (!mapInstance) {
     mapInstance = L.map(container).setView([lat, lon], zoom);
 
@@ -80,7 +78,6 @@ export const initMap = async (
 export const addMarker = (lat, lon, popupText = "") => {
   if (!mapInstance || !markerGroup) return;
 
-  // Create custom icon for task pickup location
   const taskIcon = L.divIcon({
     className: "task-marker",
     html: `<div style="
@@ -113,7 +110,6 @@ export const addTaskMarker = (lat, lon, task) => {
 
   const [adjustedLat, adjustedLon] = getOffsetLatLon(lat, lon);
 
-  // Create custom icon for task
   const taskIcon = L.divIcon({
     className: "task-marker",
     html: `<div style="
@@ -182,7 +178,6 @@ export const addCourierMarker = (
 
   const [adjustedLat, adjustedLon] = getOffsetLatLon(lat, lon);
 
-  // Create custom icon for courier
   const courierIcon = L.divIcon({
     className: "courier-marker",
     html: `<div style="
@@ -209,21 +204,17 @@ export const addCourierMarker = (
     icon: courierIcon,
   }).addTo(markerGroup);
 
-  // Create popup container
   const popupContainer = document.createElement("div");
 
-  // Create React root and render component
   const root = createRoot(popupContainer);
   root.render(createElement(PopupComponent, { courier, onRequestDelivery }));
 
-  // Bind popup to marker
   marker.bindPopup(popupContainer, {
     maxWidth: 320,
     minWidth: 280,
     className: "courier-popup",
   });
 
-  // Store root for cleanup
   reactRoots.set(marker, root);
 
   return marker;
@@ -231,7 +222,6 @@ export const addCourierMarker = (
 
 export const clearMarkers = () => {
   if (markerGroup) {
-    // Cleanup all React roots
     reactRoots.forEach((root) => {
       root.unmount();
     });

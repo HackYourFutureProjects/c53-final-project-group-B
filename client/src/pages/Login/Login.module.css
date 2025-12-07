@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px); /* Adjust for nav height */
+  min-height: calc(100vh - 80px);
   background-color: var(--color-bg-light);
   padding: 1rem;
 }

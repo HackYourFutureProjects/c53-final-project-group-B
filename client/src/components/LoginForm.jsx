@@ -34,14 +34,12 @@ const LoginForm = () => {
   const validate = () => {
     const newErrors = {};
 
-    // Email validation
     if (!email) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (!password) {
       newErrors.password = "Password is required";
     } else if (password.length < 8) {
@@ -80,29 +78,16 @@ const LoginForm = () => {
     try {
       const result = await login(email, password);
       if (result.success) {
-        // If the user was redirected to login from a protected route, go back there
         const from = location.state?.from;
         if (from && from.pathname) {
           navigate(from.pathname, { replace: true });
           return;
         }
-
-        // Otherwise, default to role-based dashboard
         navigate("/user-dashboard");
-        /*const role = result.user?.role;
-        if (role === "client") {
-          navigate("/client-dashboard");
-        } else if (role === "courier") {
-          navigate("/courier-dashboard");
-        } else {
-          navigate("/");
-        }*/
       } else {
-        // Show server provided message (e.g. invalid credentials or not verified)
         setServerError(result.message || "Login failed");
         if (result.needVerification) {
-          // Optionally guide the user to verification page — keep them on login and show message
-          // You could navigate to a verification flow if available: navigate('/verify')
+          toast.error("Please verify your email before logging in.");
         }
       }
     } catch (err) {

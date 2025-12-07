@@ -8,26 +8,22 @@ import { toast } from "react-toastify";
 const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
   const { token } = useContext(UserContext);
   const STORAGE_KEY = `deliveryRequestDraft_${courier._id}`;
-  const STORAGE_EXPIRY = 10 * 60 * 1000; // 10 minutes
+  const STORAGE_EXPIRY = 10 * 60 * 1000;
 
-  // Load saved draft from localStorage or use defaults
   const getInitialFormData = () => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const { data, timestamp } = JSON.parse(saved);
-        // Check if saved data is still valid (within 10 minutes)
         if (Date.now() - timestamp < STORAGE_EXPIRY) {
           return data;
         } else {
-          // Clean up expired data
           localStorage.removeItem(STORAGE_KEY);
         }
       }
     } catch (error) {
       console.error("Error loading draft:", error);
     }
-    // Return default values
     return {
       title: "",
       description: "",
@@ -50,7 +46,6 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Save form data to localStorage whenever it changes
   useEffect(() => {
     const saveToLocalStorage = () => {
       try {
@@ -66,11 +61,10 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
       }
     };
 
-    const timeoutId = setTimeout(saveToLocalStorage, 500); // Debounce saves
+    const timeoutId = setTimeout(saveToLocalStorage, 500);
     return () => clearTimeout(timeoutId);
   }, [formData, STORAGE_KEY]);
 
-  // Check if form has any data entered
   const hasFormData = () => {
     return (
       formData.title.trim() !== "" ||
@@ -81,7 +75,6 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
     );
   };
 
-  // Handle close with confirmation if form has data
   const handleClose = () => {
     if (hasFormData()) {
       const confirmClose = window.confirm(
@@ -91,13 +84,11 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
         onClose();
       }
     } else {
-      // Clear draft if form is empty
       localStorage.removeItem(STORAGE_KEY);
       onClose();
     }
   };
 
-  // Handle overlay click
   const handleOverlayClick = () => {
     handleClose();
   };
@@ -119,7 +110,6 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error for this field
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -182,7 +172,6 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
         throw new Error(data.msg || "Failed to request delivery");
       }
 
-      // Clear the saved draft after successful submission
       localStorage.removeItem(STORAGE_KEY);
       toast.success("Delivery request sent successfully!");
       onSuccess();

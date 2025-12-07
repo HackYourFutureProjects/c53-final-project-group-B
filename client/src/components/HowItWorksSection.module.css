@@ -1,7 +1,7 @@
 .howItWorks {
   padding: 5rem 8%;
   background: linear-gradient(to bottom, var(--color-bg) 0%, #f8f9fa 100%);
-  scroll-margin-top: 3px; /* Accounting here for fixed nav height */
+  scroll-margin-top: 3px;
 }
 
 .container {
@@ -89,7 +89,6 @@
   line-height: 1.6;
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .howItWorks {
     padding: 5rem 8%;
@@ -138,7 +137,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .howItWorks {
     padding: 4.5rem 7%;
@@ -187,7 +185,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .howItWorks {
     padding: 4rem 6%;
@@ -236,7 +233,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .howItWorks {
     padding: 3.5rem 5%;

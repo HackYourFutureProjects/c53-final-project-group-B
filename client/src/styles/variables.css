@@ -1,5 +1,4 @@
 :root {
-  /* Colors */
   --color-primary: #6d349f;
   --color-secondary: #a855f7;
   --color-tertiary: #e0e0e0;
@@ -18,7 +17,6 @@
   --color-server-error-bg: #ffe6e6;
   --color-server-error-border: #f5c2c2;
 
-  /* Typography */
   --font-main: "Inter", sans-serif;
   --font-heading: "Poppins", sans-serif;
 
@@ -28,7 +26,6 @@
   --font-size-lg: 1.13rem;
   --font-size-xl: 2rem;
 
-  /* Spacing scale */
   --space-none: 0;
   --space-2xs: 0.125rem;
   --space-xs: 0.25rem;
@@ -37,7 +34,6 @@
   --space-lg: 2rem;
   --space-xl: 4rem;
 
-  /* Radius + Shadow */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 16px;
@@ -49,7 +45,6 @@
   color: var(--color-tertiary);
 }
 
-/* Mobile responsive adjustments */
 @media (max-width: 767px) {
   :root {
     --font-size-base: 0.9rem;
@@ -78,7 +73,6 @@
 
 @media (min-width: 1024px) and (max-width: 1439px) {
   :root {
-    /* Base values */
   }
 }
 

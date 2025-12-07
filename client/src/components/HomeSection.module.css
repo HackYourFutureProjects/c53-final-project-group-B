@@ -1,4 +1,3 @@
-/* homeSection.module.css */
 .homeContainer {
   display: flex;
   flex-direction: column;
@@ -7,7 +6,6 @@
   box-sizing: border-box;
 }
 
-/* Client view styles */
 .clientHeader {
   padding: 16px 20px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -45,7 +43,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Map column for courier view */
 .courierHeader {
   padding: 16px 20px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -99,7 +96,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Old styles - keep for backwards compatibility if needed */
 .mapArea {
   flex: 0 0 60%;
   height: 100%;
@@ -110,7 +106,6 @@
   align-items: stretch;
 }
 
-/* List column for courier view */
 .listArea {
   flex: 1;
   height: 100%;
@@ -119,7 +114,6 @@
   flex-direction: column;
 }
 
-/* Full map container for clients */
 .fullMapContainer {
   flex: 1;
   height: 100%;
@@ -213,26 +207,23 @@
   gap: 15px;
 }
 
-/* Map at top */
 .mapAreaTop {
-  height: 50vh; /* adjust: 50% of screen height */
+  height: 50vh;
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #ddd;
 }
 
-/* Tasks below the map */
 .tasksBelow {
   flex: 1;
-  overflow-y: auto; /* scroll tasks */
+  overflow-y: auto;
   padding-right: 10px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* Mobile responsive styles */
 @media (max-width: 767px) {
   .homeContainer {
     gap: 10px;
@@ -240,7 +231,6 @@
     margin-top: -20px;
   }
 
-  /* Client mobile styles */
   .clientHeader {
     padding: var(--space-md);
     order: 1;
@@ -280,7 +270,6 @@
     order: 2;
   }
 
-  /* Courier view mobile */
   .courierHeader {
     padding: var(--space-sm);
     order: 1;
@@ -319,7 +308,6 @@
     order: 2;
   }
 
-  /* Old courier view styles - for backwards compatibility */
   .mapArea {
     flex: none;
     height: 40vh;
@@ -345,7 +333,6 @@
   }
 }
 
-/* Tablet styles (768px - 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .clientMapArea {
     flex: 0 0 60%;
@@ -367,7 +354,6 @@
     font-size: 13px;
   }
 
-  /* Courier view tablet */
   .courierMapArea {
     flex: 0 0 60%;
   }
@@ -389,7 +375,6 @@
   }
 }
 
-/* Small Desktop / Laptop (1024px - 1439px) */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .clientMapArea {
     flex: 0 0 68%;
@@ -399,7 +384,6 @@
     flex: 1;
   }
 
-  /* Courier view laptop */
   .courierMapArea {
     flex: 0 0 68%;
   }
@@ -409,7 +393,6 @@
   }
 }
 
-/* Large Desktop (1440px+) */
 @media (min-width: 1440px) {
   .clientMapArea {
     flex: 0 0 70%;
@@ -431,7 +414,6 @@
     font-size: 15px;
   }
 
-  /* Courier view large desktop */
   .courierMapArea {
     flex: 0 0 70%;
   }
@@ -453,7 +435,6 @@
   }
 }
 
-/* Hide taskTitle on desktop */
 @media (min-width: 768px) {
   .taskTitle {
     display: none;

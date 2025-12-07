@@ -64,7 +64,6 @@ const Profile = () => {
       );
 
       if (response.status === 401) {
-        // Token expired or invalid, logout user
         logout();
         navigate("/login");
         return;
@@ -180,10 +179,8 @@ const Profile = () => {
 
       toast.success("Password updated successfully ✔");
 
-      // Log out user and redirect to login
       logout();
 
-      // Reset form state
       setPasswordData({
         oldPassword: "",
         newPassword: "",
@@ -191,7 +188,6 @@ const Profile = () => {
       });
       setShowPasswordForm(false);
 
-      // Redirect to login page
       navigate("/login");
     } catch (err) {
       console.error(err);
@@ -205,12 +201,10 @@ const Profile = () => {
     const { name, value } = e.target;
 
     if (name === "cardNumber") {
-      // Format card number with spaces
       const cleaned = value.replace(/\s/g, "");
       const formatted = cleaned.match(/.{1,4}/g)?.join(" ") || cleaned;
       setPaymentData((prev) => ({ ...prev, [name]: formatted }));
 
-      // Detect card type
       if (cleaned.startsWith("4")) {
         setPaymentData((prev) => ({ ...prev, cardType: "Visa" }));
       } else if (cleaned.startsWith("5")) {
@@ -219,7 +213,6 @@ const Profile = () => {
         setPaymentData((prev) => ({ ...prev, cardType: "American Express" }));
       }
     } else if (name === "expiryDate") {
-      // Format expiry date MM/YY
       const cleaned = value.replace(/\D/g, "");
       const formatted = cleaned.match(/.{1,2}/g)?.join("/") || cleaned;
       setPaymentData((prev) => ({ ...prev, [name]: formatted }));
@@ -334,7 +327,6 @@ const Profile = () => {
       if (data.success) {
         setUser(data.user);
         toast.success("Payment method updated successfully!");
-        // Clear CVV for security
         setPaymentData((prev) => ({ ...prev, cvv: "" }));
       } else {
         toast.error(data.msg || "Failed to update payment method");
@@ -585,7 +577,6 @@ const Profile = () => {
                     maxLength="5"
                   />
                 </div>
-                {/* --- Pending decision to be deleted --- */}
                 <div className={styles.formGroup}>
                   <label>CVV</label>
                   <input
@@ -598,7 +589,6 @@ const Profile = () => {
                     maxLength="4"
                   />
                 </div>
-                {/* --- Pending decision to be deleted --- */}
               </div>
 
               <div className={styles.securityNote}>
@@ -710,9 +700,7 @@ const Profile = () => {
               <h2>Security Settings</h2>
             </div>
 
-            {/* 🔥 Toggle between security overview and password form */}
             {!showPasswordForm ? (
-              /* ------------ SECURITY SETTINGS OVERVIEW ------------ */
               <div className={styles.securitySection}>
                 <div className={styles.securityItem}>
                   <div>
@@ -759,7 +747,6 @@ const Profile = () => {
                 </div>
               </div>
             ) : (
-              /* ------------ PASSWORD FORM (REPLACES SECURITY LIST) ------------ */
               <div className={styles.section}>
                 <h2>Change Password</h2>
 

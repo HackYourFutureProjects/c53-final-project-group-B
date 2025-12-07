@@ -12,12 +12,11 @@ const Sidebar = ({ onChangeSection, active, isOpen, onToggle }) => {
   const handleLogout = () => {
     logout();
     navigate("/login");
-    onToggle(); // Close sidebar on mobile after logout
+    onToggle();
   };
 
   return (
     <>
-      {/* Mobile toggle button */}
       <button className={styles.mobileToggle} onClick={onToggle}>
         <CgMenuLeft size={30} />
       </button>

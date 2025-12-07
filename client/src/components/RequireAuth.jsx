@@ -8,7 +8,6 @@ const RequireAuth = ({ children }) => {
   const location = useLocation();
 
   if (!user || !token) {
-    // Redirect to login and preserve attempted path
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

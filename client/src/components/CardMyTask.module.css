@@ -39,7 +39,6 @@
   line-height: 1.4;
 }
 
-/* Info row */
 .infoRow {
   display: flex;
   flex-wrap: wrap;
@@ -55,10 +54,9 @@
   font-weight: 500;
 }
 
-/* Status badge */
 .status {
   padding: 0.3rem 0.8rem;
-  border-radius: 20px; /* pill shape */
+  border-radius: 20px;
   font-weight: 700;
   text-transform: capitalize;
   font-size: 0.85rem;
@@ -66,7 +64,6 @@
   color: #fff;
 }
 
-/* Status colors */
 .posted {
   background-color: #3498db;
 }
@@ -89,7 +86,6 @@
   background-color: #7f8c8d;
 }
 
-/* Address styling */
 .address {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -97,7 +93,6 @@
   overflow: hidden;
 }
 
-/* Accepted / Created By box */
 .acceptedByContainer {
   background-color: #f0f4ff;
   padding: 10px;
@@ -110,7 +105,6 @@
   margin-bottom: 4px;
 }
 
-/* Action buttons */
 .actionsContainer {
   display: flex;
   gap: 10px;
@@ -156,7 +150,6 @@
   border-color: #d1d5db;
 }
 
-/* Rating container */
 .ratingContainer {
   margin-top: 15px;
   padding: 10px;

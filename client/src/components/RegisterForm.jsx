@@ -18,7 +18,6 @@ const RegisterForm = () => {
   const [serverSuccess, setServerSuccess] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Courier preferences
   const [taskType, setTaskType] = useState([]);
   const [maxDistance, setMaxDistance] = useState("");
   const [minPrice, setMinPrice] = useState("");
@@ -29,19 +28,16 @@ const RegisterForm = () => {
   const validate = () => {
     const newErrors = {};
 
-    // Name validation
     if (!name.trim()) {
       newErrors.name = "Name is required";
     }
 
-    // Email validation
     if (!email) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (!password) {
       newErrors.password = "Password is required";
     } else if (password.length < 8) {
@@ -51,19 +47,16 @@ const RegisterForm = () => {
         "Password must include a number and an uppercase letter";
     }
 
-    // Confirm password validation
     if (!confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
     } else if (password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    // Role validation
     if (!role) {
       newErrors.role = "Please select a role";
     }
 
-    // Phone validation (optional but validate format if provided)
     if (
       phone &&
       (!/^\+?[\d\s\-()]+$/.test(phone) || phone.replace(/\D/g, "").length < 9)
@@ -71,9 +64,7 @@ const RegisterForm = () => {
       newErrors.phone = "Please enter a valid phone number (at least 9 digits)";
     }
 
-    // ✅ NEW VALIDATION for courier preferences
     if (role === "courier") {
-      // Validate maxDistance if provided
       if (maxDistance !== "") {
         const distance = parseFloat(maxDistance);
         if (isNaN(distance) || distance < 0) {
@@ -83,7 +74,6 @@ const RegisterForm = () => {
         }
       }
 
-      // Validate minPrice if provided
       if (minPrice !== "") {
         const price = parseFloat(minPrice);
         if (isNaN(price) || price < 0) {
@@ -118,7 +108,6 @@ const RegisterForm = () => {
     setIsSubmitting(true);
 
     try {
-      // If courier role and no task types selected, pass undefined to use backend default (all types)
       const taskTypeValue =
         role === "courier" && taskType.length === 0 ? undefined : taskType;
 
@@ -135,7 +124,6 @@ const RegisterForm = () => {
 
       if (result.success) {
         setServerSuccess(result.message);
-        // Clear form
         setName("");
         setEmail("");
         setPassword("");
@@ -146,8 +134,6 @@ const RegisterForm = () => {
         setMaxDistance("");
         setMinPrice("");
         setErrors({});
-
-        // Redirect to login after 2 seconds
         setTimeout(() => {
           navigate("/login");
         }, 2000);

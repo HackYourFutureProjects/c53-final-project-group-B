@@ -9,7 +9,8 @@ import UserList from "./pages/User/UserList";
 import { UserProvider } from "./context/UserProvider.jsx";
 import RequestResetPassword from "./pages/ResetPassword/RequestResetPassword";
 import ResetPasswordForm from "./pages/ResetPassword/ResetPasswordForm";
-import UserDashboardLayout from "./pages/UserDashboard/userDashboard.jsx";
+import UserDashboardLayout from "./pages/UserDashboard/UserDashboard.jsx";
+import RequireAuth from "./components/RequireAuth";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -40,7 +41,14 @@ const App = () => {
         <Route path="/user" element={<UserList />} />
         <Route path="/user/create" element={<CreateUser />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/user-dashboard" element={<UserDashboardLayout />} />
+        <Route
+          path="/user-dashboard"
+          element={
+            <RequireAuth>
+              <UserDashboardLayout />
+            </RequireAuth>
+          }
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="/reset-password" element={<RequestResetPassword />} />

@@ -14,7 +14,6 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* TITLE */
 .title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -22,7 +21,6 @@
   margin-bottom: 6px;
 }
 
-/* DESCRIPTION */
 .description {
   font-size: 0.9rem;
   color: #555;
@@ -30,7 +28,6 @@
   margin-bottom: 10px;
 }
 
-/* STATUS BADGE */
 .status {
   display: inline-block;
   padding: 4px 10px;
@@ -42,7 +39,6 @@
   margin-left: 6px;
 }
 
-/* STATUS COLORS */
 .posted {
   background-color: #3498db;
 }
@@ -62,14 +58,12 @@
   background-color: #9b59b6;
 }
 
-/* ADDRESS TRIM */
 .address {
   color: #444;
   font-size: 0.9rem;
   margin: 6px 0;
 }
 
-/* ACCEPT BUTTON */
 .acceptButton {
   margin-top: 12px;
   width: 100%;

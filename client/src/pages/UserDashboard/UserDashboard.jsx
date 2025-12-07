@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Sidebar from "../../components/Sidebar.jsx";
-import MyTaskList from "../myTasks/mytasks.jsx";
+import MyTaskList from "../myTasks/MyTasks.jsx";
 import MyRequestedTasks from "../myTasks/myRequestedTasks.jsx";
 import CouriersList from "../../components/Couriers.jsx";
-import HomeSection from "../../components/homeSection.jsx";
+import HomeSection from "../../components/HomeSection.jsx";
 import Profile from "../Profile/Profile.jsx";
-import styles from "./userDashboard.module.css";
+import styles from "./UserDashboard.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 
 const UserDashboardLayout = () => {
@@ -34,7 +34,7 @@ const UserDashboardLayout = () => {
       <Sidebar
         onChangeSection={(sec) => {
           setSection(sec);
-          setSidebarOpen(false); // Close sidebar on mobile after selection
+          setSidebarOpen(false);
         }}
         active={section}
         isOpen={sidebarOpen}

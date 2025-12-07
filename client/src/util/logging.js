@@ -1,9 +1,3 @@
-/**
- * Client-side logging utility
- * Provides consistent logging across the application
- * Can be extended to send logs to external services (Sentry, LogRocket, etc.)
- */
-
 const isDevelopment = import.meta.env.MODE === "development";
 
 /**
@@ -48,9 +42,6 @@ export const logError = (error, context = {}) => {
       ...context,
     });
   }
-
-  // TODO: In production, you can send errors to a monitoring service
-  // Example: Sentry.captureException(error, { extra: context });
 };
 
 /**

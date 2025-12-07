@@ -182,7 +182,6 @@
   cursor: not-allowed;
 }
 
-/* React Select Custom Styles */
 .react-select__control {
   border: 2px solid #e5e7eb !important;
   border-radius: 8px !important;
@@ -223,7 +222,6 @@
   background-color: rgba(102, 126, 234, 0.1) !important;
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .modalOverlay {
     padding: 20px;
@@ -287,7 +285,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .modalOverlay {
     padding: 18px;
@@ -351,7 +348,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .modalOverlay {
     padding: 16px;
@@ -415,7 +411,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .modalOverlay {
     padding: 10px;
