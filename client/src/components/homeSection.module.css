@@ -60,6 +60,7 @@
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  color: #ffffff;
 }
 
 .courierSubtitle {
@@ -67,6 +68,7 @@
   font-size: 14px;
   opacity: 0.95;
   font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .courierContent {
@@ -177,6 +179,7 @@
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  color: #ffffff;
 }
 
 .mapSubtitle {
@@ -184,6 +187,7 @@
   font-size: 14px;
   opacity: 0.95;
   font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .fullMapArea {
@@ -486,7 +490,7 @@
     font-size: 1rem;
   }
   .mapSubtitle {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     text-align: center;
   }
   .generalRequestButton {

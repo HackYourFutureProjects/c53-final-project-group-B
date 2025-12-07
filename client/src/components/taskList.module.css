@@ -30,8 +30,8 @@
 .loading {
   text-align: center;
   padding: 40px 20px;
-  font-size: 1rem;
-  color: #9ca3af;
+  font-size: 1.3rem;
+  color: #6b7280;
 }
 
 .error {
@@ -100,8 +100,8 @@
   .loading {
     text-align: center;
     padding: 50px 24px;
-    font-size: 1.1rem;
-    color: #9ca3af;
+    font-size: 1.2rem;
+    color: #6b7280;
   }
 
   .error {
@@ -170,8 +170,8 @@
   .loading {
     text-align: center;
     padding: 40px 20px;
-    font-size: 1rem;
-    color: #9ca3af;
+    font-size: 0.95rem;
+    color: #6b7280;
   }
 
   .error {
@@ -240,8 +240,8 @@
   .loading {
     text-align: center;
     padding: 35px 18px;
-    font-size: 0.95rem;
-    color: #9ca3af;
+    font-size: 0.85rem;
+    color: #6b7280;
   }
 
   .error {
@@ -280,6 +280,16 @@
   }
 }
 
+@media (min-width: 381px) and (max-width: 767px) {
+  .empty,
+  .loading {
+    text-align: center;
+    padding: 25px 12px;
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+}
+
 /* Extra small devices */
 @media (max-width: 380px) {
   .container {
@@ -310,8 +320,8 @@
   .loading {
     text-align: center;
     padding: 25px 12px;
-    font-size: 0.9rem;
-    color: #9ca3af;
+    font-size: 0.85rem;
+    color: #6b7280;
   }
 
   .error {
