@@ -437,7 +437,7 @@ export const requestTaskToCourier = async (req, res) => {
         html: `
       <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
         <div style="text-align: center;">
-          <h2> dropit </h2>
+          <h2> Dropit </h2>
         </div>
 
         <h2>You have a new task request</h2>

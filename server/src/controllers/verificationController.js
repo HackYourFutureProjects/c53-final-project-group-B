@@ -42,7 +42,7 @@ export const resendVerificationEmail = async (req, res) => {
       html: `
     <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 500px; margin: auto;">
       <div style="text-align: center;">
-        <h2> dropit </h2>
+        <h2> Dropit </h2>
       </div>
 
       <h2>Email Verification</h2>
