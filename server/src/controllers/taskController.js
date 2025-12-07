@@ -115,7 +115,7 @@ export const acceptTask = async (req, res) => {
         html: `
       <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
         <div style="text-align: center;">
-         <h2> dropit </h2>
+         <h2> Dropit </h2>
         </div>
 
         <h2>Your task has been accepted!</h2>
@@ -188,7 +188,7 @@ export const startTask = async (req, res) => {
         html: `
       <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
         <div style="text-align: center;">
-          <h2> dropit </h2>
+          <h2> Dropit </h2>
         </div>
 
         <h2>Your task is now in progress!</h2>
@@ -247,7 +247,7 @@ export const completeTask = async (req, res) => {
         html: `
       <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
         <div style="text-align: center;">
-          <h2> dropit </h2>
+          <h2> Dropit </h2>
         </div>
 
         <h2>Your task is complete!</h2>
