@@ -1,7 +1,7 @@
 import Task from "../models/tasks.js";
 import User from "../models/User.js";
 import { getCoordinates } from "../services/geoCodingService.js";
-//import transporter from "../util/mail.js";
+import transporter from "../util/mail.js";
 import haversineDistance from "../util/distanceCalculator.js";
 
 export const createTask = async (req, res) => {
@@ -103,19 +103,43 @@ export const acceptTask = async (req, res) => {
     task.acceptedBy = req.user._id;
     task.acceptedAt = new Date();
     await task.save();
-    //const user = await User.findById(task.createdBy);
-    //const courier = await User.findById(req.user._id);
+    const user = await User.findById(task.createdBy);
+    const courier = await User.findById(req.user._id);
     // Send email notification to the task creator
-    /*try {
+    try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: user.email,
-        subject: "Your task has been accepted",
-        text: `Your task "${task.title}" has been accepted by a courier (${courier.name}). To see the detail you can check your dashboard. They will contact you shortly to arrange the details. Thank you for using our service!`,
+        subject: "Your task has been accepted – Dropit",
+
+        html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+        <div style="text-align: center;">
+         <h2> Dropit </h2>
+        </div>
+
+        <h2>Your task has been accepted!</h2>
+
+        <p>Hello ${user.name || ""},</p>
+
+        <p>Your task <strong>"${task.title}"</strong> has been accepted by a courier.</p>
+        
+        <p>The courier handling your task is <strong>${courier.name}</strong>.</p>
+
+        <p>You can view all details in your dashboard. The courier will contact you shortly to coordinate the pickup.</p>
+
+        <p>Thank you for choosing <strong>Dropit</strong>! We're always here to help.</p>
+
+        <br>
+        <p style="font-size: 12px; color: #888;">
+          This is an automated message from the Dropit system.
+        </p>
+      </div>
+    `,
       });
     } catch {
       // Log the error but don't fail the whole request
-    }*/
+    }
 
     res
       .status(200)
@@ -132,7 +156,7 @@ export const startTask = async (req, res) => {
       return res.status(404).json({ success: false, msg: "Task not found" });
     }
     const courier = await User.findById(task.acceptedBy);
-    //const client = await User.findById(task.createdBy);
+    const client = await User.findById(task.createdBy);
     if (task.status !== "accepted") {
       return res.status(400).json({
         success: false,
@@ -155,16 +179,40 @@ export const startTask = async (req, res) => {
     const etaMinutes = Math.round((distanceKm / averageSpeedKmh) * 60);
     task.estimatedArrivalTime = new Date(Date.now() + etaMinutes * 60 * 1000);
     await task.save();
-    /*try {
+    try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: client.email,
-        subject: "Your task is now in progress",
-        text: `Your task "${task.title}" is now in progress. The courier (${courier.name}) is on their way to the pickup location. Estimated arrival time is approximately ${etaMinutes} minutes. Thank you for using our service!`,
+        subject: "Your task is now in progress – Dropit",
+
+        html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+        <div style="text-align: center;">
+          <h2> Dropit </h2>
+        </div>
+
+        <h2>Your task is now in progress!</h2>
+
+        <p>Hello ${client.name || ""},</p>
+
+        <p>Your task <strong>"${task.title}"</strong> is now being handled.</p>
+        
+        <p>The courier <strong>${courier.name}</strong> is on the way to the pickup location.</p>
+
+        <p>Estimated arrival time: <strong>${etaMinutes} minutes</strong>.</p>
+
+        <p>Thank you for choosing <strong>Dropit</strong>! We’re happy to help you.</p>
+
+        <br>
+        <p style="font-size: 12px; color: #888;">
+          This is an automated notification from the Dropit system.
+        </p>
+      </div>
+    `,
       });
     } catch {
       // Log the error but don't fail the whole request
-    }*/
+    }
 
     res
       .status(200)
@@ -189,29 +237,38 @@ export const completeTask = async (req, res) => {
     task.status = "completed";
     task.completedAt = new Date();
     await task.save();
-    //const client = await User.findById(task.createdBy);
-    //const courier = await User.findById(task.acceptedBy);
-    /*try {
+    const client = await User.findById(task.createdBy);
+    try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: client.email,
-        subject: "Your task has been completed",
-        text: `Your task "${task.title}" has been completed. Thank you for using our service!`,
-      });
-    } catch {
-      // Log the error but don't fail the whole request
-    }*/
+        subject: "Your task has been completed – Dropit",
 
-    /*try {
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: courier.email,
-        subject: "Task completed",
-        text: `The task "${task.title}" you accepted has been completed. and payment has been processed. Thank you for your service!`,
+        html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+        <div style="text-align: center;">
+          <h2> Dropit </h2>
+        </div>
+
+        <h2>Your task is complete!</h2>
+
+        <p>Hello ${client.name || ""},</p>
+
+        <p>We’re happy to let you know that your task <strong>"${task.title}"</strong> has been successfully completed.</p>
+
+        <p>Thank you for trusting <strong>Dropit</strong> to handle your delivery. We’re always here whenever you need us.</p>
+
+        <br>
+        <p style="font-size: 12px; color: #888;">
+          This is an automated notification from the Dropit system.
+        </p>
+      </div>
+    `,
       });
     } catch {
       // Log the error but don't fail the whole request
-    }*/
+    }
+
     res
       .status(200)
       .json({ success: true, message: "Task completed successfully" });
@@ -370,17 +427,44 @@ export const requestTaskToCourier = async (req, res) => {
       expiredAt: new Date(Date.now() + minutes * 60 * 1000),
       acceptDeadLineMinutes: minutes,
     });
-    // const courier = await User.findById(requestedTo);
-    /*try {
+    const courier = await User.findById(requestedTo);
+    try {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: courier.email,
-        subject: "New Task Request",
-        text: `You have a new task request: "${title}". Please check your dashboard for details.`,
+        subject: "New Task Request – Dropit",
+
+        html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+        <div style="text-align: center;">
+          <h2> Dropit </h2>
+        </div>
+
+        <h2>You have a new task request</h2>
+
+        <p>Hello ${courier.name || ""},</p>
+
+        <p>A new task has been assigned to you:</p>
+
+        <p style="font-size: 16px; margin: 8px 0;">
+          <strong>"${title}"</strong>
+        </p>
+
+        <p>Please check your dashboard for full details. Make sure to review the pickup and delivery information as soon as possible.</p>
+
+        <p>Thank you for being part of <strong>Dropit</strong>! We appreciate your work and commitment.</p>
+
+        <br>
+        <p style="font-size: 12px; color: #888;">
+          This is an automated notification from the Dropit system.
+        </p>
+      </div>
+    `,
       });
     } catch {
       // Log the error but don't fail the whole request
-    }*/
+    }
+
     res.status(201).json({ message: "Task created successfully" });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
@@ -419,10 +503,6 @@ export const getMapTasks = async (req, res) => {
       coords[0] !== 0 &&
       coords[1] !== 0;
 
-    // Build dynamic match query for map markers:
-    // - Always include posted tasks
-    // - Also include requested tasks that are specifically requested to this courier
-    // - Only apply task type filter when courier preferences exist
     const statusFilter = {
       $or: [{ status: "posted" }, { status: "requested", requestedTo: userId }],
     };
@@ -501,11 +581,6 @@ export const getAvailableTasks = async (req, res) => {
       coords[0] !== 0 &&
       coords[1] !== 0;
 
-    // Build dynamic match query:
-    // - Always include posted tasks (available to all couriers)
-    // - Also include tasks assigned to this courier across lifecycle
-    //   (accepted, in-progress, completed) so they don't disappear
-    // - Only apply task type filter when courier preferences exist
     const statusFilter = {
       $or: [
         { status: "posted" },
@@ -571,18 +646,6 @@ export const getAvailableTasks = async (req, res) => {
       }));
     }
 
-    res.status(200).json({ success: true, tasks });
-  } catch (err) {
-    res.status(500).json({ success: false, msg: "Server error" });
-  }
-};
-export const getRequestedTasks = async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const tasks = await Task.find({
-      requestedTo: userId,
-      declinedBy: { $ne: userId },
-    }).populate("createdBy");
     res.status(200).json({ success: true, tasks });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Server error" });
