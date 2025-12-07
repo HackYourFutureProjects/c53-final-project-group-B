@@ -1,12 +1,27 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import styles from "./HeroSection.module.css";
 import { Link } from "react-router-dom";
-import dotlottieUrl from "../assets/lottie/John and the haverboard.lottie";
+import hoverboardUrl from "../assets/lottie/John and the haverboard.lottie";
+import bicycleUrl from "../assets/lottie/Delivery Guy on Bicycle, Cycle, and Bike.lottie";
+import deliveredUrl from "../assets/lottie/Order delivered.lottie";
 import { UserContext } from "../context/UserContext";
 
 const HeroSection = () => {
   const { user } = useContext(UserContext);
+  const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
+
+  const animations = [hoverboardUrl, bicycleUrl, deliveredUrl];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentAnimationIndex(
+        (prevIndex) => (prevIndex + 1) % animations.length,
+      );
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [animations.length]);
 
   return (
     <section className={styles.hero}>
@@ -26,7 +41,16 @@ const HeroSection = () => {
       </div>
 
       <div className={styles.animation}>
-        <DotLottieReact src={dotlottieUrl} loop autoplay />
+        {animations.map((animationUrl, index) => (
+          <div
+            key={index}
+            className={`${styles.lottieWrapper} ${
+              index === currentAnimationIndex ? styles.active : ""
+            }`}
+          >
+            <DotLottieReact src={animationUrl} loop autoplay />
+          </div>
+        ))}
       </div>
     </section>
   );
