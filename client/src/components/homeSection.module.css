@@ -1,33 +1,122 @@
 /* homeSection.module.css */
 .homeContainer {
   display: flex;
-  gap: 20px;
-  /* use viewport height minus header or top spacing you have.
-     Adjust the calc value if you have a top navbar/header height. */
-  height: calc(100vh - 40px); /* change 40px to your header height if any */
-  align-items: flex-start; /* align children at top */
-
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - 40px);
   box-sizing: border-box;
 }
 
-/* Map column */
+/* Client view styles */
+.clientHeader {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+  flex-shrink: 0;
+}
+
+.clientContent {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.clientMapArea {
+  flex: 0 0 65%;
+  height: 100%;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.clientListArea {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Map column for courier view */
+.courierHeader {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+  flex-shrink: 0;
+}
+
+.courierTitle {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+}
+
+.courierSubtitle {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.95;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.courierContent {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.courierMapArea {
+  flex: 0 0 65%;
+  height: 100%;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.courierListArea {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Old styles - keep for backwards compatibility if needed */
 .mapArea {
-  flex: 0 0 60%; /* map column takes 60% width (adjust) */
-  height: 100%; /* fill parent's height */
+  flex: 0 0 60%;
+  height: 100%;
   border-radius: 10px;
   border: 1px solid #ddd;
   overflow: hidden;
-  display: flex; /* so map div can stretch */
+  display: flex;
   align-items: stretch;
 }
 
-/* List column */
+/* List column for courier view */
 .listArea {
-  flex: 1; /* remaining width */
+  flex: 1;
   height: 100%;
-  overflow: hidden; /* hide overflow at the column level */
+  overflow: hidden;
   display: flex;
-  flex-direction: column; /* allow child to grow and scroll */
+  flex-direction: column;
 }
 
 /* Full map container for clients */
@@ -90,6 +179,7 @@
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  color: #ffffff;
 }
 
 .mapSubtitle {
@@ -97,6 +187,7 @@
   font-size: 14px;
   opacity: 0.95;
   font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .fullMapArea {
@@ -144,16 +235,94 @@
 /* Mobile responsive styles */
 @media (max-width: 767px) {
   .homeContainer {
-    flex-direction: column;
-    height: calc(100vh - 30px); /* adjust for mobile header */
     gap: 10px;
-    width: 100%;
+    height: calc(100vh - 30px);
     margin-top: -20px;
   }
 
+  /* Client mobile styles */
+  .clientHeader {
+    padding: var(--space-md);
+    order: 1;
+  }
+
+  .clientContent {
+    flex-direction: column;
+    order: 2;
+    gap: 12px;
+  }
+  .mapTitle {
+    font-size: 1.2rem;
+  }
+  .mapSubtitle {
+    font-size: 0.65rem;
+    text-align: center;
+  }
+  .generalRequestButton {
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    padding: 0.2rem 0.5rem;
+  }
+  .clientMapArea {
+    flex: none;
+    height: 45vh;
+    order: 1;
+  }
+
+  .clientListArea {
+    flex: none;
+    height: auto;
+    max-height: 40vh;
+    order: 2;
+  }
+
+  /* Courier view mobile */
+  .courierHeader {
+    padding: var(--space-sm);
+    order: 1;
+    margin-top: 0px;
+  }
+
+  .courierContent {
+    flex-direction: column;
+    order: 2;
+    gap: 12px;
+  }
+
+  .courierTitle {
+    font-size: 18px;
+  }
+
+  .courierSubtitle {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .mapHeader {
+    padding: var(--space-sm);
+  }
+
+  .courierMapArea {
+    flex: none;
+    height: 45vh;
+    order: 1;
+  }
+
+  .courierListArea {
+    flex: none;
+    height: auto;
+    max-height: 40vh;
+    order: 2;
+  }
+
+  /* Old courier view styles - for backwards compatibility */
   .mapArea {
     flex: none;
-    height: 40vh; /* map takes half screen height */
+    height: 40vh;
     width: 100%;
   }
 
@@ -163,35 +332,124 @@
     height: auto;
   }
 
-  /* Client mobile styles */
-  .fullMapContainer {
-    max-width: 100%;
-    margin: 0px auto;
-    padding: 18px var(--space-xs);
-  }
-
-  .mapHeader {
-    padding: var(--space-md);
-    text-align: center;
-    margin-top: 10px;
-  }
-
   .headerContent {
     flex-direction: column;
     gap: var(--space-md);
     align-items: center;
   }
 
-  .generalRequestButton {
-    width: 100%;
-    max-width: 250px;
-    justify-content: center;
-  }
-
   .taskTitle {
     font-size: 1.2rem;
     margin: 0;
     margin-left: 40px;
+  }
+}
+
+/* Tablet styles (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .clientMapArea {
+    flex: 0 0 60%;
+  }
+
+  .clientListArea {
+    flex: 1;
+  }
+
+  .clientHeader {
+    padding: 14px 18px;
+  }
+
+  .mapTitle {
+    font-size: 20px;
+  }
+
+  .mapSubtitle {
+    font-size: 13px;
+  }
+
+  /* Courier view tablet */
+  .courierMapArea {
+    flex: 0 0 60%;
+  }
+
+  .courierListArea {
+    flex: 1;
+  }
+
+  .courierHeader {
+    padding: 14px 18px;
+  }
+
+  .courierTitle {
+    font-size: 20px;
+  }
+
+  .courierSubtitle {
+    font-size: 13px;
+  }
+}
+
+/* Small Desktop / Laptop (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .clientMapArea {
+    flex: 0 0 68%;
+  }
+
+  .clientListArea {
+    flex: 1;
+  }
+
+  /* Courier view laptop */
+  .courierMapArea {
+    flex: 0 0 68%;
+  }
+
+  .courierListArea {
+    flex: 1;
+  }
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .clientMapArea {
+    flex: 0 0 70%;
+  }
+
+  .clientListArea {
+    flex: 1;
+  }
+
+  .clientHeader {
+    padding: 18px 24px;
+  }
+
+  .mapTitle {
+    font-size: 26px;
+  }
+
+  .mapSubtitle {
+    font-size: 15px;
+  }
+
+  /* Courier view large desktop */
+  .courierMapArea {
+    flex: 0 0 70%;
+  }
+
+  .courierListArea {
+    flex: 1;
+  }
+
+  .courierHeader {
+    padding: 18px 24px;
+  }
+
+  .courierTitle {
+    font-size: 26px;
+  }
+
+  .courierSubtitle {
+    font-size: 15px;
   }
 }
 
@@ -221,5 +479,24 @@
 @media (max-width: 320px) {
   .taskTitle {
     font-size: 1rem;
+  }
+  .courierTitle {
+    font-size: 14px;
+  }
+  .courierSubtitle {
+    font-size: 11px;
+  }
+  .mapTitle {
+    font-size: 1rem;
+  }
+  .mapSubtitle {
+    font-size: 0.75rem;
+    text-align: center;
+  }
+  .generalRequestButton {
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
   }
 }

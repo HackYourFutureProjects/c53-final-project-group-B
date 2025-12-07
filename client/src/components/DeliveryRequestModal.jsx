@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { UserContext } from "../context/UserContext";
 import Select from "react-select";
@@ -7,24 +7,100 @@ import { toast } from "react-toastify";
 
 const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
   const { token } = useContext(UserContext);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    taskType: courier.taskTypes?.[0]
-      ? {
-          value: courier.taskTypes[0],
-          label:
-            courier.taskTypes[0].charAt(0).toUpperCase() +
-            courier.taskTypes[0].slice(1),
+  const STORAGE_KEY = `deliveryRequestDraft_${courier._id}`;
+  const STORAGE_EXPIRY = 10 * 60 * 1000; // 10 minutes
+
+  // Load saved draft from localStorage or use defaults
+  const getInitialFormData = () => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const { data, timestamp } = JSON.parse(saved);
+        // Check if saved data is still valid (within 10 minutes)
+        if (Date.now() - timestamp < STORAGE_EXPIRY) {
+          return data;
+        } else {
+          // Clean up expired data
+          localStorage.removeItem(STORAGE_KEY);
         }
-      : { value: "delivery", label: "Delivery" },
-    pickupLocation: "",
-    dropoffLocation: "",
-    price: "",
-    acceptDeadLineMinutes: { value: 5, label: "5 minutes" },
-  });
+      }
+    } catch (error) {
+      console.error("Error loading draft:", error);
+    }
+    // Return default values
+    return {
+      title: "",
+      description: "",
+      taskType: courier.taskTypes?.[0]
+        ? {
+            value: courier.taskTypes[0],
+            label:
+              courier.taskTypes[0].charAt(0).toUpperCase() +
+              courier.taskTypes[0].slice(1),
+          }
+        : { value: "delivery", label: "Delivery" },
+      pickupLocation: "",
+      dropoffLocation: "",
+      price: "",
+      acceptDeadLineMinutes: { value: 5, label: "5 minutes" },
+    };
+  };
+
+  const [formData, setFormData] = useState(getInitialFormData);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Save form data to localStorage whenever it changes
+  useEffect(() => {
+    const saveToLocalStorage = () => {
+      try {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            data: formData,
+            timestamp: Date.now(),
+          }),
+        );
+      } catch (error) {
+        console.error("Error saving draft:", error);
+      }
+    };
+
+    const timeoutId = setTimeout(saveToLocalStorage, 500); // Debounce saves
+    return () => clearTimeout(timeoutId);
+  }, [formData, STORAGE_KEY]);
+
+  // Check if form has any data entered
+  const hasFormData = () => {
+    return (
+      formData.title.trim() !== "" ||
+      formData.description.trim() !== "" ||
+      formData.pickupLocation.trim() !== "" ||
+      formData.dropoffLocation.trim() !== "" ||
+      formData.price.trim() !== ""
+    );
+  };
+
+  // Handle close with confirmation if form has data
+  const handleClose = () => {
+    if (hasFormData()) {
+      const confirmClose = window.confirm(
+        "You have unsaved changes. Your progress will be saved for 10 minutes. Do you want to close?",
+      );
+      if (confirmClose) {
+        onClose();
+      }
+    } else {
+      // Clear draft if form is empty
+      localStorage.removeItem(STORAGE_KEY);
+      onClose();
+    }
+  };
+
+  // Handle overlay click
+  const handleOverlayClick = () => {
+    handleClose();
+  };
 
   const acceptanceTimeOptions = [
     { value: 5, label: "5 minutes" },
@@ -106,6 +182,8 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
         throw new Error(data.msg || "Failed to request delivery");
       }
 
+      // Clear the saved draft after successful submission
+      localStorage.removeItem(STORAGE_KEY);
       toast.success("Delivery request sent successfully!");
       onSuccess();
       onClose();
@@ -117,11 +195,11 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
   };
 
   return createPortal(
-    <div className={styles.modalOverlay} onClick={onClose}>
+    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <h2>Request Delivery from {courier.name}</h2>
-          <button className={styles.closeButton} onClick={onClose}>
+          <button className={styles.closeButton} onClick={handleClose}>
             ×
           </button>
         </div>
@@ -245,7 +323,7 @@ const DeliveryRequestModal = ({ courier, onClose, onSuccess }) => {
           <div className={styles.formActions}>
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className={styles.cancelButton}
               disabled={isSubmitting}
             >

@@ -21,9 +21,9 @@ const HomeSection = () => {
   return (
     <div className={styles.homeContainer}>
       {isClient ? (
-        // Client view: Full-width map with courier markers
-        <div className={styles.fullMapContainer}>
-          <div className={styles.mapHeader}>
+        // Client view: Map and courier list side-by-side
+        <>
+          <div className={styles.clientHeader}>
             <div className={styles.headerContent}>
               <div>
                 <h1 className={styles.mapTitle}>Request a Delivery</h1>
@@ -40,25 +40,31 @@ const HomeSection = () => {
               </button>
             </div>
           </div>
-          <div className={styles.fullMapArea}>
-            <Map />
+          <div className={styles.clientContent}>
+            <div className={styles.clientMapArea}>
+              <Map />
+            </div>
+            <div className={styles.clientListArea}>
+              <CouriersList />
+            </div>
           </div>
-          {/* Hidden component that still fetches and adds markers to map */}
-          <div className={styles.hiddenCouriers}>
-            <CouriersList />
-          </div>
-        </div>
+        </>
       ) : (
-        // Courier view: Map on left, task list on right (existing layout)
+        // Courier view: Map and task list side-by-side
         <>
-          {!isClient && (
-            <h1 className={styles.taskTitle}>Available & Requested Tasks</h1>
-          )}
-          <div className={styles.mapArea}>
-            <Map />
+          <div className={styles.courierHeader}>
+            <h1 className={styles.courierTitle}>Available & Requested Tasks</h1>
+            <p className={styles.courierSubtitle}>
+              View tasks on the map or browse the list
+            </p>
           </div>
-          <div className={styles.listArea}>
-            <TaskList />
+          <div className={styles.courierContent}>
+            <div className={styles.courierMapArea}>
+              <Map />
+            </div>
+            <div className={styles.courierListArea}>
+              <TaskList />
+            </div>
           </div>
         </>
       )}

@@ -26,6 +26,7 @@
 .description {
   font-size: 0.9rem;
   color: #555;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 
@@ -114,10 +115,6 @@
 }
 
 @media (min-width: 1440px) {
-  .card {
-    padding: 18px 22px;
-  }
-
   .title {
     font-size: 1.21rem;
   }
@@ -147,26 +144,23 @@
   }
 
   .locationBox {
-    padding: 12px;
+    padding: 10px;
+    font-size: 0.98rem;
   }
 }
 
 @media (min-width: 1024px) and (max-width: 1439px) {
-  .card {
-    padding: 20px 26px;
-  }
-
   .title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .description {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .status {
-    padding: 4px 10px;
-    font-size: 0.8rem;
+    padding: 2.5px 8.5px;
+    font-size: 0.78rem;
   }
 
   .address {
@@ -181,11 +175,12 @@
   .infoGrid {
     gap: 6px 12px;
     grid-template-columns: 1fr;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
   .locationBox {
     padding: 10px;
+    font-size: 0.65rem;
   }
 }
 
@@ -195,11 +190,11 @@
   }
 
   .title {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   .description {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .status {
@@ -219,7 +214,45 @@
   .infoGrid {
     grid-template-columns: 1fr;
     gap: 5px 10px;
-    font-size: 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .locationBox {
+    padding: 8px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 381px) and (max-width: 767px) {
+  .card {
+    padding: 12px 16px;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+  }
+
+  .status {
+    padding: 3px 8px;
+    font-size: 0.7rem;
+  }
+
+  .address {
+    font-size: 0.85rem;
+  }
+
+  .acceptButton {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+    gap: 5px 10px;
   }
 
   .locationBox {
@@ -242,7 +275,7 @@
 
   .status {
     padding: 2px 6px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
 
   .address {

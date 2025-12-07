@@ -42,6 +42,12 @@
   min-height: 400px;
 }
 
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
 .section {
   background: white;
   border-radius: 12px;
@@ -73,6 +79,12 @@
     min-height: 400px;
   }
 
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
   .section {
     padding: 30px;
   }
@@ -97,6 +109,12 @@
 
   .tabContent {
     min-height: 380px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    text-align: center;
   }
 
   .section {
@@ -125,6 +143,12 @@
     min-height: 360px;
   }
 
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
   .section {
     padding: 26px;
   }
@@ -150,7 +174,11 @@
   .tabContent {
     min-height: 340px;
   }
-
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    text-align: center;
+  }
   .section {
     padding: 24px;
   }
@@ -164,8 +192,8 @@
 /* Mobile responsive styles */
 @media (max-width: 767px) {
   h1 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
     text-align: center;
   }
 }

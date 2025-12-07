@@ -287,7 +287,6 @@
   cursor: pointer;
   transition: all 0.2s;
   max-width: 200px;
-  margin-top: 20px;
 }
 
 .editButton:hover,
