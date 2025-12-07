@@ -187,7 +187,7 @@
   }
 
   .title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: var(--color-primary);
     margin: 0 0 16px 0;
     font-weight: 700;
@@ -195,7 +195,7 @@
   }
 
   .subtitle {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: #6b7280;
     margin: 0 0 24px 0;
     text-align: center;
@@ -245,14 +245,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 16px 24px;
     background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
     border-radius: 12px;
-    min-width: 120px;
+    min-width: 100px;
   }
 
   .statNumber {
-    font-size: 2rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: #667eea;
     line-height: 1;
@@ -277,7 +276,7 @@
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--color-primary);
     margin: 0 0 14px 0;
     font-weight: 700;
@@ -285,7 +284,7 @@
   }
 
   .subtitle {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: #6b7280;
     margin: 0 0 20px 0;
     text-align: center;
@@ -335,14 +334,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 14px 20px;
     background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
     border-radius: 12px;
-    min-width: 110px;
+    min-width: 90px;
   }
 
   .statNumber {
-    font-size: 1.8rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #667eea;
     line-height: 1;
@@ -350,7 +348,7 @@
   }
 
   .statLabel {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #6b7280;
     font-weight: 500;
     text-align: center;
@@ -358,16 +356,16 @@
 }
 
 /* Extra small devices */
-@media (max-width: 380px) {
+@media (min-width: 320px) and (max-width: 767px) {
   .container {
-    padding: 12px;
+    padding: 5px;
     box-sizing: border-box;
     height: 100%;
     overflow-y: auto;
   }
 
   .title {
-    font-size: 1.3rem;
+    font-size: 0.9rem;
     color: var(--color-primary);
     margin: 0 0 10px 0;
     font-weight: 700;
@@ -375,7 +373,7 @@
   }
 
   .subtitle {
-    font-size: 0.85rem;
+    font-size: 0.65rem;
     color: #6b7280;
     margin: 0 0 16px 0;
     text-align: center;
@@ -428,11 +426,11 @@
     padding: 10px 16px;
     background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
     border-radius: 10px;
-    min-width: 90px;
+    min-width: 0.1rem;
   }
 
   .statNumber {
-    font-size: 1.5rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: #667eea;
     line-height: 1;
@@ -440,7 +438,7 @@
   }
 
   .statLabel {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: #6b7280;
     font-weight: 500;
     text-align: center;

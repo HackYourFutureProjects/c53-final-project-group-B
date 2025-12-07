@@ -48,10 +48,10 @@
 /* Map column for courier view */
 .courierHeader {
   padding: 16px 20px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 12px;
   color: white;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
   flex-shrink: 0;
 }
 
@@ -247,7 +247,22 @@
     order: 2;
     gap: 12px;
   }
-
+  .mapTitle {
+    font-size: 1.2rem;
+  }
+  .mapSubtitle {
+    font-size: 0.65rem;
+    text-align: center;
+  }
+  .generalRequestButton {
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    padding: 0.2rem 0.5rem;
+  }
   .clientMapArea {
     flex: none;
     height: 45vh;
@@ -263,14 +278,28 @@
 
   /* Courier view mobile */
   .courierHeader {
-    padding: var(--space-md);
+    padding: var(--space-sm);
     order: 1;
+    margin-top: 0px;
   }
 
   .courierContent {
     flex-direction: column;
     order: 2;
     gap: 12px;
+  }
+
+  .courierTitle {
+    font-size: 18px;
+  }
+
+  .courierSubtitle {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .mapHeader {
+    padding: var(--space-sm);
   }
 
   .courierMapArea {
@@ -303,12 +332,6 @@
     flex-direction: column;
     gap: var(--space-md);
     align-items: center;
-  }
-
-  .generalRequestButton {
-    width: 100%;
-    max-width: 250px;
-    justify-content: center;
   }
 
   .taskTitle {
@@ -452,5 +475,24 @@
 @media (max-width: 320px) {
   .taskTitle {
     font-size: 1rem;
+  }
+  .courierTitle {
+    font-size: 14px;
+  }
+  .courierSubtitle {
+    font-size: 11px;
+  }
+  .mapTitle {
+    font-size: 1rem;
+  }
+  .mapSubtitle {
+    font-size: 0.6rem;
+    text-align: center;
+  }
+  .generalRequestButton {
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
   }
 }
