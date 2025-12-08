@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useMemo } from "react";
+import { useContext, useState, useEffect } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import styles from "./HeroSection.module.css";
 import { Link } from "react-router-dom";
@@ -7,24 +7,22 @@ import bicycleUrl from "../assets/lottie/Delivery Guy on Bicycle, Cycle, and Bik
 import deliveredUrl from "../assets/lottie/Order delivered.lottie";
 import { UserContext } from "../context/UserContext";
 
+// Static array - no need to recreate on each render
+const ANIMATIONS = [hoverboardUrl, bicycleUrl, deliveredUrl];
+
 const HeroSection = () => {
   const { user } = useContext(UserContext);
   const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
 
-  const animations = useMemo(
-    () => [hoverboardUrl, bicycleUrl, deliveredUrl],
-    [],
-  );
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAnimationIndex(
-        (prevIndex) => (prevIndex + 1) % animations.length,
+        (prevIndex) => (prevIndex + 1) % ANIMATIONS.length,
       );
     }, 2500);
 
     return () => clearInterval(interval);
-  }, [animations]);
+  }, []); // Empty deps - ANIMATIONS is a module-level constant
 
   return (
     <section className={styles.hero}>
@@ -46,7 +44,7 @@ const HeroSection = () => {
       <div className={styles.animation}>
         <div className={styles.lottieWrapper}>
           <DotLottieReact
-            src={animations[currentAnimationIndex]}
+            src={ANIMATIONS[currentAnimationIndex]}
             loop
             autoplay
           />
