@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import styles from "./HeroSection.module.css";
 import { Link } from "react-router-dom";
@@ -7,11 +7,14 @@ import bicycleUrl from "../assets/lottie/Delivery Guy on Bicycle, Cycle, and Bik
 import deliveredUrl from "../assets/lottie/Order delivered.lottie";
 import { UserContext } from "../context/UserContext";
 
-const animations = [hoverboardUrl, bicycleUrl, deliveredUrl];
-
 const HeroSection = () => {
   const { user } = useContext(UserContext);
   const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
+
+  const animations = useMemo(
+    () => [hoverboardUrl, bicycleUrl, deliveredUrl],
+    [],
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,7 +24,7 @@ const HeroSection = () => {
     }, 2500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [animations]);
 
   return (
     <section className={styles.hero}>
