@@ -10,7 +10,7 @@ const MyTaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [activeTab, setActiveTab] = useState(
     user?.role === "client" ? "posted" : "accepted",
-  ); // default tab
+  );
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     "/tasks/my-tasks",
     (data) => setTasks(data.tasks),
@@ -28,14 +28,12 @@ const MyTaskList = () => {
     return <div>Error loading available tasks: {error}</div>;
   }
 
-  // Filter tasks based on activeTab
   const filteredTasks = tasks.filter((task) => task.status === activeTab);
 
   return (
     <div className={styles.container}>
       {user?.role === "client" ? <h1>My Deliveries</h1> : <h1>My Tasks</h1>}
 
-      {/* Tabs for status */}
       <div className={styles.tabContainer}>
         {[
           ...(user?.role === "client" ? ["requested"] : []),
@@ -58,7 +56,6 @@ const MyTaskList = () => {
         ))}
       </div>
 
-      {/* Tab Content */}
       <div className={styles.tasksScrollContainer}>
         <AnimatePresence mode="wait">
           <motion.div

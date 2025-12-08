@@ -42,7 +42,7 @@
 }
 
 .navItem:hover {
-  background: rgba(106, 13, 173, 0.08); /* soft purple hover */
+  background: rgba(106, 13, 173, 0.08);
   border-color: var(--color-primary);
   transform: translateY(-2px);
 }
@@ -55,7 +55,6 @@
   transform: translateY(-2px);
 }
 
-/* Mobile toggle button */
 .mobileToggle {
   display: none;
   position: fixed;
@@ -75,7 +74,6 @@
   background: var(--color-primary);
 }
 
-/* Mobile home button */
 .mobileHomeButton {
   display: none;
   position: fixed;
@@ -95,7 +93,6 @@
   background: var(--color-primary);
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .sidebar {
     width: 220px;
@@ -116,7 +113,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .sidebar {
     width: 200px;
@@ -137,7 +133,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .sidebar {
     width: 180px;
@@ -159,7 +154,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .sidebar {
     width: 160px;

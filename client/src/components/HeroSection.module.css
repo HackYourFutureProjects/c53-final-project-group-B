@@ -57,6 +57,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.lottieWrapper {
+  position: absolute;
+  width: 100%;
+  max-width: 600px;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.lottieWrapper.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .animation canvas {

@@ -70,7 +70,7 @@
 
 .passwordWrapper input {
   flex: 1;
-  padding-right: 2.5rem; /* space for the icon */
+  padding-right: 2.5rem;
 }
 
 .showPasswordBtn {
@@ -263,7 +263,6 @@
   text-align: center;
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .form {
     background: var(--color-bg);
@@ -531,7 +530,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .form {
     background: var(--color-bg);
@@ -799,7 +797,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .form {
     background: var(--color-bg);
@@ -1067,7 +1064,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .form {
     background: var(--color-bg);

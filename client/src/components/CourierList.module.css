@@ -1,8 +1,6 @@
-/* CourierList.module.css */
 .container {
   padding: 20px;
   box-sizing: border-box;
-  /* Make the card container fill the column and allow scrolling inside it */
   height: 100%;
   overflow-y: auto;
 }
@@ -10,7 +8,7 @@
 .title {
   font-size: 1.6rem;
   color: var(--color-primary);
-  margin: 0 0 16px 0; /* ensure no top-margin pushing it down */
+  margin: 0 0 16px 0;
   font-weight: 700;
   text-align: center;
 }
@@ -87,7 +85,6 @@
   text-align: center;
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .container {
     padding: 24px;
@@ -177,7 +174,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .container {
     padding: 20px;
@@ -266,7 +262,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .container {
     padding: 18px;
@@ -355,7 +350,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 767px) {
   .container {
     padding: 5px;

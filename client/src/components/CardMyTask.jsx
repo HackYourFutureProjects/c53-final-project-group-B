@@ -104,7 +104,6 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
 
   return (
     <div className={styles.card}>
-      {/* Top section */}
       <div className={styles.topSection}>
         <h3 className={styles.title}>{task.title}</h3>
         <p className={styles.description}>{task.description}</p>
@@ -134,7 +133,6 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
         </div>
       </div>
 
-      {/* Bottom section */}
       <div className={styles.bottomSection}>
         {task.pickupLocation?.address && (
           <p className={styles.address}>
@@ -169,7 +167,6 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
           </div>
         )}
 
-        {/* Action buttons */}
         <div className={styles.actionsContainer}>
           {primaryAction && (
             <button
@@ -191,7 +188,6 @@ const CardMyTask = ({ task, refreshMyTasks }) => {
           )}
         </div>
 
-        {/* Rating */}
         {user?.role === "client" &&
           task.status === "completed" &&
           !task.rated && (

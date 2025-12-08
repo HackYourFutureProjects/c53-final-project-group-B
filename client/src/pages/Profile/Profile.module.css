@@ -237,7 +237,7 @@
 
 .passwordWrapper input {
   flex: 1;
-  padding-right: 2.5rem; /* space for the icon */
+  padding-right: 2.5rem;
   width: 100%;
 }
 
@@ -503,7 +503,6 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .profileContainer {
     max-width: 1200px;
@@ -571,7 +570,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .profileContainer {
     max-width: 1100px;
@@ -639,7 +637,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .profileContainer {
     max-width: 1000px;
@@ -707,7 +704,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .profileContainer {
     max-width: 100%;

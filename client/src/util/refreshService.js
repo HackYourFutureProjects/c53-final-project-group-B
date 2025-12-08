@@ -2,7 +2,7 @@ export async function refreshAccessToken() {
   try {
     const res = await fetch("/api/auth/refresh-token", {
       method: "POST",
-      credentials: "include", // cookie refresh token
+      credentials: "include",
     });
 
     if (!res.ok) return null;

@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import useFetch from "../hooks/useFetch";
 import { UserContext } from "../context/UserContext.js";
-import TaskCard from "./taskCard.jsx";
-import styles from "./taskList.module.css";
+import TaskCard from "./TaskCard.jsx";
+import styles from "./TaskList.module.css";
 import {
   addTaskMarker,
   clearMarkers,
   getMapInstance,
-} from "../controller/mapcontroller.js";
+} from "../controller/mapController.js";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);

@@ -126,7 +126,6 @@
   font-size: 20px;
 }
 
-/* Leaflet popup customization */
 :global(.leaflet-popup-content-wrapper) {
   padding: 0;
   border-radius: 16px;
@@ -142,7 +141,6 @@
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
 }
 
-/* Large Desktop */
 @media (min-width: 1440px) {
   .popupContainer {
     min-width: 280px;
@@ -197,7 +195,6 @@
   }
 }
 
-/* Small Desktop / Laptop */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .popupContainer {
     min-width: 260px;
@@ -252,7 +249,6 @@
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
   .popupContainer {
     min-width: 240px;
@@ -307,7 +303,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 380px) {
   .popupContainer {
     min-width: 220px;

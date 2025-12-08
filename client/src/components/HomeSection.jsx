@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext.js";
 import CouriersList from "./Couriers.jsx";
-import TaskList from "./taskList.jsx";
-import Map from "../pages/map/map.jsx";
+import TaskList from "./TaskList.jsx";
+import Map from "../pages/map/Map.jsx";
 import GeneralDeliveryModal from "./GeneralDeliveryModal.jsx";
-import styles from "./homeSection.module.css";
+import styles from "./HomeSection.module.css";
 
 const HomeSection = () => {
   const { user } = useContext(UserContext);
@@ -14,14 +14,11 @@ const HomeSection = () => {
 
   const isClient = user.role === "client";
 
-  const handleGeneralRequestSuccess = () => {
-    // Optionally refresh or show success message
-  };
+  const handleGeneralRequestSuccess = () => {};
 
   return (
     <div className={styles.homeContainer}>
       {isClient ? (
-        // Client view: Map and courier list side-by-side
         <>
           <div className={styles.clientHeader}>
             <div className={styles.headerContent}>
@@ -50,7 +47,6 @@ const HomeSection = () => {
           </div>
         </>
       ) : (
-        // Courier view: Map and task list side-by-side
         <>
           <div className={styles.courierHeader}>
             <h1 className={styles.courierTitle}>Available & Requested Tasks</h1>

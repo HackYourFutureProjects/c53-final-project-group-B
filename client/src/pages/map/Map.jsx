@@ -1,8 +1,8 @@
 import { useEffect, useContext, useRef } from "react";
 import { UserContext } from "../../context/UserContext.js";
-import { initMap } from "../../controller/mapcontroller.js";
+import { initMap } from "../../controller/mapController.js";
 import "leaflet/dist/leaflet.css";
-import styles from "./map.module.css";
+import styles from "./Map.module.css";
 
 const Map = () => {
   const { coordinates, locationReady } = useContext(UserContext);

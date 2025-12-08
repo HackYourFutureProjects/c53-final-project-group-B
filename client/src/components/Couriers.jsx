@@ -8,7 +8,7 @@ import {
   addCourierMarker,
   clearMarkers,
   getMapInstance,
-} from "../controller/mapcontroller";
+} from "../controller/mapController";
 
 const CouriersList = () => {
   const [couriers, setCouriers] = useState([]);
@@ -36,7 +36,6 @@ const CouriersList = () => {
   };
 
   const handleSuccessfulRequest = () => {
-    // Optionally refresh courier list or show success message
     performFetch();
   };
 
