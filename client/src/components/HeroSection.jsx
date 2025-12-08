@@ -7,11 +7,11 @@ import bicycleUrl from "../assets/lottie/Delivery Guy on Bicycle, Cycle, and Bik
 import deliveredUrl from "../assets/lottie/Order delivered.lottie";
 import { UserContext } from "../context/UserContext";
 
+const animations = [hoverboardUrl, bicycleUrl, deliveredUrl];
+
 const HeroSection = () => {
   const { user } = useContext(UserContext);
   const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
-
-  const animations = [hoverboardUrl, bicycleUrl, deliveredUrl];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,7 +21,7 @@ const HeroSection = () => {
     }, 2500);
 
     return () => clearInterval(interval);
-  }, [animations.length]);
+  }, []);
 
   return (
     <section className={styles.hero}>
@@ -41,16 +41,13 @@ const HeroSection = () => {
       </div>
 
       <div className={styles.animation}>
-        {animations.map((animationUrl, index) => (
-          <div
-            key={index}
-            className={`${styles.lottieWrapper} ${
-              index === currentAnimationIndex ? styles.active : ""
-            }`}
-          >
-            <DotLottieReact src={animationUrl} loop autoplay />
-          </div>
-        ))}
+        <div className={styles.lottieWrapper}>
+          <DotLottieReact
+            src={animations[currentAnimationIndex]}
+            loop
+            autoplay
+          />
+        </div>
       </div>
     </section>
   );
